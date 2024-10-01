@@ -9,7 +9,6 @@ android {
 
     signingConfigs {
         getByName("debug") {
-//            storeFile = file("C:\\Users\\zycko\\.android\\debug.keystore")
             storeFile = file("$storeFile")
             storePassword = "android"
             keyAlias = "debug"
@@ -58,6 +57,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
@@ -72,6 +74,9 @@ dependencies {
     implementation(libs.androidx.material3)
 
     testImplementation(libs.junit)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
