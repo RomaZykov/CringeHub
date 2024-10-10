@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CringeHub"
 include(":app")
+include(":features:auth")
+include(":core")
