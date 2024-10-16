@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.gms)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -66,6 +67,10 @@ android {
 
 dependencies {
 
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+    implementation(project(":features:auth"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -75,6 +80,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.hilt.android)
 
     testImplementation(libs.junit)
     testImplementation(platform(libs.junit.bom))
@@ -90,14 +96,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Auth
-    implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
-
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-
     // Hilt
     ksp(libs.hilt.compiler)
     androidTestImplementation(libs.hilt.android.testing)
+    implementation(libs.androidx.hilt.navigation.compose)
 }
