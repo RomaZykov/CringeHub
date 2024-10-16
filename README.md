@@ -7,5 +7,5 @@
 2. Jetpack Compose
 3. Hilt
 
-## Notes (what article i use)
+## Notes (what articles i use)
 1. Adaptive navigation (https://developer.android.com/develop/ui/compose/layouts/adaptive/build-adaptive-navigation).
