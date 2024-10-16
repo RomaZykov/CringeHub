@@ -1,4 +1,4 @@
-package com.example.cringehub.domain
+package com.example.auth_domain.repository
 
 interface AuthRepository {
 
