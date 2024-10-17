@@ -13,6 +13,21 @@ android {
     defaultConfig {
         minSdk = 24
     }
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("$storeFile")
+            storePassword = "android"
+            keyAlias = "debug"
+            keyPassword = "android"
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
@@ -26,8 +41,10 @@ dependencies {
     implementation(libs.play.services.auth)
 
     // Hilt
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android.testing)
+
+    implementation(libs.androidx.junit.ktx)
 }
