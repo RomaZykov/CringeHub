@@ -2,6 +2,7 @@
 agp = "8.7.1"
 firebaseBom = "33.4.0"
 hilt = "2.52"
+hiltNavigationCompose = "1.2.0"
 junitBom = "5.11.1"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
@@ -24,6 +25,7 @@ gmsPlugin = "4.4.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
