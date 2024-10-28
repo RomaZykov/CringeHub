@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -21,6 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "CringeHub"
 include(":app")
-include(":core:data")
 include(":core:domain")
 include(":features:auth")
+include(":core:data")
+include(":core:ui")

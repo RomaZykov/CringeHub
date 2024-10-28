@@ -1,16 +1,15 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.cringehub.android.application)
+
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.gms)
+
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.cringehub"
-    compileSdk = 34
 
     signingConfigs {
         getByName("debug") {
@@ -19,16 +18,23 @@ android {
             keyAlias = "debug"
             keyPassword = "android"
         }
+        create("release") {
+//            try {
+//                storeFile = file("$storeFile")
+//                storePassword = KEYSTORE_PASSWORD
+//                keyAlias = "release"
+//                keyPassword =  KEY_PASSWORD
+//            } catch (ex) {
+//                throw InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+//            }
+        }
     }
 
     defaultConfig {
         applicationId = "com.example.cringehub"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -41,26 +47,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+//            buildConfigField "String", "BASE_URL", '"https://moguchi-app-default-rtdb.europe-west1.firebasedatabase.app"'
+//            buildConfigField "String", "SERVER_CLIENT_ID", '"620122652964-ruvd9u3fru7mqfpdh9j3sd13i7b71lem.apps.googleusercontent.com"'
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
+//            buildConfigField "String", "BASE_URL", '"https://moguchi-debug-default-rtdb.europe-west1.firebasedatabase.app"'
+//            buildConfigField "String", "SERVER_CLIENT_ID", '"620122652964-ruvd9u3fru7mqfpdh9j3sd13i7b71lem.apps.googleusercontent.com"'
             signingConfig = signingConfigs.getByName("debug")
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
-        }
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -73,8 +70,6 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:data"))
     implementation(project(":core:domain"))
     implementation(project(":features:auth"))
 
