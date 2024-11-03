@@ -1,4 +1,4 @@
-package com.example.auth_presentation
+package com.example.auth
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package com.example.auth_domain.repository
+package com.example.domain.repositories.auth
 
 interface AuthRepository {
 
