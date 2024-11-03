@@ -66,8 +66,8 @@ test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
 test-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 test-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-test-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-test-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+test-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+test-compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 # Hilt
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
