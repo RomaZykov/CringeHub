@@ -89,11 +89,11 @@ dependencies {
     androidTestImplementation(libs.compose.navigation.testing)
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.test.espresso.core)
-    androidTestImplementation(libs.test.ui.junit4)
+    androidTestImplementation(libs.test.compose.ui.junit4)
     ksp(libs.androidx.room.compiler)
 
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.test.ui.manifest)
+    debugImplementation(libs.test.compose.ui.manifest)
 
     implementation(libs.kotlinx.serialization.json)
 

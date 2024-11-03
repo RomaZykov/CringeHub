@@ -1,9 +1,10 @@
 package com.example.cringehub.ui
 
-import com.example.cringehub.navigation.Navigation
+import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-@HiltViewModel
-class MainActivityViewModel(private val navigation: Navigation) {
-
-}
+//@HiltViewModel
+//class MainActivityViewModel(private val navigation: Navigation) : ViewModel() {
+//
+//}
