@@ -1,11 +1,8 @@
 plugins {
     alias(libs.plugins.cringehub.android.application)
-
-    alias(libs.plugins.compose.compiler)
-
+    alias(libs.plugins.cringehub.android.application.compose)
+    alias(libs.plugins.cringehub.hilt)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -71,37 +68,34 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":core:data"))
     implementation(project(":features:auth"))
 
+    implementation(platform(libs.compose.bom))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.navigation)
 
-    testImplementation(libs.junit)
-    testImplementation(platform(libs.junit.bom))
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly(libs.junit.platform.launcher)
-    androidTestImplementation(libs.androidx.navigation.testing)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(platform(libs.test.junit.bom))
+    testImplementation(libs.test.junit.jupiter)
+    testImplementation(libs.test.junit)
+    testRuntimeOnly(libs.test.junit.platform.launcher)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.navigation.testing)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso.core)
+    androidTestImplementation(libs.test.ui.junit4)
     ksp(libs.androidx.room.compiler)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.test.ui.manifest)
 
     implementation(libs.kotlinx.serialization.json)
 
-    // Hilt
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
     androidTestImplementation(libs.hilt.android.testing)
 }
