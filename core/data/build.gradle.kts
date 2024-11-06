@@ -8,8 +8,6 @@ android {
     dependencies {
         implementation(project(":core:domain"))
 
-        androidTestImplementation(libs.test.compose.ui.junit4)
-
         implementation(libs.androidx.core.ktx)
         implementation(libs.androidx.appcompat)
 

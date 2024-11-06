@@ -6,5 +6,4 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun AuthScreen(authViewModel: AuthViewModel = hiltViewModel()) {
-    Text("from Auth screen")
 }
