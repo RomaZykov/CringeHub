@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun GoogleSignInButton() {
-    Button(onClick = {}) { }
+    Button(onClick = {1}) { }
 }
