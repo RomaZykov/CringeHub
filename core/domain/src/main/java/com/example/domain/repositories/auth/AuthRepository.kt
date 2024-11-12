@@ -1,8 +1,10 @@
 package com.example.domain.repositories.auth
 
-interface AuthRepository {
+import com.google.firebase.auth.AuthCredential
 
-    suspend fun signIn()
+interface AuthFirebaseRepository {
 
-    suspend fun logOut()
+    suspend fun oneTapSignInWithGoogle()
+
+    suspend fun firebaseSignInWithGoogle(googleCredential: AuthCredential, onResult: (Throwable?) -> Unit)
 }

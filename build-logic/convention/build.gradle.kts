@@ -42,5 +42,9 @@ gradlePlugin {
             id = "cringehub.hilt"
             implementationClass = "HiltConventionPlugin"
         }
+        register("firebase") {
+            id = "cringehub.firebase"
+            implementationClass = "FirebaseConventionPlugin"
+        }
     }
 }

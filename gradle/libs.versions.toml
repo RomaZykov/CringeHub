@@ -1,12 +1,13 @@
 [versions]
 androidGradlePlugin = "8.7.1"
 agp = "8.7.2"
+konsist = "2"
+kotestRunnerJunit5 = "5.7.2"
 kotlin = "2.0.20"
 jetbrainsKotlinJvm = "2.0.20"
 runtimeAndroid = "1.7.5"
 appcompat = "1.7.0"
 credentials = "1.3.0"
-firebaseBom = "33.5.1"
 googleid = "1.1.1"
 hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
@@ -26,6 +27,8 @@ kotlinxSerializationJson = "1.7.3"
 ksp = "2.0.20-1.0.25"
 gmsPlugin = "4.4.2"
 junitKtx = "1.2.1"
+material = "1.12.0"
+firebaseBom = "33.5.1"
 firebaseCommonKtx = "21.0.0"
 firebaseAuthKtx = "23.1.0"
 
@@ -34,18 +37,18 @@ compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "24"
 jvm = "17"
-material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotestRunnerJunit5" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -109,3 +112,4 @@ cringehub-android-feature = { id = "cringehub.android.feature" }
 cringehub-android-application-compose = { id = "cringehub.android.application.compose" }
 cringehub-android-library-compose = { id = "cringehub.android.library.compose" }
 cringehub-hilt = { id = "cringehub.hilt" }
+cringehub-firebase = { id = "cringehub.firebase" }

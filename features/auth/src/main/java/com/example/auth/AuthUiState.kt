@@ -1,9 +1,18 @@
 package com.example.auth
 
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 
-//data class AuthUiState() {
-//
-//    @Composable
-//    fun GoogleButton()
-//}
+interface AuthUiState {
+    object Initial : AuthUiState
+
+    object Loading : AuthUiState
+
+    data class Auth(val dummy: String) : AuthUiState {
+
+        @Composable
+        fun GoogleSignInButton() = Button(onClick = {}) { }
+    }
+
+    data object Error : AuthUiState
+}
