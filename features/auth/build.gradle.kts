@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.cringehub.android.library.compose)
     alias(libs.plugins.cringehub.android.feature)
     alias(libs.plugins.cringehub.hilt)
+    alias(libs.plugins.cringehub.firebase)
 }
 
 android {
@@ -10,7 +11,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.ui.tooling.preview.android)
 
     testImplementation(project(":core:test"))
     androidTestImplementation(project(":core:test"))

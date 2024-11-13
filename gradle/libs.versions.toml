@@ -28,15 +28,19 @@ ksp = "2.0.20-1.0.25"
 gmsPlugin = "4.4.2"
 junitKtx = "1.2.1"
 material = "1.12.0"
+uiToolingPreviewAndroid = "1.7.5"
+playServicesAuthVersion = "21.2.0"
 firebaseBom = "33.5.1"
 firebaseCommonKtx = "21.0.0"
 firebaseAuthKtx = "23.1.0"
+firebaseAuth = "23.1.0"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "24"
 jvm = "17"
+multidex = "2.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -86,6 +90,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -93,6 +98,10 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuthVersion" }
+google-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

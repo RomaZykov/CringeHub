@@ -31,7 +31,6 @@ android {
         applicationId = "com.example.cringehub"
         versionCode = 1
         versionName = "1.0"
-
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -44,23 +43,41 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"0\""
+            )
+            buildConfigField(
+                "String",
+                "SERVER_CLIENT_ID",
+                "\"0\""
+            )
             signingConfig = signingConfigs.getByName("release")
-//            buildConfigField "String", "BASE_URL", '"https://moguchi-app-default-rtdb.europe-west1.firebasedatabase.app"'
-//            buildConfigField "String", "SERVER_CLIENT_ID", '"620122652964-ruvd9u3fru7mqfpdh9j3sd13i7b71lem.apps.googleusercontent.com"'
         }
 
         debug {
             applicationIdSuffix = ".debug"
-//            buildConfigField "String", "BASE_URL", '"https://moguchi-debug-default-rtdb.europe-west1.firebasedatabase.app"'
-//            buildConfigField "String", "SERVER_CLIENT_ID", '"620122652964-ruvd9u3fru7mqfpdh9j3sd13i7b71lem.apps.googleusercontent.com"'
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"0\""
+            )
+            buildConfigField(
+                "String",
+                "SERVER_CLIENT_ID",
+                "\"0\""
+            )
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     tasks.withType<Test> {
         useJUnitPlatform()
     }

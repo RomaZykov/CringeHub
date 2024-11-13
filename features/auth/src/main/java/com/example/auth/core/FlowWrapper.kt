@@ -13,7 +13,7 @@ interface FlowWrapper {
     fun state(): StateFlow<AuthUiState>
 
     class Base : FlowWrapper {
-        private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Initial)
+        private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState())
 
         override fun value() = _uiState.value
 

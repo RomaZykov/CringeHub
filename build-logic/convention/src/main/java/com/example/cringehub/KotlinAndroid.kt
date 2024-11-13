@@ -12,6 +12,10 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
             minSdk = libs.findVersion("min-sdk").get().toString().toInt()
         }
 
+        buildFeatures {
+            buildConfig = true
+        }
+
         compileOptions {
             val javaVersion = JavaVersion.toVersion(libs.findVersion("jvm").get())
             sourceCompatibility = javaVersion

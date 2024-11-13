@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.example.domain"
 }
+dependencies {
+    implementation(libs.play.services.auth)
+    implementation(libs.androidx.credentials)
+}
