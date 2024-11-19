@@ -9,7 +9,7 @@ class FirebaseConventionPlugin : Plugin<Project> {
             dependencies {
                 val bom = libs.findLibrary("firebase-bom").get()
                 add("implementation", platform(bom))
-                add("implementation", libs.findLibrary("firebase-auth-ktx").get())
+                add("implementation", libs.findLibrary("firebase-auth").get())
                 add("implementation", libs.findLibrary("firebase-firestore").get())
             }
         }

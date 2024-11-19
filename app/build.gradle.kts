@@ -2,18 +2,21 @@ plugins {
     alias(libs.plugins.cringehub.android.application)
     alias(libs.plugins.cringehub.android.application.compose)
     alias(libs.plugins.cringehub.hilt)
+    alias(libs.plugins.cringehub.firebase)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.gms)
 }
 
 android {
     namespace = "com.example.cringehub"
 
     signingConfigs {
+        // TODO - Replace with correct way
         getByName("debug") {
             storeFile = file("$storeFile")
             storePassword = "android"
-            keyAlias = "debug"
             keyPassword = "android"
+            keyAlias = "debug"
         }
         create("release") {
 //            try {
@@ -34,6 +37,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {
@@ -43,31 +47,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"0\""
-            )
-            buildConfigField(
-                "String",
-                "SERVER_CLIENT_ID",
-                "\"0\""
-            )
             signingConfig = signingConfigs.getByName("release")
         }
 
         debug {
             applicationIdSuffix = ".debug"
-            buildConfigField(
-                "String",
-                "BASE_URL",
-                "\"0\""
-            )
-            buildConfigField(
-                "String",
-                "SERVER_CLIENT_ID",
-                "\"0\""
-            )
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -86,6 +70,7 @@ android {
 dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
+    implementation(project(":core:common"))
     implementation(project(":features:auth"))
 
     implementation(platform(libs.compose.bom))
@@ -98,10 +83,10 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.navigation)
 
+    testRuntimeOnly(libs.test.junit.platform.launcher)
     testImplementation(platform(libs.test.junit.bom))
     testImplementation(libs.test.junit.jupiter)
     testImplementation(libs.test.junit)
-    testRuntimeOnly(libs.test.junit.platform.launcher)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.navigation.testing)
     androidTestImplementation(libs.test.junit)

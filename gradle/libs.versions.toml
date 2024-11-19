@@ -11,28 +11,26 @@ credentials = "1.3.0"
 googleid = "1.1.1"
 hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
-junitBom = "5.11.2"
 junit = "4.13.2"
+junitBom = "5.11.2"
+junitKtx = "1.2.1"
 junitVersion = "1.2.1"
 coreKtx = "1.15.0"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.10.01"
+composeBom = "2024.11.00"
 composeCompiler = "1.5.15"
-navigationCompose = "2.8.3"
+navigationCompose = "2.8.4"
 playServicesAuth = "21.2.0"
 roomCompiler = "2.6.1"
 kotlinxSerializationJson = "1.7.3"
 ksp = "2.0.20-1.0.25"
 gmsPlugin = "4.4.2"
-junitKtx = "1.2.1"
 material = "1.12.0"
 uiToolingPreviewAndroid = "1.7.5"
 playServicesAuthVersion = "21.2.0"
 firebaseBom = "33.5.1"
-firebaseCommonKtx = "21.0.0"
-firebaseAuthKtx = "23.1.0"
 firebaseAuth = "23.1.0"
 
 # Used directly in gradle plugins
@@ -40,7 +38,6 @@ compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "24"
 jvm = "17"
-multidex = "2.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +46,10 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuthVersion" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
@@ -68,6 +69,7 @@ compose-navigation = { module = "androidx.navigation:navigation-compose", versio
 compose-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationCompose" }
 
 # Tests
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 test-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
@@ -88,20 +90,11 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
-firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-material3-android = { group = "androidx.compose.material3", name = "material3" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuthVersion" }
-google-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
-androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

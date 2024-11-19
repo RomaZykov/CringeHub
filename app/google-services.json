@@ -2,22 +2,59 @@
   "project_info": {
     "project_number": "172651466072",
     "project_id": "cringehub-debug",
-    "storage_bucket": "cringehub-debug.appspot.com"
+    "storage_bucket": "cringehub-debug.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:172651466072:android:f7e0d20ddc9ace859be92d",
+        "mobilesdk_app_id": "1:172651466072:android:218805f1e65889649be92d",
         "android_client_info": {
-          "package_name": "com.example.cringehub"
+          "package_name": "com.cringehub.debug"
         }
       },
       "oauth_client": [
         {
-          "client_id": "172651466072-6mqrbue8b6psqu0vngc4n96iepd0tv1f.apps.googleusercontent.com",
+          "client_id": "172651466072-ikji1sbgp5l1e552soi3n0t8m378nkhl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.cringehub",
+            "package_name": "com.cringehub.debug",
+            "certificate_hash": "3f9b00eef9801b2a3165718ed7416583979f7d22"
+          }
+        },
+        {
+          "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzIKbCokh2L7y6v_HoAObKLHXi-bCuSEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172651466072:android:abdcded25ded76f19be92d",
+        "android_client_info": {
+          "package_name": "com.example.cringehub.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172651466072-pdhef79dialg2lb3v1phbuhd24g6l15e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cringehub.debug",
             "certificate_hash": "3f9b00eef9801b2a3165718ed7416583979f7d22"
           }
         },

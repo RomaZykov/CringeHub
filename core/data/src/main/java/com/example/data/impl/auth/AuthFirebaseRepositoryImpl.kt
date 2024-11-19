@@ -12,7 +12,6 @@ import com.example.domain.repositories.auth.AuthRepository
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,10 +25,7 @@ class AuthFirebaseRepositoryImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) : AuthRepository {
 
-    override suspend fun signInWithGoogle(
-        firebaseCredential: AuthCredential,
-        onResult: (Throwable?) -> Unit
-    ) {
+    override suspend fun signInWithGoogle() {
         val signInWithGoogleOption = GetSignInWithGoogleOption.Builder("dummy")
             .build()
 
@@ -40,9 +36,10 @@ class AuthFirebaseRepositoryImpl @Inject constructor(
         // TODO - Should i wrap inside a coroutineScope?
         try {
             val credentialResult = credentialManager.getCredential(context, request)
-            handleFirebaseSignIn(credentialResult, onResult)
+            handleFirebaseSignIn(credentialResult)
         } catch (e: GetCredentialException) {
-            TODO()
+//            TODO - Implement correct realization
+            println(e)
         }
     }
 
@@ -50,10 +47,7 @@ class AuthFirebaseRepositoryImpl @Inject constructor(
 
     }
 
-    private fun handleFirebaseSignIn(
-        result: GetCredentialResponse,
-        onResult: (Throwable?) -> Unit
-    ) {
+    private fun handleFirebaseSignIn(result: GetCredentialResponse) {
         when (val credential = result.credential) {
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
@@ -70,7 +64,6 @@ class AuthFirebaseRepositoryImpl @Inject constructor(
                                 if (isNewUser) {
                                     addUserToFirestore()
                                 }
-                                onResult(it.exception)
                             }
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e(TAG, "Received an invalid google id token response", e)

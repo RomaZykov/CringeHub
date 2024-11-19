@@ -1,15 +1,18 @@
 package com.example.data.di
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.data.impl.auth.AuthFirebaseRepositoryImpl
+import com.example.domain.repositories.auth.AuthRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataModule {
+abstract class DataModule {
 
+    @Binds
+    internal abstract fun bindsAuthRepository(
+        authRepository: AuthFirebaseRepositoryImpl
+    ) : AuthRepository
 }

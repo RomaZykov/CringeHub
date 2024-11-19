@@ -2,6 +2,7 @@ package com.example.data.di
 
 import android.content.Context
 import androidx.credentials.CredentialManager
+import com.example.common.BuildConfig
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -14,7 +15,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class FirebaseModule {
+object FirebaseModule {
     @Provides
     fun provideFirebaseAuth() = Firebase.auth
 
@@ -26,7 +27,7 @@ class FirebaseModule {
         CredentialManager.create(context)
 
     @Provides
-    fun provideSignInGoogleOption(buildConfig: BuildConfig) =
-        GetSignInWithGoogleOption.Builder(buildConfig)
+    fun provideSignInGoogleOption() =
+        GetSignInWithGoogleOption.Builder(BuildConfig.BASE_URL)
             .build()
 }

@@ -6,5 +6,5 @@ import androidx.compose.runtime.Composable
 data class AuthUiState(val dummy: String = "") {
 
     @Composable
-    fun GoogleSignInButton() = Button(onClick = {}) { }
+    fun GoogleSignInButton(onSignInClick: () -> Unit) = Button(onClick = onSignInClick) { }
 }

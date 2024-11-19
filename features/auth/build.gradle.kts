@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.cringehub.android.library.compose)
     alias(libs.plugins.cringehub.android.feature)
     alias(libs.plugins.cringehub.hilt)
-    alias(libs.plugins.cringehub.firebase)
 }
 
 android {
