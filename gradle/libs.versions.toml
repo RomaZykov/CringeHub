@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "8.7.1"
 agp = "8.7.2"
-konsist = "2"
+konsist = "0.16.1"
 kotestRunnerJunit5 = "5.7.2"
 kotlin = "2.0.20"
 jetbrainsKotlinJvm = "2.0.20"
@@ -30,7 +30,7 @@ gmsPlugin = "4.4.2"
 material = "1.12.0"
 uiToolingPreviewAndroid = "1.7.5"
 playServicesAuthVersion = "21.2.0"
-firebaseBom = "33.5.1"
+firebaseBom = "33.6.0"
 firebaseAuth = "23.1.0"
 
 # Used directly in gradle plugins
@@ -38,6 +38,7 @@ compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "24"
 jvm = "17"
+uiTooling = "1.7.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -95,6 +96,7 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

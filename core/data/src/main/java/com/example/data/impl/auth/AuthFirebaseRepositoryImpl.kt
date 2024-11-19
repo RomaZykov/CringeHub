@@ -26,8 +26,9 @@ class AuthFirebaseRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun signInWithGoogle() {
-        val signInWithGoogleOption = GetSignInWithGoogleOption.Builder("dummy")
-            .build()
+        val signInWithGoogleOption =
+            GetSignInWithGoogleOption.Builder(com.example.common.BuildConfig.SERVER_CLIENT_ID)
+                .build()
 
         val request: GetCredentialRequest = GetCredentialRequest.Builder()
             .addCredentialOption(signInWithGoogleOption)
@@ -38,13 +39,13 @@ class AuthFirebaseRepositoryImpl @Inject constructor(
             val credentialResult = credentialManager.getCredential(context, request)
             handleFirebaseSignIn(credentialResult)
         } catch (e: GetCredentialException) {
-//            TODO - Implement correct realization
+            // TODO - Implement correct realization
             println(e)
         }
     }
 
     override suspend fun signOut() {
-
+        auth.signOut()
     }
 
     private fun handleFirebaseSignIn(result: GetCredentialResponse) {

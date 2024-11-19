@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":core:domain"))
 
     implementation(libs.androidx.material3.android)
+    debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview.android)
 
     testImplementation(project(":core:test"))

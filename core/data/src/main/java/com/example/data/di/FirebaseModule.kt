@@ -28,6 +28,6 @@ object FirebaseModule {
 
     @Provides
     fun provideSignInGoogleOption() =
-        GetSignInWithGoogleOption.Builder(BuildConfig.BASE_URL)
+        GetSignInWithGoogleOption.Builder(BuildConfig.SERVER_CLIENT_ID)
             .build()
 }

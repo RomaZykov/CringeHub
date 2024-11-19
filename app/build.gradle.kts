@@ -11,22 +11,21 @@ android {
     namespace = "com.example.cringehub"
 
     signingConfigs {
-        // TODO - Replace with correct way
         getByName("debug") {
             storeFile = file("$storeFile")
             storePassword = "android"
             keyPassword = "android"
-            keyAlias = "debug"
+            keyAlias = "AndroidDebugKey"
         }
         create("release") {
-//            try {
-//                storeFile = file("$storeFile")
-//                storePassword = KEYSTORE_PASSWORD
-//                keyAlias = "release"
-//                keyPassword =  KEY_PASSWORD
-//            } catch (ex) {
-//                throw InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
-//            }
+            try {
+                storeFile = file("$storeFile")
+                storePassword = providers.gradleProperty("KEYSTORE_PASSWORD").get()
+                keyAlias = "release"
+                keyPassword =  providers.gradleProperty("KEY_PASSWORD").get()
+            } catch (e: Exception) {
+                throw InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
         }
     }
 
@@ -82,6 +81,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.compose.navigation)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.firebase.firestore)
 
     testRuntimeOnly(libs.test.junit.platform.launcher)
     testImplementation(platform(libs.test.junit.bom))
@@ -92,12 +93,10 @@ dependencies {
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.test.espresso.core)
     androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
+
     ksp(libs.androidx.room.compiler)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.test.compose.ui.manifest)
-
-    implementation(libs.kotlinx.serialization.json)
-
-    androidTestImplementation(libs.hilt.android.testing)
 }

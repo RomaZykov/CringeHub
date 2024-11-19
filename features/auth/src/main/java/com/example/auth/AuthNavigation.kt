@@ -8,6 +8,6 @@ fun NavController.navigateToAuth() = navigate(AuthRoute)
 
 fun NavGraphBuilder.authScreen() {
     composable<AuthRoute> {
-        AuthScreen({})
+        AuthScreen()
     }
 }

@@ -15,11 +15,6 @@ android {
             )
             buildConfigField(
                 "String",
-                "BASE_URL",
-                "\"BASE_URL_RELEASE_FROM_COMMON\""
-            )
-            buildConfigField(
-                "String",
                 "SERVER_CLIENT_ID",
                 "\"SERVER_CLIENT_ID_RELEASE_FROM_COMMON\""
             )
@@ -28,13 +23,8 @@ android {
         debug {
             buildConfigField(
                 "String",
-                "BASE_URL",
-                "\"BASE_URL_DEBUG_FROM_COMMON\""
-            )
-            buildConfigField(
-                "String",
                 "SERVER_CLIENT_ID",
-                "\"SERVER_CLIENT_ID_DEBUG_FROM_COMMON\""
+                "\"753665239042-v5gfiv9l2thti048a1om9sj57p4tnnbq.apps.googleusercontent.com\""
             )
         }
     }

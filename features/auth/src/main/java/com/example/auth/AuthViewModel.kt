@@ -2,23 +2,22 @@ package com.example.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.auth.core.FlowWrapper
+import com.example.auth.core.ViewModelActions
 import com.example.domain.repositories.auth.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    private val flowWrapper: FlowWrapper,
     private val repository: AuthRepository
-) : ViewModel() {
+) : ViewModel(), ViewModelActions {
 
-    private val _uiState = MutableStateFlow(AuthUiState())
-    val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
+    fun state() = flowWrapper.state()
 
-    fun onSignInClick() {
+    override fun onSignInClick() {
         viewModelScope.launch {
             repository.signInWithGoogle()
         }
