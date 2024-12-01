@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.lifecycle.viewmodel.android)
+    testImplementation(libs.androidx.lifecycle.viewmodel.android)
+    testImplementation(libs.androidx.ui.tooling.preview.android)
     testImplementation(libs.konsist)
 }
