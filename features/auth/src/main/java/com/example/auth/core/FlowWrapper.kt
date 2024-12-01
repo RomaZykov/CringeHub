@@ -16,7 +16,7 @@ interface FlowWrapper {
 
     class Base @Inject constructor() : FlowWrapper {
 
-        private val _uiState = MutableStateFlow(AuthUiState)
+        private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Initial)
 
         override fun value(): AuthUiState = _uiState.value
 
