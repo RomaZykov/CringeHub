@@ -1,13 +1,9 @@
 package com.example.auth
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -17,15 +13,12 @@ fun AuthScreen(
 ) {
     val uiState by viewModel.state().collectAsState()
 
-    Row(modifier = Modifier.fillMaxHeight()) {
-        Box(Modifier.align(Alignment.CenterVertically)) {
-            uiState.GoogleSignInButton(viewModel::onSignInClick)
-        }
-    }
+    val activityContext = LocalContext.current
+    uiState.Show(viewModel::onSignInClick, activityContext)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AuthScreenPreview() {
-
+    AuthScreen()
 }

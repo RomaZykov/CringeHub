@@ -1,5 +1,6 @@
 package com.example.auth
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.auth.core.FlowWrapper
@@ -17,9 +18,14 @@ class AuthViewModel @Inject constructor(
 
     fun state() = flowWrapper.state()
 
-    override fun onSignInClick() {
+    override fun onSignInClick(activityContext: Context) {
         viewModelScope.launch {
-            repository.signInWithGoogle()
+            try {
+                repository.signInWithGoogle(activityContext)
+//                flowWrapper.setValue(AuthUiState.Success)
+            } catch (e: Exception) {
+                flowWrapper.setValue(AuthUiState.Error(e.message.toString()))
+            }
         }
     }
 }
