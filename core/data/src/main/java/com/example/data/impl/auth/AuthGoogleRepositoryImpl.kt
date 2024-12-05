@@ -9,43 +9,52 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
+import com.example.data.model.UserData
+import com.example.domain.model.User
 import com.example.domain.repositories.auth.AuthRepository
+import com.example.network.core.UserNetworkDataSource
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
-class AuthGoogleFirebaseRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth,
+class AuthGoogleRepositoryImpl @Inject constructor(
+    private val userNetworkDataSource: UserNetworkDataSource,
     private val credentialManager: CredentialManager,
     private val credentialRequest: GetCredentialRequest,
-    private val db: FirebaseFirestore
+    // TODO - replace from di
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AuthRepository {
 
-    override suspend fun signInWithGoogle(activityContext: Context) {
-        CoroutineScope(coroutineContext).launch {
+    override suspend fun signInWithGoogle(activityContext: Context): Result<User> =
+        withContext(dispatcher) {
             try {
                 val credentialResult =
                     credentialManager.getCredential(activityContext, credentialRequest)
                 handleFirebaseSignIn(credentialResult)
+
+                val rawUser = userNetworkDataSource.getUser()
+                val user =
+                    UserData(
+                        rawUser.id.orEmpty(),
+                        rawUser.userName.orEmpty(),
+                        isAuthorize = true
+                    )
+                Result.success(user.mappedValue())
             } catch (e: GetCredentialException) {
-                // TODO - Implement correct realization
-                println(e)
+                Result.failure(e)
             }
         }
-    }
 
     override suspend fun signOut() {
         credentialManager.clearCredentialState(ClearCredentialStateRequest())
-        auth.signOut()
+        userNetworkDataSource.signOutUser()
     }
 
-    private fun handleFirebaseSignIn(result: GetCredentialResponse) {
+    private suspend fun handleFirebaseSignIn(result: GetCredentialResponse) {
         when (val credential = result.credential) {
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
@@ -53,16 +62,11 @@ class AuthGoogleFirebaseRepositoryImpl @Inject constructor(
                         val googleIdTokenCredential =
                             GoogleIdTokenCredential.createFrom(credential.data)
                         val idToken = googleIdTokenCredential.idToken
-                        val firebaseCredential =
-                            GoogleAuthProvider.getCredential(idToken, null)
-                        auth.signInWithCredential(firebaseCredential)
-                            .addOnCompleteListener {
-                                val isNewUser =
-                                    it.result.additionalUserInfo?.isNewUser ?: false
-                                if (isNewUser) {
-                                    addUserToFirestore()
-                                }
-                            }
+
+                        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                        userNetworkDataSource.signInUserWithFirebaseCredential(
+                            firebaseCredential
+                        )
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e(TAG, "Received an invalid google id token response", e)
                     }
@@ -75,9 +79,5 @@ class AuthGoogleFirebaseRepositoryImpl @Inject constructor(
                 Log.e(TAG, "Unexpected type of credential")
             }
         }
-    }
-
-    private fun addUserToFirestore() {
-
     }
 }
