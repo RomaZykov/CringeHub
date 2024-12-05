@@ -1,5 +1,7 @@
 package com.example.konsist
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import com.lemonappdev.konsist.api.Konsist
@@ -12,6 +14,7 @@ import com.lemonappdev.konsist.api.ext.list.withAllParentsOf
 import com.lemonappdev.konsist.api.ext.list.withAnnotationOf
 import com.lemonappdev.konsist.api.verify.assertFalse
 import com.lemonappdev.konsist.api.verify.assertTrue
+import kotlinx.coroutines.flow.Flow
 import kotlin.test.Test
 
 class KonsistTest {
@@ -41,7 +44,7 @@ class KonsistTest {
     }
 
     @Test
-    fun `clean architecture features have correct dependencies`() {
+    fun `Clean architecture features have correct dependencies`() {
         Konsist
             .scopeFromProduction()
             .assertArchitecture(arch("auth", "onboarding"))
@@ -54,7 +57,7 @@ class KonsistTest {
         .withAllParentsOf(ViewModel::class)
 
     @Test
-    fun `classes extending 'ViewModel' should have 'ViewModel' suffix`() {
+    fun `Classes extending 'ViewModel' should have 'ViewModel' suffix`() {
         viewModelScope
             .assertTrue { it.name.endsWith("ViewModel") }
     }
@@ -74,7 +77,21 @@ class KonsistTest {
             .functions()
             .withAnnotationOf(Preview::class)
             .assertTrue {
-                it.hasNameContaining("Preview")
+                it.hasNameEndingWith("Preview")
+            }
+    }
+
+    @Test
+    fun `All JetPack Compose functions do not contain MutableState and Flows properties directly`() {
+        Konsist
+            .scopeFromProject()
+            .functions()
+            .withAnnotationOf(Composable::class)
+            .assertFalse {
+                it.hasParameter { parameter ->
+                    parameter.hasTypeOf(Flow::class)
+                    parameter.hasTypeOf(MutableState::class)
+                }
             }
     }
 }
