@@ -9,8 +9,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:domain"))
-    implementation(project(":core:common"))
+    api(project(":core:common"))
+    api(project(":core:domain"))
+    api(project(":core:database"))
+    api(project(":core:network"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

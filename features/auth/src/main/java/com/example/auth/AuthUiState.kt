@@ -33,6 +33,7 @@ interface AuthUiState {
         override fun Show(onSignInClick: (Context) -> Unit, authScreenContext: Context) {
             println("Bad")
         }
+
     }
 
     object Success : AuthUiState {
