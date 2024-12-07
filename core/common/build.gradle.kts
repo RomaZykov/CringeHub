@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.cringehub.android.library)
+    alias(libs.plugins.cringehub.hilt)
 }
 
 android {
@@ -16,7 +17,7 @@ android {
             buildConfigField(
                 "String",
                 "SERVER_CLIENT_ID",
-                "\"SERVER_CLIENT_ID_RELEASE_FROM_COMMON\""
+                "\"172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com\""
             )
         }
 
@@ -24,7 +25,7 @@ android {
             buildConfigField(
                 "String",
                 "SERVER_CLIENT_ID",
-                "\"753665239042-v5gfiv9l2thti048a1om9sj57p4tnnbq.apps.googleusercontent.com\""
+                "\"172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com\""
             )
         }
     }
