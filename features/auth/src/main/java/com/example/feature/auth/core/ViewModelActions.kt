@@ -1,4 +1,4 @@
-package com.example.auth.core
+package com.example.feature.auth.core
 
 import android.content.Context
 

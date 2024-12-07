@@ -1,6 +1,6 @@
-package com.example.auth.core
+package com.example.feature.auth.core
 
-import com.example.auth.AuthUiState
+import com.example.feature.auth.AuthUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

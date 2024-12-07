@@ -6,9 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.onboarding"
+    namespace = "com.example.feature.onboarding"
 }
 
 dependencies {
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.ui.tooling.preview.android)
+
     androidTestImplementation(libs.test.compose.ui.junit4)
 }

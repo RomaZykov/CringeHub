@@ -6,11 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.auth"
+    namespace = "com.example.feature.auth"
 }
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":features:onboarding"))
 
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.tooling.preview.android)

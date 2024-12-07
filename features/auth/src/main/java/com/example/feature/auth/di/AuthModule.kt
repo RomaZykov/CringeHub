@@ -1,6 +1,6 @@
-package com.example.auth.di
+package com.example.feature.auth.di
 
-import com.example.auth.core.FlowWrapper
+import com.example.feature.auth.core.FlowWrapper
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
