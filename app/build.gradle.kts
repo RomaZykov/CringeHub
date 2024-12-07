@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":features:auth"))
+    implementation(project(":features:onboarding"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.core.ktx)
