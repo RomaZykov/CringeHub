@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.feature.auth
 
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,26 +27,20 @@ import androidx.compose.ui.unit.dp
 interface AuthUiState {
 
     @Composable
-    fun Show(onSignInClick: (Context) -> Unit, authScreenContext: Context)
-
-    data class Error(val message: String) : AuthUiState {
-        @Composable
-        override fun Show(onSignInClick: (Context) -> Unit, authScreenContext: Context) {
-            println("Bad")
-        }
-
-    }
-
-    object Success : AuthUiState {
-        @Composable
-        override fun Show(onSignInClick: (Context) -> Unit, authScreenContext: Context) {
-            println("Move to the next screen")
-        }
-    }
+    fun Show(
+        onSignInClick: (Context) -> Unit,
+        authScreenContext: Context,
+        onAuthSuccess: () -> Unit,
+    )
 
     object Initial : AuthUiState {
         @Composable
-        override fun Show(onSignInClick: (Context) -> Unit, authScreenContext: Context) {
+        override fun Show(
+            onSignInClick: (Context) -> Unit,
+            authScreenContext: Context,
+            onAuthSuccess: () -> Unit
+        ) {
+
             Row(modifier = Modifier.fillMaxHeight()) {
                 Box(Modifier.align(Alignment.CenterVertically)) {
                     GoogleSignInButton {
@@ -80,10 +75,33 @@ interface AuthUiState {
             }
         }
     }
+
+    object Success : AuthUiState {
+        @Composable
+        override fun Show(
+            onSignInClick: (Context) -> Unit,
+            authScreenContext: Context,
+            onAuthSuccess: () -> Unit
+        ) {
+            onAuthSuccess.invoke()
+        }
+    }
+
+    // TODO - How to handle Error correctly?
+    data class Error(val message: String) : AuthUiState {
+        @Composable
+        override fun Show(
+            onSignInClick: (Context) -> Unit,
+            authScreenContext: Context,
+            onAuthSuccess: () -> Unit
+        ) {
+            println("Bad")
+        }
+    }
 }
 
 @Preview(showBackground = true, locale = "en")
 @Composable
 fun GoogleSignInButtonPreview() {
-    AuthUiState.Initial
+    AuthUiState.Initial.Show({}, LocalContext.current, {})
 }
