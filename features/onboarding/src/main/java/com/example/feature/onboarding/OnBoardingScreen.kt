@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun OnBoardingScreen() {
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black))
+fun OnBoardingScreen(onBoarding: () -> Unit) {
+    onBoarding.invoke()
+    Box(modifier = Modifier.fillMaxSize().background(Color.Blue))
 }

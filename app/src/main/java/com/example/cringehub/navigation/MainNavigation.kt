@@ -4,14 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.feature.auth.AuthGraphRoute
-import com.example.feature.auth.authGraph
+import com.example.feature.auth.AuthRoute
+import com.example.feature.auth.authScreen
+import com.example.feature.onboarding.onBoardingScreen
 
 @Composable
 fun MainNavigation(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = AuthGraphRoute) {
-        authGraph(navController)
+    NavHost(navController = navController, startDestination = AuthRoute) {
+        authScreen(navController)
+        onBoardingScreen(navController)
     }
 }
