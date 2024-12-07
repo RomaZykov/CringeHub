@@ -12,6 +12,7 @@ import com.lemonappdev.konsist.api.architecture.Layer
 import com.lemonappdev.konsist.api.ext.list.functions
 import com.lemonappdev.konsist.api.ext.list.withAllParentsOf
 import com.lemonappdev.konsist.api.ext.list.withAnnotationOf
+import com.lemonappdev.konsist.api.ext.list.withName
 import com.lemonappdev.konsist.api.verify.assertFalse
 import com.lemonappdev.konsist.api.verify.assertTrue
 import kotlinx.coroutines.flow.Flow
@@ -34,17 +35,27 @@ class KonsistTest {
         return architecture {
             val data = Layer("Data", "com.example.data..")
             val domain = Layer("Domain", "com.example.domain..")
+            val featureLayers = featureNames.map { feature ->
+                Layer("Feature $feature", "com.example.feature.${feature}..")
+            }
 
             data.dependsOn(domain)
             domain.dependsOnNothing()
-            featureNames.forEach {
-                Layer("Feature $it", "com.example.${it}..").dependsOn(domain)
+
+            featureLayers.forEach { feature ->
+                feature.doesNotDependOn(data)
+                featureLayers.filter { it != feature }.forEach {
+                    feature.dependsOn(domain, it)
+                }
             }
         }
     }
 
     @Test
     fun `Clean architecture features have correct dependencies`() {
+//        Konsist.scopeFromProduction().packages.withName {
+//            it.contains("com.example.feature")
+//        }
         Konsist
             .scopeFromProduction()
             .assertArchitecture(arch("auth", "onboarding"))
