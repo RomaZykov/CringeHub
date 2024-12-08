@@ -1,4 +1,4 @@
-<h1 align="center">CringeHub</h1>
+<h1 align="center">CringeHub <br /> (в разработке)</h1>
 <p align="center">
   <a href="https://github.com/RomaZykov/CringeHub/blob/master/README.md">
     <img src="https://img.shields.io/badge/lang-en-yellow" />
@@ -11,22 +11,24 @@
 !На русском описание!
 
 ## Описание
-  Геймифицированное мобильное приложение...
+  Геймифицированное мобильное приложение для бумеров и зумеров (с частичной идеей как в сервисе Lurkmore) для погружения в среду современной культуры мемов, инфобизнеса, игр и много другого с помощью . В первую очередь, для меня - как разработчикаЭнто твой хаб кринжатины :)
 
 ## Стэк
-  - Kotlin, Kotlin coroutines
+  - Kotlin (KTS), Kotlin coroutines
   - MVVM, Clean Architecture
   - Single-Activity
   - Jetpack Compose
   - Hilt
   - Konsist
   - Firebase: Auth, Cloud Firestore
-  - Androix: ViewPager2, ViewModel, Flow
+  - Androix: ViewPager2, Flow
 
 ## Архитектура
 
 ## Особенности
   - Композитная сборка для мульти-модульного проекта через convention плагины
+  - Разбиение модульности по фичам
 
 ## Заметки
   - Дизайн из Figma (делал я)
+  - Основываюсь на проекте NowInAndroid (без InDirectionalFlow подхода, а с классической clean архитектурой от Дядюшки Боба)
