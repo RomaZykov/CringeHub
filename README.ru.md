@@ -19,8 +19,11 @@
   - Single-Activity
   - Jetpack Compose
   - Hilt
-  - Firebase: Auth, Realtime Database
-  - Androix: ViewPager2, RecyclerView, ViewModel, LiveData/Flow
+  - Konsist
+  - Firebase: Auth, Cloud Firestore
+  - Androix: ViewPager2, ViewModel, Flow
+
+## Архитектура
 
 ## Особенности
   - Композитная сборка для мульти-модульного проекта через convention плагины
