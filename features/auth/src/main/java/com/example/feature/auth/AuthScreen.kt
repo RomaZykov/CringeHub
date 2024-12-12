@@ -16,23 +16,3 @@ fun AuthScreen(
     val activityContext = LocalContext.current
     uiState.Show(viewModel::onSignInClick, activityContext, onAuthSuccess)
 }
-
-//@Preview(showSystemUi = true)
-//@Composable
-//fun AuthScreenPreview() {
-//    AuthScreen(
-//        {},
-//        viewModel = AuthViewModel(
-//            flowWrapper = FlowWrapper.Base(),
-//            repository = FakeAuthRepository()
-//        )
-//    )
-//}
-//
-//private class FakeAuthRepository : AuthRepository {
-//    override suspend fun signInWithGoogle(activityContext: Context): Result<User> {
-//        return Result.failure(Exception())
-//    }
-//
-//    override suspend fun signOut() = Unit
-//}
