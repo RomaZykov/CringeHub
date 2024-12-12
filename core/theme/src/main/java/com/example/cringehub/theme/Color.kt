@@ -9,3 +9,7 @@ val PrimaryWhite = Color(0xFFFBE4CB)
 
 val SecondaryBlack = Color(0xFF0D0E10)
 val SecondaryGray = Color(0xFF737379)
+
+val GoogleStrokeBlack = Color(0xFF747775)
+val GoogleBackgroundGray = Color(0xFFF2F2F2)
+val GoogleTitleBlack = Color(0xFF1F1F1F)

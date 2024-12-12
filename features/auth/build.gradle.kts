@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":core:theme"))
 
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
