@@ -1,33 +1,42 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.cringehub.android.application)
+    alias(libs.plugins.cringehub.android.application.compose)
+    alias(libs.plugins.cringehub.hilt)
+    alias(libs.plugins.cringehub.firebase)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.gms)
 }
 
 android {
     namespace = "com.example.cringehub"
-    compileSdk = 34
 
     signingConfigs {
         getByName("debug") {
             storeFile = file("$storeFile")
             storePassword = "android"
-            keyAlias = "debug"
             keyPassword = "android"
+            keyAlias = "AndroidDebugKey"
+        }
+        create("release") {
+            try {
+                storeFile = file("$storeFile")
+                storePassword = providers.gradleProperty("KEYSTORE_PASSWORD").get()
+                keyAlias = "release"
+                keyPassword =  providers.gradleProperty("KEY_PASSWORD").get()
+            } catch (e: Exception) {
+                throw InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
         }
     }
 
     defaultConfig {
         applicationId = "com.example.cringehub"
-        minSdk = 24
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {
@@ -37,59 +46,58 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
             signingConfig = signingConfigs.getByName("debug")
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
     tasks.withType<Test> {
         useJUnitPlatform()
     }
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+    implementation(project(":core:common"))
+    implementation(project(":core:theme"))
+    implementation(project(":features:auth"))
+    implementation(project(":features:onboarding"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.navigation)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.firebase.firestore)
 
-    testImplementation(libs.junit)
-    testImplementation(platform(libs.junit.bom))
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly(libs.junit.platform.launcher)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    testRuntimeOnly(libs.test.junit.platform.launcher)
+    testImplementation(platform(libs.test.junit.bom))
+    testImplementation(libs.test.junit.jupiter)
+    testImplementation(libs.test.junit)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.navigation.testing)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso.core)
+    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    ksp(libs.androidx.room.compiler)
 
-    // Auth
-    implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
-
-    // Firebase
-    implementation(platform(libs.firebase.bom))
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.test.compose.ui.manifest)
 }

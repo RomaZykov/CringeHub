@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_sign_in">Sign-in with Google</string>
+    <string name="welcome_main_title_part_1">Welcome \nto\u0020</string>
+    <string translatable="false" name="welcome_main_title_part_2">CringeHub</string>
+    <string translatable="false" name="welcome_main_title_part_3">!</string>
+</resources>
