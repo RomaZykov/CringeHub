@@ -11,10 +11,9 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
-    implementation(project(":features:onboarding"))
 
-    implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.compose.material3)
     debugImplementation(libs.androidx.ui.tooling)
 
     testImplementation(project(":core:test"))

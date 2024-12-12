@@ -34,7 +34,7 @@ class AuthGoogleRepositoryImpl @Inject constructor(
                 val user = UserData(
                     rawUser.id.orEmpty(),
                     rawUser.userName.orEmpty(),
-                    isAuthorize = true
+                    isNewUser = true
                 )
                 Result.success(user.mappedValue())
             } catch (e: GetCredentialException) {

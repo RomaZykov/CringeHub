@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
@@ -18,8 +17,22 @@ fun AuthScreen(
     uiState.Show(viewModel::onSignInClick, activityContext, onAuthSuccess)
 }
 
-@Preview(showBackground = true)
-@Composable
-fun AuthScreenPreview() {
-    AuthScreen({})
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//fun AuthScreenPreview() {
+//    AuthScreen(
+//        {},
+//        viewModel = AuthViewModel(
+//            flowWrapper = FlowWrapper.Base(),
+//            repository = FakeAuthRepository()
+//        )
+//    )
+//}
+//
+//private class FakeAuthRepository : AuthRepository {
+//    override suspend fun signInWithGoogle(activityContext: Context): Result<User> {
+//        return Result.failure(Exception())
+//    }
+//
+//    override suspend fun signOut() = Unit
+//}

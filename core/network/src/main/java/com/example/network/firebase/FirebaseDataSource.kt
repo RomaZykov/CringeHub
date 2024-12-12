@@ -22,7 +22,7 @@ internal class FirebaseDataSource @Inject constructor(
                 it.result.additionalUserInfo?.isNewUser ?: false
             if (isNewUser) {
                 auth.currentUser?.apply {
-                    val userNetwork = UserNetwork(this.uid, this.displayName)
+                    val userNetwork = UserNetwork(this.uid, this.displayName, true)
                     db.collection(USERS).document(uid).set(userNetwork)
                         .addOnSuccessListener {
                             Log.d(

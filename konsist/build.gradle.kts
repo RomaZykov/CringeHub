@@ -8,6 +8,6 @@ android {
 
 dependencies {
     testImplementation(libs.androidx.lifecycle.viewmodel.android)
-    testImplementation(libs.androidx.ui.tooling.preview.android)
+    testImplementation(libs.compose.ui.tooling.preview)
     testImplementation(libs.konsist)
 }

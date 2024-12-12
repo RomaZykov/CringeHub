@@ -2,7 +2,6 @@ package com.example.feature.onboarding
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 
@@ -11,8 +10,8 @@ object OnBoardingRoute
 
 fun NavController.navigateToOnBoarding() = navigate(OnBoardingRoute)
 
-fun NavGraphBuilder.onBoardingScreen(navController: NavHostController) {
+fun NavGraphBuilder.onBoardingScreen(onHomeRedirect: () -> Unit) {
     composable<OnBoardingRoute> {
-        OnBoardingScreen(navController::navigateToOnBoarding)
+        OnBoardingScreen(onHomeRedirect)
     }
 }

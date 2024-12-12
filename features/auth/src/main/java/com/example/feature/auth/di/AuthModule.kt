@@ -11,5 +11,5 @@ import dagger.hilt.android.components.ViewModelComponent
 abstract class AuthModule {
 
     @Binds
-    abstract fun provideFlowWrapper(flowWrapper: FlowWrapper.Base): FlowWrapper
+    abstract fun bindsFlowWrapper(flowWrapper: FlowWrapper.Base): FlowWrapper
 }

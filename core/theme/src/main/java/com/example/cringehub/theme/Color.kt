@@ -1,4 +1,4 @@
-package com.example.cringehub.ui.theme
+package com.example.cringehub.theme
 
 import androidx.compose.ui.graphics.Color
 
