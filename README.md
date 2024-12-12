@@ -1,4 +1,7 @@
-<h1 align="center">CringeHub</h1>
+<h1 align="center">CringeHub <br /> (WIP)</h1>
+<p align="center">
+Энто твой хаб кринжатины :)
+</p>
 <p align="center">
   <a href="https://github.com/RomaZykov/CringeHub/blob/master/README.md">
     <img src="https://img.shields.io/badge/lang-en-yellow" />
@@ -8,15 +11,38 @@
   </a>
 </p>
 <p align="center">
-!Описание на английском!
 
 ## Description
+  Геймифицированное мобильное приложение для бумеров и зумеров для погружения в среду современной культуры мемов, инфобизнеса, игр и много другого с помощью ... 
+  
+  В первую очередь, для меня - как разработчика, это приложение полигон для тестирования различных гипотез и фич, так как тематика приложения не ограничена рамками самого приложения и возможно добавлять различные безумные приколюхи, во вторую очередь, это попытка выйти на монетизацию в будущем и радовать моих любимых пользователей кринжовыми фичами и обучающими материалами.
+<br /><br />  Заимствованные идеи: Lurkmore, HyperSkill, Lyra.
+
+## Screenshots
 
 ## Stack
-1. Kotlin
-2. Jetpack Compose
-3. Hilt
-4. Firebase Firestore
+  - Kotlin (KTS), Kotlin coroutines
+  - MVVM, Clean Architecture
+  - Single-Activity
+  - Jetpack Compose
+  - Hilt
+  - Konsist
+  - Firebase: Auth, Cloud Firestore
+  - Androix: Flow
 
-## Notes
-1. Composite Builds Gradle for multi-module project
+## Architecture
+
+## Features (product)
+
+## Features (development)
+  - Дизайн из Figma (делал я)
+  - Композитная сборка для мульти-модульного проекта через convention плагины
+  - Мульти-модульность по фичам и слоям
+  - Кастомная тема
+  - Вдохновлено проектом [NowInAndroid](https://github.com/android/nowinandroid) (без InDirectionalFlow подхода, а с классической чистой архитектурой от Дядюшки Боба)
+
+## Tests
+`Приложите примеры кода и способы, как их запустить.Таким образом, вы сможете продемонстрировать, что вы уверены в том, что ваш проект будет работать без каких-либо проблем. Это позволит другим людям также поверить в успех этого проекта.`
+
+## Copyright
+<a href="https://fonts.google.com/specimen/M+PLUS+Rounded+1c/license" title="fox icons">Шрифт M PLUS Rounded 1c</a>
