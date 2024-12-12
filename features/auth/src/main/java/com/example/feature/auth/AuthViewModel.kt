@@ -21,8 +21,9 @@ class AuthViewModel @Inject constructor(
     override fun onSignInClick(activityContext: Context) {
         viewModelScope.launch {
             try {
-                repository.signInWithGoogle(activityContext)
-                flowWrapper.setValue(AuthUiState.Success)
+                repository.signInWithGoogle(activityContext).onSuccess {
+                    flowWrapper.setValue(AuthUiState.Success)
+                }
             } catch (e: Exception) {
                 flowWrapper.setValue(AuthUiState.Error(e.message.toString()))
             }
