@@ -10,8 +10,9 @@ object OnBoardingRoute
 
 fun NavController.navigateToOnBoarding() = navigate(OnBoardingRoute)
 
-fun NavGraphBuilder.onBoardingScreen(onHomeRedirect: () -> Unit) {
+// TODO: Parameter: onHomeRedirect: () -> Unit
+fun NavGraphBuilder.onBoardingScreen() {
     composable<OnBoardingRoute> {
-        OnBoardingScreen(onHomeRedirect)
+        OnBoardingScreen()
     }
 }

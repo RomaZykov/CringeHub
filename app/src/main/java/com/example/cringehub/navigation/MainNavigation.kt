@@ -16,7 +16,7 @@ fun MainNavigation(
 ) {
     NavHost(navController = navController, startDestination = AuthRoute) {
         authScreen(navController::navigateToOnBoarding)
-        // TODO - Replace incorrect placeholder
-        onBoardingScreen(navController::navigateToAuth)
+        // TODO: Add correct lambda
+        onBoardingScreen()
     }
 }
