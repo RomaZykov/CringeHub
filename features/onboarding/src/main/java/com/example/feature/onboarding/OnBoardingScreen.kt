@@ -21,7 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.cringehub.theme.CringeHubTheme
 
 // TODO: onBoarding: () -> Unit
 @Composable
@@ -50,7 +52,7 @@ fun OnBoardingScreen() {
                 .wrapContentHeight()
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 8.dp),
+                .padding(bottom = 4.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(pagerState.pageCount) { iteration ->
@@ -65,5 +67,13 @@ fun OnBoardingScreen() {
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun OnBoardingScreenPreview() {
+    CringeHubTheme {
+        OnBoardingScreen()
     }
 }

@@ -1,8 +1,7 @@
 [versions]
 androidGradlePlugin = "8.7.3"
-coreSplashscreen = "1.0.1"
-konsist = "0.16.1"
 kotlin = "2.1.0"
+konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
 runtimeAndroid = "1.7.6"
 appcompat = "1.7.0"
@@ -30,6 +29,7 @@ gmsPlugin = "4.4.2"
 firebaseBom = "33.7.0"
 firebaseAuth = "23.1.0"
 lifecycleViewmodelAndroid = "2.8.7"
+composeScreenshot = "0.0.1-alpha08"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
@@ -39,7 +39,6 @@ jvm = "17"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
@@ -108,6 +107,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
+compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "composeScreenshot"}
 
 # Plugins defined by this project via composition builds
 cringehub-android-application = { id = "cringehub.android.application" }
