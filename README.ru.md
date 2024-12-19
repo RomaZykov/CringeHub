@@ -42,7 +42,7 @@
   - Вдохновлено проектом [NowInAndroid](https://github.com/android/nowinandroid) (без InDirectionalFlow подхода, а с классической чистой архитектурой от Дядюшки Боба)
 
 ## Тесты
-<!--When to run screenshot commands
+<!-- 1) Скриншот тесты
 From the above section you’ll notice that there were two commands we used – updateDebugScreenshotTest and validateDebugScreenshotTest. With these commands we need to make sure that our screenshots are kept up-to-date with the latest changes in our project, but we don’t want to be updating them all of the time – as we could accidentally update screenshots with UI regressions.
 
 For validateDebugScreenshotTest, we’ll want to run this whenever code is being committed to the project – so ideally on pull requests, failing the request if the check fails.
@@ -56,7 +56,7 @@ With the examples above, we can see that we only want to run this update command
 
 To avoid any accident changes, updateDebugScreenshotTest should not be run automatically by CI and any screenshot changes in pull requests should be flagged be automation so that changes can be checked by reviewers.
 
-Приложите примеры кода и способы, как их запустить. Таким образом, вы сможете продемонстрировать, что вы уверены в том, что ваш проект будет работать без каких-либо проблем. Это позволит другим людям также поверить в успех этого проекта.-->
+2) Приложите примеры кода и способы, как их запустить. Таким образом, вы сможете продемонстрировать, что вы уверены в том, что ваш проект будет работать без каких-либо проблем. Это позволит другим людям также поверить в успех этого проекта.-->
 
 ## Copyright
 <a href="https://fonts.google.com/specimen/M+PLUS+Rounded+1c/license" title="fox icons">Шрифт M PLUS Rounded 1c</a>
