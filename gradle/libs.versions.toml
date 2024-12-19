@@ -1,5 +1,6 @@
 [versions]
 androidGradlePlugin = "8.7.3"
+coreSplashscreen = "1.0.1"
 konsist = "0.16.1"
 kotlin = "2.1.0"
 jetbrainsKotlinJvm = "2.0.21"
@@ -38,6 +39,7 @@ jvm = "17"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }

@@ -2,9 +2,7 @@ package com.example.cringehub.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -19,8 +17,7 @@ data class CringeHubTypography(
     val googleButton: TextStyle = TextStyle(
         fontSize = 14.sp,
         fontFamily = googleButtonFontFamily,
-        fontWeight = FontWeight.Normal,
-        color = GoogleTitleBlack
+        fontWeight = FontWeight.Normal
     ),
     val title: TextStyle = TextStyle(
         fontSize = 32.sp,

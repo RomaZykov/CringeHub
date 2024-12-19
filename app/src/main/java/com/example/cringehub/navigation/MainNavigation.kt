@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.feature.auth.AuthRoute
 import com.example.feature.auth.authScreen
-import com.example.feature.auth.navigateToAuth
 import com.example.feature.onboarding.navigateToOnBoarding
 import com.example.feature.onboarding.onBoardingScreen
 
