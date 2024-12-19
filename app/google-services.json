@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "172651466072-mfsmpeke8kf7ecicae6bm2dmfovc5hj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cringehub.debug",
+            "certificate_hash": "4e20a80f199bbd3e487048a11da4a9039ced33f8"
+          }
+        },
+        {
           "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
           "client_type": 3
         }
