@@ -1,0 +1,59 @@
+name: Screenshot test UI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    concurrency: screenshot-test-ui-${{ github.ref }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+            path: |
+              ~/.gradle/caches
+              ~/.gradle/wrapper
+            key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+            restore-keys: |
+              ${{ runner.os }}-gradle-
+
+      - name: Install Git LFS
+        run: |
+            sudo apt-get install git-lfs
+            git lfs install
+
+      - name: Pull LFS files
+        run: git lfs pull
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Run screenshot tests in onboarding feature (need to rework for all features)
+        run: ./gradlew :features:onboarding:validateDebugScreenshotTest
+
+      - name: Upload screenshot test report in onboarding feature package (need to rework for all features)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-test-report
+          path: features/onboarding/build/reports/screenshotTest/
+
+permissions:
+  contents: read
+  pull-requests: read
