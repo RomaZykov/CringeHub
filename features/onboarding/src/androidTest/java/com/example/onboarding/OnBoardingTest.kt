@@ -2,12 +2,13 @@ package com.example.onboarding
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeRight
+import androidx.compose.ui.test.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.cringehub.theme.CringeHubTheme
 import com.example.feature.onboarding.OnBoardingScreen
@@ -24,13 +25,6 @@ class OnBoardingTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    // matcher based on the click label, example
-//    fun hasClickLabel(label: String) = SemanticsMatcher("Clickable action with label: $label") {
-//        it.config.getOrNull(
-//            SemanticsActions.OnClick
-//        )?.label == label
-//    }
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -38,47 +32,87 @@ class OnBoardingTest {
                 OnBoardingScreen(OnBoardingUiState.Initial) {}
             }
         }
+        with(
+            composeTestRule.onNodeWithContentDescription(
+                composeTestRule.activity.resources.getString(
+                    R.string.onboarding_page_cd
+                )
+            )
+        ) {
+            assertExists()
+            assertIsDisplayed()
+        }
     }
 
     @Test
     fun onBoardingPager_whenDifferentSelectionUsed_showsEachPagesFromStartToEnd() {
-        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd))
-            .assertExists()
-        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
-            .assertIsDisplayed()
+        repeat(1) {
+            composeTestRule.onNodeWithText(
+                composeTestRule.activity.resources.getString(
+                    R.string.onboarding_next
+                )
+            ).performClick()
+        }
+        composeTestRule.onNodeWithText(
+            composeTestRule.activity.resources.getString(R.string.onboarding_title_2)
+        ).assertIsDisplayed()
 
         repeat(2) {
-            composeTestRule.onNodeWithContentDescription("next onboarding page").performClick()
+            composeTestRule.onNodeWithContentDescription(
+                composeTestRule.activity.resources.getString(
+                    R.string.onboarding_page_cd
+                )
+            )
+                .performTouchInput { swipeLeft() }
         }
-        repeat(2) {
-            composeTestRule.onNodeWithContentDescription("next onboarding page")
-                .performTouchInput { swipeRight() }
-        }
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_title_4))
+            .assertIsDisplayed()
     }
 
     @Test
     fun onBoardingPager_whenSkipButtonUsed_moveToEnd() {
-        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd))
-            .assertExists()
-        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
-            .assertIsDisplayed()
+        with(composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_skip))) {
+            assertIsDisplayed()
+            performClick()
+        }
 
-        composeTestRule.onNodeWithContentDescription("skip onboarding")
-            .performTouchInput { swipeRight() }
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_title_4))
+            .assertIsDisplayed()
     }
 
     @Test
     fun onBoardingPager_whenBackButtonUsed_moveFromEndToStart() {
-        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd))
-            .assertExists()
-        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
+        repeat(3) {
+            composeTestRule.onNodeWithText(
+                composeTestRule.activity.resources.getString(
+                    R.string.onboarding_next
+                )
+            ).performClick()
+        }
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_title_4))
             .assertIsDisplayed()
 
-        repeat(4) {
-            composeTestRule.onNodeWithContentDescription("next onboarding page").performClick()
+        repeat(3) {
+            composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_back))
+                .performClick()
         }
-        repeat(4) {
-            composeTestRule.activity.onBackPressedDispatcher.onBackPressed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_title_1))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun onBoardingPager_onFirstPage_doNotShowBackButtonButShowSkipButton() {
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_back))
+            .assertIsNotDisplayed()
+    }
+
+    @Test
+    fun onBoardingPager_onLastPage_doNotShowSkipButtonButShowBackButton() {
+        repeat(3) {
+            composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
+                .performClick()
         }
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_skip))
+            .assertIsNotDisplayed()
     }
 }
