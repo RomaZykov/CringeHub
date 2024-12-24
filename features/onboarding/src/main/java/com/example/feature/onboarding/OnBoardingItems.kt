@@ -14,17 +14,17 @@ class OnBoardingItems(
                     R.string.onboarding_desc_1
                 ),
                 OnBoardingItems(
-                    R.drawable.onboarding_1,
+                    R.drawable.onboarding_2,
                     R.string.onboarding_title_2,
                     R.string.onboarding_desc_2
                 ),
                 OnBoardingItems(
-                    R.drawable.onboarding_1,
+                    R.drawable.onboarding_3,
                     R.string.onboarding_title_3,
                     R.string.onboarding_desc_3
                 ),
                 OnBoardingItems(
-                    R.drawable.onboarding_1,
+                    R.drawable.onboarding_4,
                     R.string.onboarding_title_4,
                     R.string.onboarding_desc_4
                 )
