@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 class OnBoardingScreenshotTest {
     @Preview(showBackground = true)
     @Composable
-    private fun PreviewOnBoardingScreen() {
+    private fun PreviewOnBoardingScreenShotTest() {
         OnBoardingScreenPreview()
     }
 }

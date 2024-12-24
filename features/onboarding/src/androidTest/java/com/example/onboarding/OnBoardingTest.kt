@@ -11,6 +11,7 @@ import androidx.compose.ui.test.swipeRight
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.cringehub.theme.CringeHubTheme
 import com.example.feature.onboarding.OnBoardingScreen
+import com.example.feature.onboarding.OnBoardingUiState
 import com.example.feature.onboarding.R
 import org.junit.Before
 import org.junit.Rule
@@ -34,15 +35,17 @@ class OnBoardingTest {
     fun setUp() {
         composeTestRule.setContent {
             CringeHubTheme {
-                OnBoardingScreen()
+                OnBoardingScreen(OnBoardingUiState.Initial) {}
             }
         }
     }
 
     @Test
     fun onBoardingPager_whenDifferentSelectionUsed_showsEachPagesFromStartToEnd() {
-        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd)).assertExists()
-        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next)).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd))
+            .assertExists()
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
+            .assertIsDisplayed()
 
         repeat(2) {
             composeTestRule.onNodeWithContentDescription("next onboarding page").performClick()
@@ -50,6 +53,32 @@ class OnBoardingTest {
         repeat(2) {
             composeTestRule.onNodeWithContentDescription("next onboarding page")
                 .performTouchInput { swipeRight() }
+        }
+    }
+
+    @Test
+    fun onBoardingPager_whenSkipButtonUsed_moveToEnd() {
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd))
+            .assertExists()
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
+            .assertIsDisplayed()
+
+        composeTestRule.onNodeWithContentDescription("skip onboarding")
+            .performTouchInput { swipeRight() }
+    }
+
+    @Test
+    fun onBoardingPager_whenBackButtonUsed_moveFromEndToStart() {
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.resources.getString(R.string.onboarding_button_cd))
+            .assertExists()
+        composeTestRule.onNodeWithText(composeTestRule.activity.resources.getString(R.string.onboarding_next))
+            .assertIsDisplayed()
+
+        repeat(4) {
+            composeTestRule.onNodeWithContentDescription("next onboarding page").performClick()
+        }
+        repeat(4) {
+            composeTestRule.activity.onBackPressedDispatcher.onBackPressed()
         }
     }
 }

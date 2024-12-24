@@ -82,7 +82,7 @@ class KonsistTest {
 
     // JetpackCompose tests
     @Test
-    fun `All JetPack Compose previews contain 'Preview' in method name`() {
+    fun `All JetPack Compose previews contain 'Preview' in method name at the end`() {
         Konsist
             .scopeFromProject()
             .functions()

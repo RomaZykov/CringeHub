@@ -18,8 +18,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview.android)
-    implementation(libs.androidx.material3.android)
 
     androidTestImplementation(libs.test.compose.ui.junit4)
     debugImplementation(libs.test.compose.ui.manifest)

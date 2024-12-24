@@ -9,10 +9,12 @@ import kotlinx.serialization.Serializable
 object OnBoardingRoute
 
 fun NavController.navigateToOnBoarding() = navigate(OnBoardingRoute)
+fun NavController.navigateToHome() = navigate(OnBoardingRoute)
 
-// TODO: Parameter: onHomeRedirect: () -> Unit
-fun NavGraphBuilder.onBoardingScreen() {
+fun NavGraphBuilder.onBoardingScreen(
+    onHomeRedirect: () -> Unit
+) {
     composable<OnBoardingRoute> {
-        OnBoardingScreen()
+        OnBoardingScreen(OnBoardingUiState.Initial, onHomeRedirect)
     }
 }
