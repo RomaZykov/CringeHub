@@ -47,12 +47,12 @@ jobs:
       - name: Run screenshot tests in onboarding feature (need to rework for all features)
         run: ./gradlew :features:onboarding:validateDebugScreenshotTest
 
-      - name: Upload screenshot test report in onboarding feature package (need to rework for all features)
+      - name: Upload screenshot test report in auth feature package (need to rework for all features)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: screenshot-test-report
-          path: features/onboarding/build/reports/screenshotTest/
+          path: features/auth/build/reports/screenshotTest/
 
 permissions:
   contents: read
