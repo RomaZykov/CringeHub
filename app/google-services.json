@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "172651466072-pdhef79dialg2lb3v1phbuhd24g6l15e.apps.googleusercontent.com",
+          "client_id": "172651466072-cs77lsf75h0d4ql7lmhem7lfot5e2l4a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.cringehub.debug",
-            "certificate_hash": "3f9b00eef9801b2a3165718ed7416583979f7d22"
+            "certificate_hash": "ef3164193d327983bc82a36f4d5aa01162bd7135"
+          }
+        },
+        {
+          "client_id": "172651466072-mfsmpeke8kf7ecicae6bm2dmfovc5hj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cringehub.debug",
+            "certificate_hash": "4e20a80f199bbd3e487048a11da4a9039ced33f8"
           }
         },
         {

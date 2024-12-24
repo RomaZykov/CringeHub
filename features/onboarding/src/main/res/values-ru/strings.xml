@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_next">Дальше</string>
+    <string name="onboarding_title_1">Думай как кринж</string>
+    <string name="onboarding_title_2">Зарабатывай \nКринжики</string>
+    <string name="onboarding_title_3">Здесь не могла бы быть ваша реклама</string>
+    <string name="onboarding_title_4">Кринжуй вместе \nс нами</string>
+    <string name="onboarding_desc_1">Становись частью кринжа, вливайся \nв ряды зумеров, познавай слэнг, пасты \nи применяй их в быту. Но зачем?</string>
+    <string name="onboarding_desc_2">Местная валюта, которую нельзя вывести, \nно на которую можно покупать различный staff</string>
+    <string name="onboarding_desc_3">Потому что будет тотальная монетизация, \nахахахах. И что ты мне сделаешь? \nЯ в другом городе</string>
+    <string name="onboarding_desc_4">Прокачивай Battle pass и получай \nразличные кринжовые плюшки</string>
+    <string name="onboarding_back">Back</string>
+    <string name="onboarding_skip">Skip</string>
+</resources>

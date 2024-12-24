@@ -17,6 +17,6 @@ fun MainNavigation(
     NavHost(navController = navController, startDestination = AuthRoute) {
         authScreen(navController::navigateToOnBoarding)
         // TODO: Add correct lambda
-        onBoardingScreen()
+        onBoardingScreen(navController::navigateToAuth)
     }
 }

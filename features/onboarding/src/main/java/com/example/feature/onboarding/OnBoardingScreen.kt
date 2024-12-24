@@ -1,15 +1,21 @@
 package com.example.feature.onboarding
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.cringehub.theme.CringeHubTheme
 
-// TODO: onBoarding: () -> Unit
 @Composable
-fun OnBoardingScreen() {
-//    onBoarding.invoke()
-    Box(modifier = Modifier.fillMaxSize().background(Color.Red))
+fun OnBoardingScreen(
+    onBoardingUiState: OnBoardingUiState,
+    onHomeRedirect: () -> Unit
+) {
+    onBoardingUiState.Show(onHomeRedirect)
+}
+
+@Preview(showSystemUi = true)
+@Composable
+internal fun OnBoardingScreenPreview() {
+    CringeHubTheme {
+        OnBoardingScreen(OnBoardingUiState.Initial) {}
+    }
 }
