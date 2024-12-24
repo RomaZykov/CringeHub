@@ -2,6 +2,8 @@ package com.example.cringehub.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -26,6 +28,7 @@ private val DarkColorScheme = darkColorScheme(
     primary = PrimaryBlack,
     secondary = PrimaryYellow,
     tertiary = PrimaryGray,
+    surfaceBright = PrimaryWhite,
     // Google button
     background = GoogleBackgroundBlack,
     onBackground = GoogleFontWhite
@@ -38,6 +41,7 @@ fun CringeHubTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    WindowInsets.safeDrawing
     val colorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val context = LocalContext.current
         if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)

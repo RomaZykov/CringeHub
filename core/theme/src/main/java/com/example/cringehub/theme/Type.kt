@@ -12,7 +12,7 @@ data class CringeHubTypography(
         fontSize = 16.sp,
         fontFamily = cringeHubFontFamily,
         fontWeight = FontWeight.Normal,
-        color = SecondaryGray
+        color = PrimaryBlack
     ),
     val googleButton: TextStyle = TextStyle(
         fontSize = 14.sp,
@@ -24,6 +24,12 @@ data class CringeHubTypography(
         fontFamily = cringeHubFontFamily,
         fontWeight = FontWeight.Black,
         color = PrimaryBlack
+    ),
+    val onContainerBody: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        fontFamily = cringeHubFontFamily,
+        fontWeight = FontWeight.ExtraBold,
+        color = PrimaryWhite
     )
 )
 
