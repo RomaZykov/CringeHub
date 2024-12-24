@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,7 +24,7 @@ fun GoogleSignInButton(onSignInClick: () -> Unit) {
         onClick = onSignInClick,
         modifier = Modifier
             .fillMaxWidth()
-            .requiredHeight(40.dp)
+            .wrapContentHeight()
             .padding(horizontal = 32.dp),
         shape = RoundedCornerShape(24.dp),
         colors = ButtonDefaults.buttonColors(
@@ -39,7 +39,7 @@ fun GoogleSignInButton(onSignInClick: () -> Unit) {
         )
         ProvideTextStyle(value = CringeHubTheme.typography.googleButton) {
             Text(
-                modifier = Modifier.padding(end = 12.dp),
+                modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.spaceMedium),
                 text = stringResource(R.string.google_sign_in),
                 color = CringeHubTheme.colorScheme.onBackground
             )
