@@ -155,6 +155,6 @@ private fun WelcomeText() {
 
 @Preview(showSystemUi = true, locale = "en")
 @Composable
-fun AuthScreenInitialPreview() {
+internal fun AuthScreenPreview() {
     AuthUiState.Initial.Show({}, LocalContext.current, {})
 }
