@@ -7,41 +7,44 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.cringehub.theme.CringeHubTheme
+import com.example.cringehub.theme.PrimaryBlack
+import com.example.cringehub.theme.PrimaryWhite
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -87,7 +90,15 @@ interface OnBoardingUiState {
             val scope = rememberCoroutineScope()
             val pagerState = rememberPagerState(pageCount = { 4 })
 
-            Column(modifier = Modifier.fillMaxSize()) {
+            val onBoardingCD = stringResource(id = R.string.onboarding_page_cd)
+            Column(
+                modifier = Modifier
+                    .semantics {
+                        contentDescription = onBoardingCD
+                    }
+                    .fillMaxSize()
+                    .background(CringeHubTheme.colorScheme.primary)
+            ) {
                 TopSection(
                     pagerState,
                     onBackClicked = {
@@ -101,7 +112,11 @@ interface OnBoardingUiState {
                     })
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    HorizontalPager(modifier = Modifier.fillMaxHeight(0.9f), state = pagerState) {
+                    HorizontalPager(
+                        modifier = Modifier
+                            .wrapContentHeight(),
+                        state = pagerState
+                    ) {
                         OnBoardingItem(items[it])
                     }
                     Indicators(pagerState)
@@ -112,75 +127,90 @@ interface OnBoardingUiState {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TopSection(
     pagerState: PagerState,
     onBackClicked: () -> Unit,
     onSkipClicked: () -> Unit
 ) {
-    CenterAlignedTopAppBar(
+    Box(
         modifier = Modifier
-            .fillMaxHeight(0.1f)
             .fillMaxWidth()
-            .padding(CringeHubTheme.dimensions.spaceMedium),
-        title = {
-            Text(text = "CringeHub")
-        },
-        navigationIcon = {
-            AnimatedVisibility(
-                visible = pagerState.currentPage != 0
+            .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
+            .padding(CringeHubTheme.dimensions.spaceMedium)
+    ) {
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.CenterStart),
+            visible = pagerState.currentPage != 0
+        ) {
+            Button(
+                modifier = Modifier.semantics {
+                    contentDescription = "back onboarding"
+                },
+                onClick = onBackClicked, colors = ButtonColors(
+                    CringeHubTheme.colorScheme.secondary,
+                    contentColor = CringeHubTheme.colorScheme.onBackground,
+                    disabledContainerColor = CringeHubTheme.colorScheme.onBackground,
+                    disabledContentColor = CringeHubTheme.colorScheme.onBackground
+                ),
             ) {
-                Button(onClick = onBackClicked) {
-                    Text("Back")
-                }
+                Text(stringResource(R.string.onboarding_back), style = CringeHubTheme.typography.onContainerBody)
             }
-        },
-        actions = {
-            AnimatedVisibility(
-                visible = pagerState.currentPage != 3
+        }
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = stringResource(R.string.main_title),
+            style = CringeHubTheme.typography.title
+        )
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            visible = pagerState.currentPage != 3
+        ) {
+            Button(
+                modifier = Modifier.semantics {
+                    contentDescription = "skip onboarding"
+                },
+                onClick = onSkipClicked, colors = ButtonColors(
+                    CringeHubTheme.colorScheme.secondary,
+                    contentColor = CringeHubTheme.colorScheme.onBackground,
+                    disabledContainerColor = CringeHubTheme.colorScheme.onBackground,
+                    disabledContentColor = CringeHubTheme.colorScheme.onBackground
+                )
             ) {
-                Button(onClick = onSkipClicked) {
-                    Text("Skip")
-                }
+                Text(stringResource(R.string.onboarding_skip), style = CringeHubTheme.typography.onContainerBody)
             }
-        },
-        windowInsets = WindowInsets.systemBars
-            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
-    )
+        }
+    }
 }
 
 @Composable
 private fun OnBoardingItem(items: OnBoardingItems) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         modifier = Modifier.fillMaxSize()
     ) {
         Image(
             painter = painterResource(id = items.image),
-            contentDescription = "Image1",
-            modifier = Modifier.padding(horizontal = 48.dp)
+            contentDescription = null,
+            modifier = Modifier
+                .padding(start = 48.dp, end = 48.dp, top = 32.dp, bottom = 24.dp)
+                .requiredHeight(300.dp)
         )
-        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = stringResource(id = items.title),
             style = CringeHubTheme.typography.title,
-            // fontSize = 24.sp,
             color = CringeHubTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            letterSpacing = 1.sp,
+            textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
+            modifier = Modifier.padding(horizontal = CringeHubTheme.dimensions.spaceLarge),
             text = stringResource(id = items.desc),
-            style = CringeHubTheme.typography.title,
+            style = CringeHubTheme.typography.body,
             color = CringeHubTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Light,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(10.dp),
-            letterSpacing = 1.sp,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -195,18 +225,20 @@ private fun Indicators(pagerState: PagerState) {
     ) {
         repeat(pagerState.pageCount) { iteration ->
             val color =
-                if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                if (pagerState.currentPage == iteration) PrimaryBlack else PrimaryWhite
             Box(
                 modifier = Modifier
-                    .padding(2.dp)
-                    .clip(CircleShape)
+                    .padding(4.dp)
+                    .width(24.dp)
+                    .clip(CutCornerShape(4.dp))
                     .background(color)
-                    .size(16.dp)
+                    .size(4.dp)
             )
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BoxScope.NextButton(
     pagerState: PagerState,
@@ -215,13 +247,17 @@ private fun BoxScope.NextButton(
 ) {
     Button(
         modifier = Modifier
-            .fillMaxHeight(0.1f)
+            .wrapContentHeight()
             .fillMaxWidth()
             .align(Alignment.BottomCenter)
-            .padding(CringeHubTheme.dimensions.spaceSmall)
-            .semantics {
-                contentDescription = "next button"
-            },
+            .windowInsetsPadding(WindowInsets.navigationBarsIgnoringVisibility)
+            .padding(CringeHubTheme.dimensions.spaceMedium),
+        colors = ButtonColors(
+            CringeHubTheme.colorScheme.secondary,
+            contentColor = CringeHubTheme.colorScheme.onBackground,
+            disabledContainerColor = CringeHubTheme.colorScheme.onBackground,
+            disabledContentColor = CringeHubTheme.colorScheme.onBackground
+        ),
         onClick = {
             if (pagerState.currentPage < pagerState.pageCount) scope.launch {
                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -229,6 +265,10 @@ private fun BoxScope.NextButton(
             OnBoardingUiState.Navigate.toHomePage(pagerState.currentPage, onHomeRedirect)
         }
     ) {
-        Text("Next")
+        Text(
+            modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.spaceSmall),
+            text = stringResource(R.string.onboarding_next),
+            style = CringeHubTheme.typography.onContainerBody
+        )
     }
 }
