@@ -5,7 +5,7 @@ import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
-import androidx.credentials.exceptions.GetCredentialException
+import com.example.common.core.HandleError
 import com.example.data.model.UserData
 import com.example.domain.model.User
 import com.example.domain.repositories.auth.AuthRepository
@@ -20,6 +20,7 @@ class AuthGoogleRepositoryImpl @Inject constructor(
     private val userNetworkDataSource: UserNetworkDataSource,
     private val credentialManager: CredentialManager,
     private val credentialRequest: GetCredentialRequest,
+    private val handleError: HandleError,
     private val dispatcher: CoroutineDispatcher
 ) : AuthRepository {
 
@@ -30,15 +31,16 @@ class AuthGoogleRepositoryImpl @Inject constructor(
                     credentialManager.getCredential(activityContext, credentialRequest)
                 handleFirebaseSignIn(credentialResult)
 
-                val rawUser = userNetworkDataSource.getUser()
+                val rawUser =
+                    userNetworkDataSource.getUser()
                 val user = UserData(
-                    rawUser.id.orEmpty(),
-                    rawUser.userName.orEmpty(),
+                    rawUser?.id.orEmpty(),
+                    rawUser?.userName.orEmpty(),
                     isLoggedIn = true
                 )
                 Result.success(user.mappedValue())
-            } catch (e: GetCredentialException) {
-                Result.failure(e)
+            } catch (e: Exception) {
+                Result.failure(handleError.handle(e))
             }
         }
 
@@ -51,7 +53,6 @@ class AuthGoogleRepositoryImpl @Inject constructor(
         val googleIdTokenCredential =
             GoogleIdTokenCredential.createFrom(result.credential.data)
         val idToken = googleIdTokenCredential.idToken
-
         val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
         userNetworkDataSource.signInUserWithFirebaseCredential(
             firebaseCredential

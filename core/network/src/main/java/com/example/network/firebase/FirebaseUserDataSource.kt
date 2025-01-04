@@ -1,7 +1,5 @@
 package com.example.network.firebase
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.example.network.core.UserNetworkDataSource
 import com.example.network.model.UserNetwork
 import com.google.firebase.auth.AuthCredential
@@ -11,36 +9,29 @@ import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-internal class FirebaseDataSource @Inject constructor(
+internal class FirebaseUserDataSource @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore
 ) : UserNetworkDataSource {
 
     override suspend fun signInUserWithFirebaseCredential(firebaseCredential: AuthCredential) {
-        auth.signInWithCredential(firebaseCredential).addOnCompleteListener {
-            val isNewUser =
-                it.result.additionalUserInfo?.isNewUser ?: false
+        auth.signInWithCredential(firebaseCredential).addOnSuccessListener { task ->
+            val isNewUser = task.additionalUserInfo?.isNewUser ?: throw NoUserAuthInDatabase()
             if (isNewUser) {
                 auth.currentUser?.apply {
                     val userNetwork = UserNetwork(this.uid, this.displayName, true)
                     db.collection(USERS).document(uid).set(userNetwork)
-                        .addOnSuccessListener {
-                            Log.d(
-                                TAG,
-                                "DocumentSnapshot successfully written!"
-                            )
-                        }
-                        .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
                 }
             }
         }
     }
 
     override suspend fun getUser(): UserNetwork {
-        val userRef = db.collection(USERS).document(auth.uid!!)
-        val snapshot = userRef.get().await()
-        val user = snapshot.toObject<UserNetwork>()
-        return user!!
+        val usersRef = db.collection(USERS)
+        val currentUser = auth.currentUser ?: throw NoUserAuthInDatabase()
+        val document = usersRef.document(currentUser.uid)
+        val snapshot = document.get().await()
+        return snapshot.toObject<UserNetwork>() ?: throw NoUserInfoFoundInDatabase()
     }
 
     override suspend fun signOutUser() {
