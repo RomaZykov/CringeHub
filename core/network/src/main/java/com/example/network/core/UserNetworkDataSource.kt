@@ -9,5 +9,5 @@ interface UserNetworkDataSource {
 
     suspend fun signOutUser()
 
-    suspend fun getUser(): UserNetwork
+    suspend fun getUser(): UserNetwork?
 }

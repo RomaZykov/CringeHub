@@ -1,6 +1,7 @@
 package com.example.feature.auth
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -26,7 +26,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.cringehub.theme.CringeHubTheme
 import com.example.cringehub.theme.PrimaryYellow
 import com.example.feature.auth.components.GoogleSignInButton
@@ -87,7 +86,6 @@ interface AuthUiState {
         }
     }
 
-    // TODO: How to handle Error correctly?
     data class Error(val message: String) : AuthUiState {
         @Composable
         override fun Show(
@@ -95,7 +93,8 @@ interface AuthUiState {
             authScreenContext: Context,
             onAuthSuccess: () -> Unit
         ) {
-            println("Bad")
+            Initial.Show(onSignInClick, authScreenContext) {}
+            Toast.makeText(authScreenContext, message, Toast.LENGTH_LONG).show()
         }
     }
 }
@@ -153,8 +152,8 @@ private fun WelcomeText() {
     }
 }
 
-@Preview(showSystemUi = true, locale = "en")
-@Composable
-internal fun AuthScreenPreview() {
-    AuthUiState.Initial.Show({}, LocalContext.current, {})
-}
+//@Preview(showSystemUi = true, locale = "en")
+//@Composable
+//internal fun AuthScreenPreview() {
+//    AuthUiState.Initial.Show(uiState, {}, LocalContext.current, {})
+//}

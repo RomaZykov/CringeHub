@@ -4,6 +4,7 @@ import com.example.feature.auth.AuthUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 interface FlowWrapper {
@@ -11,6 +12,8 @@ interface FlowWrapper {
     fun setValue(newState: AuthUiState)
 
     fun state(): StateFlow<AuthUiState>
+
+    fun update(function: (AuthUiState) -> AuthUiState)
 
     class Base @Inject constructor() : FlowWrapper {
 
@@ -21,5 +24,9 @@ interface FlowWrapper {
         }
 
         override fun state(): StateFlow<AuthUiState> = _uiState.asStateFlow()
+
+        override fun update(function: (AuthUiState) -> AuthUiState) {
+            _uiState.update(function)
+        }
     }
 }
