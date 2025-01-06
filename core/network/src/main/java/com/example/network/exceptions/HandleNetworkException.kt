@@ -1,12 +1,9 @@
-package com.example.network
+package com.example.network.exceptions
 
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import com.example.common.core.HandleError
-import com.example.network.firebase.FirebaseCustomException
-import com.example.network.firebase.NO_USER_AUTH_IN_BACKEND
-import com.example.network.firebase.NO_USER_INFO_FOUND_IN_DATABASE
-import com.example.network.firebase.NoUserAuthInDatabase
-import com.example.network.firebase.NoUserInfoFoundInDatabase
+import com.example.network.exceptions.FirebaseCustomException.Companion.NO_USER_AUTH_IN_BACKEND
+import com.example.network.exceptions.FirebaseCustomException.Companion.NO_USER_INFO_FOUND_IN_DATABASE
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -16,8 +13,8 @@ class HandleNetworkException @Inject constructor() : HandleError {
         return when (error) {
             is FirebaseCustomException -> {
                 when (error.code) {
-                    NO_USER_AUTH_IN_BACKEND -> NoUserAuthInDatabase()
-                    NO_USER_INFO_FOUND_IN_DATABASE -> NoUserInfoFoundInDatabase()
+                    NO_USER_AUTH_IN_BACKEND -> FirebaseCustomException.NoUserAuthInDatabase()
+                    NO_USER_INFO_FOUND_IN_DATABASE -> FirebaseCustomException.NoUserInfoFoundInDatabase()
                     else -> Exception("Unexpected network exception")
                 }
             }

@@ -1,6 +1,7 @@
 package com.example.network.firebase
 
 import com.example.network.core.UserNetworkDataSource
+import com.example.network.exceptions.FirebaseCustomException
 import com.example.network.model.UserNetwork
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -16,7 +17,7 @@ internal class FirebaseUserDataSource @Inject constructor(
 
     override suspend fun signInUserWithFirebaseCredential(firebaseCredential: AuthCredential) {
         auth.signInWithCredential(firebaseCredential).addOnSuccessListener { task ->
-            val isNewUser = task.additionalUserInfo?.isNewUser ?: throw NoUserAuthInDatabase()
+            val isNewUser = task.additionalUserInfo?.isNewUser ?: throw FirebaseCustomException.NoUserAuthInDatabase()
             if (isNewUser) {
                 auth.currentUser?.apply {
                     val userNetwork = UserNetwork(this.uid, this.displayName, true)
@@ -28,10 +29,10 @@ internal class FirebaseUserDataSource @Inject constructor(
 
     override suspend fun getUser(): UserNetwork {
         val usersRef = db.collection(USERS)
-        val currentUser = auth.currentUser ?: throw NoUserAuthInDatabase()
+        val currentUser = auth.currentUser ?: throw FirebaseCustomException.NoUserAuthInDatabase()
         val document = usersRef.document(currentUser.uid)
         val snapshot = document.get().await()
-        return snapshot.toObject<UserNetwork>() ?: throw NoUserInfoFoundInDatabase()
+        return snapshot.toObject<UserNetwork>() ?: throw FirebaseCustomException.NoUserInfoFoundInDatabase()
     }
 
     override suspend fun signOutUser() {
