@@ -1,7 +1,6 @@
 package com.example.network.di
 
 import com.example.network.core.UserNetworkDataSource
-import com.example.network.firebase.FirebaseUserDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +12,5 @@ import javax.inject.Singleton
 internal abstract class NetworkModule {
     @Binds
     @Singleton
-    abstract fun providesUserNetworkDataSource(impl: FirebaseUserDataSource): UserNetworkDataSource
+    abstract fun providesUserNetworkDataSource(impl: UserNetworkDataSource.Base): UserNetworkDataSource
 }
