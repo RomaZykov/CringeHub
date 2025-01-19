@@ -3,6 +3,7 @@ androidGradlePlugin = "8.7.3"
 kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
+rules = "1.6.1"
 runtimeAndroid = "1.7.6"
 appcompat = "1.7.0"
 credentials = "1.3.0"
@@ -30,11 +31,12 @@ firebaseBom = "33.7.0"
 firebaseAuth = "23.1.0"
 lifecycleViewmodelAndroid = "2.8.7"
 composeScreenshot = "0.0.1-alpha08"
+runner = "1.6.2"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
 target-sdk = "35"
-min-sdk = "24"
+min-sdk = "26"
 jvm = "17"
 
 [libraries]
@@ -47,7 +49,6 @@ androidx-credentials = { module = "androidx.credentials:credentials", version.re
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android" }
-androidx-material3-android = { group = "androidx.compose.material3", name = "material3" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -76,6 +77,8 @@ test-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref 
 test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
 test-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "junitBom" }
 test-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+test-rules = { module = "androidx.test:rules", version.ref = "rules" }
+test-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 test-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
