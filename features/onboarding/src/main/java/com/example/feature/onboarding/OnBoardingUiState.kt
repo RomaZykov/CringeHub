@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -109,6 +108,8 @@ interface OnBoardingUiState {
                         }
                     })
 
+                Spacer(modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.spaceLarge))
+
                 Box(modifier = Modifier.fillMaxSize()) {
                     HorizontalPager(
                         modifier = Modifier
@@ -125,7 +126,6 @@ interface OnBoardingUiState {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TopSection(
     pagerState: PagerState,
@@ -133,10 +133,7 @@ private fun TopSection(
     onSkipClicked: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
-            .padding(CringeHubTheme.dimensions.spaceMedium)
+        modifier = Modifier.fillMaxWidth().padding(CringeHubTheme.dimensions.spaceMedium)
     ) {
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.CenterStart),
