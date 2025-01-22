@@ -1,9 +1,10 @@
 package com.example.data.di
 
 import com.example.common.core.HandleError
-import com.example.network.exceptions.HandleNetworkException
+import com.example.data.impl.adminAuth.AuthAdminEmailRepositoryImpl
 import com.example.data.impl.auth.AuthGoogleRepositoryImpl
 import com.example.domain.repositories.auth.AuthRepository
+import com.example.network.exceptions.HandleNetworkException
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,9 +17,15 @@ abstract class DataModule {
 
     @Binds
     @Singleton
-    abstract fun bindsAuthRepository(
-        authRepository: AuthGoogleRepositoryImpl
-    ): AuthRepository
+    abstract fun bindsGoogleAuthRepository(
+        googleAuthRepository: AuthGoogleRepositoryImpl
+    ): AuthRepository.GoogleAuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsAdminAuthRepository(
+        adminAuthRepository: AuthAdminEmailRepositoryImpl
+    ): AuthRepository.AdminAuthRepository
 
     @Binds
     @Singleton

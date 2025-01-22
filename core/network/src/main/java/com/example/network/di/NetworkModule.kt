@@ -1,6 +1,7 @@
 package com.example.network.di
 
 import com.example.network.core.UserNetworkDataSource
+import com.example.network.core.admin.AdminUserNetworkDataSource
 import com.example.network.firebase.FirebaseUserDataSource
 import dagger.Binds
 import dagger.Module
@@ -14,4 +15,8 @@ internal abstract class NetworkModule {
     @Binds
     @Singleton
     abstract fun providesUserNetworkDataSource(impl: FirebaseUserDataSource): UserNetworkDataSource
+
+    @Binds
+    @Singleton
+    abstract fun providesAdminUserNetworkDataSource(impl: AdminUserNetworkDataSource.Base): AdminUserNetworkDataSource
 }
