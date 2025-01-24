@@ -14,6 +14,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.compose.material3)
+    debugImplementation(libs.androidx.ui.tooling)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.test.junit)

@@ -54,7 +54,7 @@ interface AdminAuthUiState {
     object Success : AdminAuthUiState {
         @Composable
         override fun Show(onSignInClick: (String, String) -> Unit, onAuthSuccess: () -> Unit) {
-            Text("Success")
+            onAuthSuccess()
         }
     }
 }
