@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +50,7 @@ interface AuthUiState {
         ) {
             Column(
                 modifier = Modifier
+                    .semantics { contentDescription = "Initial Auth screen" }
                     .fillMaxSize()
                     .background(
                         brush = Brush.verticalGradient(

@@ -22,7 +22,7 @@ android {
                 storeFile = file("$storeFile")
                 storePassword = providers.gradleProperty("KEYSTORE_PASSWORD").get()
                 keyAlias = "release"
-                keyPassword =  providers.gradleProperty("KEY_PASSWORD").get()
+                keyPassword = providers.gradleProperty("KEY_PASSWORD").get()
             } catch (e: Exception) {
                 throw InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
             }
@@ -37,6 +37,8 @@ android {
             useSupportLibrary = true
         }
         signingConfig = signingConfigs.getByName("debug")
+
+        testInstrumentationRunner = "com.example.test.CringeHubTestRunner"
     }
 
     buildTypes {
@@ -73,22 +75,25 @@ dependencies {
     implementation(project(":core:theme"))
     implementation(project(":features:auth"))
     implementation(project(":features:onboarding"))
+    implementation(project(":features:hub"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.firebase.firestore)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.activity)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.navigation)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.firebase.firestore)
 
     testRuntimeOnly(libs.test.junit.platform.launcher)
     testImplementation(platform(libs.test.junit.bom))
     testImplementation(libs.test.junit.jupiter)
     testImplementation(libs.test.junit)
+
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.navigation.testing)
     androidTestImplementation(libs.test.junit)

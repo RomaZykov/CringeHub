@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.cringehub.navigation.MainNavigation
+import com.example.cringehub.navigation.MainNavHost
 import com.example.cringehub.theme.CringeHubTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             CringeHubTheme {
-                MainNavigation()
+                MainNavHost()
             }
         }
     }
