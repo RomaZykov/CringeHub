@@ -1,5 +1,5 @@
 // Workaround for issue https://stackoverflow.com/questions/77279080/unable-to-make-progress-running-work-android-studio
-gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+//gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
 
 pluginManagement {
     includeBuild("build-logic")
@@ -25,6 +25,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "cringehub"
 include(":app")
+include(":admin")
 include(":core:domain")
 include(":core:data")
 include(":core:ui")
@@ -35,6 +36,8 @@ include(":core:common")
 include(":core:theme")
 include(":features:auth")
 include(":features:onboarding")
+include(":features:adminAuth")
+include(":features:adminHome")
 include(":features:hub")
 include(":features:seasonPass")
 include(":features:store")

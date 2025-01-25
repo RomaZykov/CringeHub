@@ -1,6 +1,7 @@
 package com.example.network.di
 
 import com.example.network.core.UserNetworkDataSource
+import com.example.network.core.admin.AdminUserNetworkDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,4 +14,8 @@ internal abstract class NetworkModule {
     @Binds
     @Singleton
     abstract fun providesUserNetworkDataSource(impl: UserNetworkDataSource.Base): UserNetworkDataSource
+  
+    @Binds
+    @Singleton
+    abstract fun providesAdminUserNetworkDataSource(impl: AdminUserNetworkDataSource.Base): AdminUserNetworkDataSource
 }

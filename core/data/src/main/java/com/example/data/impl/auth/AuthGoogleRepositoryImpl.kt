@@ -22,7 +22,7 @@ class AuthGoogleRepositoryImpl @Inject constructor(
     private val credentialRequest: GetCredentialRequest,
     private val handleError: HandleError,
     private val dispatcher: CoroutineDispatcher
-) : AuthRepository {
+) : AuthRepository.GoogleAuthRepository {
 
     override suspend fun signInWithGoogle(activityContext: Context): Result<User> =
         withContext(dispatcher) {
