@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.androidx.material3.android)
+    implementation(libs.compose.material3.android)
 
     testImplementation(libs.junit)
 
