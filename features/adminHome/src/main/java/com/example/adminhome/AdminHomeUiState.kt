@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.adminhome.components.CardItem
 
 interface AdminHomeUiState {
 
@@ -27,9 +28,18 @@ interface AdminHomeUiState {
     object Initial : AdminHomeUiState {
         @Composable
         override fun Show() {
+            val items = listOf(
+                CardItem(
+                    "Создать \nгайд",
+                    image = R.drawable.image_placeholder
+                ),
+                CardItem(
+                    "Создать \nпрактическое \nзадание",
+                    image = R.drawable.image_placeholder
+                )
+            )
             Scaffold { innerPadding ->
                 LazyVerticalGrid(contentPadding = innerPadding, columns = GridCells.Fixed(2)) {
-                    val items = listOf("Создать \nгайд", "Создать \nпрактическое \nзадание")
                     itemsIndexed(items) { index, item ->
                         CardInGrid(index, item)
                     }
@@ -40,7 +50,7 @@ interface AdminHomeUiState {
 }
 
 @Composable
-private fun CardInGrid(index: Int, item: String) {
+private fun CardInGrid(index: Int, item: CardItem) {
     Card(
         modifier = Modifier
             .padding(
@@ -56,14 +66,14 @@ private fun CardInGrid(index: Int, item: String) {
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(16.dp),
-                text = item,
+                text = item.title,
                 fontSize = 16.sp
             )
             Image(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                painter = painterResource(R.drawable.image_placeholder),
+                painter = painterResource(item.image),
                 contentDescription = null
             )
         }
