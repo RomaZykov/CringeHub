@@ -1,6 +1,5 @@
 [versions]
 androidGradlePlugin = "8.8.0"
-bcrypt = "2.3.0"
 kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
