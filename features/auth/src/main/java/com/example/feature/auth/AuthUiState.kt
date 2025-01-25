@@ -154,9 +154,3 @@ private fun WelcomeText() {
         }
     }
 }
-
-//@Preview(showSystemUi = true, locale = "en")
-//@Composable
-//internal fun AuthScreenPreview() {
-//    AuthUiState.Initial.Show(uiState, {}, LocalContext.current, {})
-//}

@@ -1,5 +1,5 @@
 // Workaround for issue https://stackoverflow.com/questions/77279080/unable-to-make-progress-running-work-android-studio
-gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+//gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
 
 pluginManagement {
     includeBuild("build-logic")

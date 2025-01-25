@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val flowWrapper: FlowWrapper,
-    private val repository: AuthRepository
+    private val repository: AuthRepository.GoogleAuthRepository
 ) : ViewModel(), ViewModelActions {
 
     fun state() = flowWrapper.state()
