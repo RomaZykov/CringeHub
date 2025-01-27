@@ -1,6 +1,7 @@
 package com.example.adminhome
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
@@ -23,19 +24,21 @@ import com.example.adminhome.components.CardItem
 interface AdminHomeUiState {
 
     @Composable
-    fun Show()
+    fun Show(onGuideCreationClicked: () -> Unit)
 
     object Initial : AdminHomeUiState {
         @Composable
-        override fun Show() {
+        override fun Show(onGuideCreationClicked: () -> Unit) {
             val items = listOf(
                 CardItem(
                     "Создать \nгайд",
-                    image = R.drawable.image_placeholder
+                    image = R.drawable.image_placeholder,
+                    onClick = onGuideCreationClicked
                 ),
                 CardItem(
                     "Создать \nпрактическое \nзадание",
-                    image = R.drawable.image_placeholder
+                    image = R.drawable.image_placeholder,
+                    onClick = {}
                 )
             )
             Scaffold { innerPadding ->
@@ -60,6 +63,9 @@ private fun CardInGrid(index: Int, item: CardItem) {
                 end = if (index % 2 == 0) 8.dp else 16.dp
             )
             .heightIn(172.dp, 172.dp)
+            .clickable {
+                item.onClick.invoke()
+            }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Text(
@@ -83,5 +89,5 @@ private fun CardInGrid(index: Int, item: CardItem) {
 @Preview(showSystemUi = true)
 @Composable
 internal fun AdminHomePreview() {
-    AdminHomeUiState.Initial.Show()
+    AdminHomeUiState.Initial.Show {}
 }

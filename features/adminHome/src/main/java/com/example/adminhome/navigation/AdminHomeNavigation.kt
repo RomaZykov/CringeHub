@@ -11,8 +11,8 @@ object AdminHomeRoute
 
 fun NavController.navigateToAdminHome() = navigate(AdminHomeRoute)
 
-fun NavGraphBuilder.adminHomeScreen() {
+fun NavGraphBuilder.adminHomeScreen(navController: NavController) {
     composable<AdminHomeRoute> {
-        AdminHomeScreen()
+        AdminHomeScreen(navController)
     }
 }

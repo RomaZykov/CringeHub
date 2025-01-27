@@ -38,8 +38,10 @@ dependencies {
     implementation(project(":core:theme"))
     implementation(project(":features:adminAuth"))
     implementation(project(":features:adminHome"))
+    implementation(project(":features:adminGuideCreation"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.compose.activity)
     implementation(platform(libs.compose.bom))
