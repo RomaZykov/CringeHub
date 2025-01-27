@@ -8,17 +8,19 @@ android {
 }
 
 dependencies {
+    implementation(project(":features:adminGuideCreation"))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
+
     debugImplementation(libs.androidx.ui.tooling)
 
     testImplementation(libs.junit)
 
+    androidTestImplementation(libs.test.compose.ui.junit4)
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.test.espresso.core)
 }

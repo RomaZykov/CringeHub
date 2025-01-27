@@ -1,6 +1,6 @@
-package com.example.adminauth.di
+package com.example.adminguidecreation.di
 
-import com.example.adminauth.AdminAuthUiState
+import com.example.adminguidecreation.GuideCreationUiState
 import com.example.common.core.FlowWrapper
 import dagger.Module
 import dagger.Provides
@@ -10,8 +10,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AdminAuthModule {
+object GuideCreationModule {
+
     @Provides
     @Singleton
-    fun provideFlowWrapper(): FlowWrapper<AdminAuthUiState> = FlowWrapper.Base(AdminAuthUiState.Initial)
+    fun provideFlowWrapper(): FlowWrapper<GuideCreationUiState> = FlowWrapper.Base(GuideCreationUiState.Initial)
 }

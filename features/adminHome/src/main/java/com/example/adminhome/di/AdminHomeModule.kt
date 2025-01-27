@@ -1,15 +1,18 @@
 package com.example.adminhome.di
 
-import com.example.adminhome.core.FlowWrapper
-import dagger.Binds
+import com.example.adminhome.AdminHomeUiState
+import com.example.common.core.FlowWrapper
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
-abstract class AuthModule {
+@InstallIn(SingletonComponent::class)
+object AuthModule {
 
-    @Binds
-    abstract fun bindsFlowWrapper(flowWrapper: FlowWrapper.Base): FlowWrapper
+    @Provides
+    @Singleton
+    fun provideFlowWrapper(): FlowWrapper<AdminHomeUiState> = FlowWrapper.Base(AdminHomeUiState.Initial)
 }

@@ -2,8 +2,8 @@ package com.example.adminauth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.adminauth.core.FlowWrapper
 import com.example.adminauth.core.ViewModelActions
+import com.example.common.core.FlowWrapper
 import com.example.domain.repositories.auth.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminAuthViewModel @Inject constructor(
-    private val flowWrapper: FlowWrapper,
+    private val flowWrapper: FlowWrapper<AdminAuthUiState>,
     private val adminAuthRepository: AuthRepository.AdminAuthRepository
 ) : ViewModel(), ViewModelActions {
 

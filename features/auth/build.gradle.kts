@@ -20,6 +20,7 @@ android {
 dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:theme"))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
