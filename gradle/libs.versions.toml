@@ -3,6 +3,7 @@ androidGradlePlugin = "8.8.0"
 kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
+richeditorCompose = "1.0.0-rc10"
 rules = "1.6.1"
 runtimeAndroid = "1.7.6"
 appcompat = "1.7.0"
@@ -53,6 +54,7 @@ play-services-auth = { group = "com.google.android.gms", name = "play-services-a
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
+richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
