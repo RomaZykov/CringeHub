@@ -19,6 +19,9 @@ Itz yor hub of Cringe :)
 <br /><br />  Inspired by: Lurkmore,  [HyperSkill](https://hyperskill.org/), [Lyra](https://www.gaugash.ru/lyra).
 
 ## Screenshots
+<p align="center">
+<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%20Main.png">
+</p>
 
 ## Stack
   - Kotlin (KTS), Kotlin coroutines, Flow
