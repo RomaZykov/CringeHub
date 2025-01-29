@@ -29,11 +29,17 @@ Itz yor hub of Cringe :)
   - Konsist
   - Firebase: Auth, Cloud Firestore
 
-## Architecture
-
 ## Features (product side)
+  - [x] Google signIn/signUp
+  - [ ] Lessons on topics (where YouTubers steal content from, etc.)
+  - [ ] A content store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
+  - [ ] Crazy cringe features
+  - [ ] Level Up's and the equivalent of the season pass
 
 ## Features (admin panel side)
+  - [x] Only login via Email and password, no registration directly, manual registration via Firebase
+  - [ ] Creating content with practice
+  - [ ] Drafts of the created content
 
 ## Features (development)
   - Design from Figma (I did it)
