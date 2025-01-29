@@ -19,6 +19,9 @@
 <br /><br />  Заимствованные идеи: Lurkmore, [HyperSkill](https://hyperskill.org/), [Lyra](https://www.gaugash.ru/lyra).
 
 ## Скриншоты
+<p align="center">
+<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%20Main.png">
+</p>
 
 ## Стэк
   - Kotlin (KTS), Kotlin coroutines, FLow
