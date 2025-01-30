@@ -18,9 +18,12 @@
   В первую очередь, для меня - как разработчика, это приложение полигон для тестирования различных гипотез и фич, так как тематика приложения не ограничена рамками самого приложения и возможно добавлять различные безумные приколюхи, во вторую очередь, это попытка выйти на монетизацию в будущем и радовать моих любимых пользователей кринжовыми фичами и обучающими материалами.
 <br /><br />  Заимствованные идеи: Lurkmore, [HyperSkill](https://hyperskill.org/), [Lyra](https://www.gaugash.ru/lyra).
 
-## Скриншоты
+## Скриншоты (пока только макеты из Figma)
 <p align="center">
-<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%20Main.png">
+<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%201.png">
+</p>
+<p align="center">
+<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%202.png">
 </p>
 
 ## Стэк
