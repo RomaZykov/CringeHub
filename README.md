@@ -18,9 +18,12 @@ Itz yor hub of Cringe :)
   First of all, for me, as a developer, this application is a testing ground for various hypotheses and features, since the application's subject matter is not limited to the application itself and it is possible to add various crazy jokes, secondly, it is an attempt to reach monetization in the future and delight my favorite users with cool features and training materials.
 <br /><br />  Inspired by: Lurkmore,  [HyperSkill](https://hyperskill.org/), [Lyra](https://www.gaugash.ru/lyra).
 
-## Screenshots
+## Screenshots (so far only from Figma)
 <p align="center">
-<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%20Main.png">
+<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%201.png">
+</p>
+<p align="center">
+<img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%202.png">
 </p>
 
 ## Stack
