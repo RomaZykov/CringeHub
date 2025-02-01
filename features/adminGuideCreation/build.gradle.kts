@@ -24,11 +24,15 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-
-    // Rich Text Editor lib
+    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.compose.material3)
+    implementation(libs.hilt.navigation.compose)
+    // Rich Text Editor
     implementation(libs.richeditor.compose)
 
     testImplementation(libs.junit)
+
+    debugImplementation(libs.androidx.ui.tooling)
 
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.test.espresso.core)
