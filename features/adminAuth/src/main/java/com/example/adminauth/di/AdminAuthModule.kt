@@ -5,13 +5,11 @@ import com.example.common.core.FlowWrapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object AdminAuthModule {
     @Provides
-    @Singleton
     fun provideFlowWrapper(): FlowWrapper<AdminAuthUiState> = FlowWrapper.Base(AdminAuthUiState.Initial)
 }

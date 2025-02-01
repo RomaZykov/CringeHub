@@ -5,14 +5,12 @@ import com.example.feature.auth.AuthUiState
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object AuthModule {
 
     @Binds
-    @Singleton
     fun provideFlowWrapper(): FlowWrapper<AuthUiState> = FlowWrapper.Base(AuthUiState.Initial)
 }
