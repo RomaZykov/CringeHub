@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3.android)
+    implementation(libs.compose.navigation.testing)
 
     testImplementation(libs.junit)
 
@@ -56,6 +57,7 @@ dependencies {
     androidTestImplementation(libs.test.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.hilt.android.testing)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.test.compose.ui.manifest)

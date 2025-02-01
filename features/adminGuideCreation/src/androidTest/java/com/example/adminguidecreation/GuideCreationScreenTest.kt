@@ -2,9 +2,9 @@ package com.example.adminguidecreation
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.*
+import dagger.hilt.android.testing.HiltAndroidRule
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,26 +18,17 @@ class GuideCreationScreenTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private lateinit var navController: TestNavHostController
+    @Before
+    fun setUp() {
+        hiltRule.inject()
+        composeTestRule.setContent {
+            GuideCreationScreen()
+        }
+    }
 
     @Test
-    fun `fdsbfdsbdfsb`() {
-        composeTestRule.setContent {
-            AdminGui
-            BookmarksScreen(
-                feedState = NewsFeedUiState.Loading,
-                onShowSnackbar = { _, _ -> false },
-                removeFromBookmarks = {},
-                onTopicClick = {},
-                onNewsResourceViewed = {},
-            )
-        }
+    fun a() {
 
-        composeTestRule
-            .onNodeWithContentDescription(
-                composeTestRule.activity.resources.getString(R.string.feature_bookmarks_loading),
-            )
-            .assertExists()
     }
 
 //    @Test
