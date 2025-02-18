@@ -45,7 +45,7 @@ Itz yor hub of Cringe :)
 ## Features (admin panel side)
   - [x] Only login via Email and password, no registration directly, manual registration via Firebase
   - [ ] Creating content with practice
-  - [ ] Drafts of the created content
+  - [ ] Drafts of the created content (offline-first approach based on push synchronization)
 
 ## Features (development)
   - Design from Figma (I did it)
