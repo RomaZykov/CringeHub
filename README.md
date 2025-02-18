@@ -13,7 +13,7 @@ Itz yor hub of Cringe :)
 <p align="center">
 
 ## Description
-  A gamified mobile application for boomers and buzzers to immerse themselves in the environment of modern culture of memes, information business, games, slang and various Internet practices with a learning mechanism.
+  A gamified mobile application for boomers and buzzers to immerse themselves in the environment of modern culture of memes, information business, games, slang and various Internet practices with a learning mechanism in different countries.
   
   First of all, for me, as a developer, this application is a testing ground for various hypotheses and features, since the application's subject matter is not limited to the application itself and it is possible to add various crazy jokes, secondly, it is an attempt to reach monetization in the future and delight my favorite users with cool features and training materials.
 <br /><br />  Inspired by: Lurkmore,  [HyperSkill](https://hyperskill.org/), [Lyra](https://www.gaugash.ru/lyra).
