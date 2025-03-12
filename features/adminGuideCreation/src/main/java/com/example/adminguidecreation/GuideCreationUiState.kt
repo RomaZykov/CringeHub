@@ -156,7 +156,6 @@ fun Title(titleState: RichTextState) {
             Text(color = Color.Gray, text = "Заголовок")
         }
     )
-
 }
 
 @OptIn(ExperimentalLayoutApi::class)

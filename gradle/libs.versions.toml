@@ -3,6 +3,7 @@ androidGradlePlugin = "8.8.0"
 kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
+kotlinxCoroutinesAndroid = "1.9.0"
 richeditorCompose = "1.0.0-rc10"
 rules = "1.6.1"
 runtimeAndroid = "1.7.6"
@@ -13,6 +14,7 @@ hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
 junitBom = "5.11.3"
+junitJupiter = "5.11.3"
 junitVersion = "1.2.1"
 coreKtx = "1.15.0"
 espressoCore = "3.6.1"
@@ -24,6 +26,7 @@ composeUi = "1.7.6"
 composeMaterial3 = "1.3.1"
 navigationCompose = "2.8.5"
 playServicesAuth = "21.3.0"
+room = "2.6.1"
 roomCompiler = "2.6.1"
 kotlinxSerializationJson = "1.7.3"
 ksp = "2.1.0-1.0.29"
@@ -39,9 +42,11 @@ compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "26"
 jvm = "17"
+material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-room = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
@@ -50,9 +55,10 @@ androidx-credentials = { module = "androidx.credentials:credentials", version.re
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 
@@ -75,10 +81,9 @@ compose-navigation-testing = { module = "androidx.navigation:navigation-testing"
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-test-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitVersion" }
 test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
-test-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "junitBom" }
 test-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+test-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 test-rules = { module = "androidx.test:rules", version.ref = "rules" }
 test-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -101,6 +106,7 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

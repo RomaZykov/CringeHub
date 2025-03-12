@@ -15,4 +15,3 @@ sealed class FirebaseCustomException(val code: Int, message: String) : FirebaseE
         const val NO_USER_INFO_FOUND_IN_DATABASE = 1002
     }
 }
-

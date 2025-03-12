@@ -36,6 +36,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
+
     implementation(project(":features:adminAuth"))
     implementation(project(":features:adminHome"))
     implementation(project(":features:adminGuideCreation"))

@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.example.domain"
 }
+
+dependencies {
+    implementation(libs.kotlinx.coroutines.android)
+}

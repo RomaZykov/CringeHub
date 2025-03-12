@@ -1,8 +1,8 @@
-package com.example.data.impl.adminAuth
+package com.example.data.impl.admin.auth
 
 import com.example.data.model.AdminUserData
 import com.example.domain.model.AdminUser
-import com.example.domain.repositories.auth.AuthRepository
+import com.example.domain.repositories.AuthRepository
 import com.example.network.core.admin.AdminUserNetworkDataSource
 import javax.inject.Inject
 

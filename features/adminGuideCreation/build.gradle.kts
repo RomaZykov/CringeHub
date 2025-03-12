@@ -29,8 +29,10 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     // Rich Text Editor
     implementation(libs.richeditor.compose)
+    implementation(project(":core:domain"))
 
     testImplementation(libs.junit)
+    testImplementation(libs.test.junit.jupiter)
 
     debugImplementation(libs.androidx.ui.tooling)
 

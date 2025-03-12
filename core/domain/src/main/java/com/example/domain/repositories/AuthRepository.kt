@@ -1,4 +1,4 @@
-package com.example.domain.repositories.auth
+package com.example.domain.repositories
 
 import android.content.Context
 import com.example.domain.model.AdminUser

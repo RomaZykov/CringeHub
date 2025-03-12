@@ -1,6 +1,6 @@
 package com.example.database.core
 
-import com.example.database.enteties.UserLocal
+import com.example.database.entities.UserLocal
 
 interface UserLocalDataSource {
 

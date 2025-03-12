@@ -1,4 +1,4 @@
-package com.example.data.impl.auth
+package com.example.data.impl.client.auth
 
 import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest
@@ -8,7 +8,7 @@ import androidx.credentials.GetCredentialResponse
 import com.example.common.core.HandleError
 import com.example.data.model.UserData
 import com.example.domain.model.User
-import com.example.domain.repositories.auth.AuthRepository
+import com.example.domain.repositories.AuthRepository
 import com.example.network.core.UserNetworkDataSource
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.GoogleAuthProvider

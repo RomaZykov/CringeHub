@@ -1,4 +1,4 @@
-package com.example.database
+package com.example.adminnavigation
 
 import org.junit.Test
 
