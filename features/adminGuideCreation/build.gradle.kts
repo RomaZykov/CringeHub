@@ -26,7 +26,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
-    implementation(libs.hilt.navigation.compose)
     // Rich Text Editor
     implementation(libs.richeditor.compose)
     implementation(project(":core:domain"))

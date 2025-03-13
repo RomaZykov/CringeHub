@@ -3,6 +3,7 @@ package com.example.network.core.admin
 import com.example.network.model.GuideNetwork
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 interface GuideNetworkDataSource {
 
@@ -41,7 +42,7 @@ interface GuideNetworkDataSource {
 //        }
 //    }
 
-    class Base(
+    class Base @Inject constructor(
         private val db: FirebaseFirestore
     ) : GuideNetworkDataSource {
         override fun allGuides(): Flow<List<GuideNetwork>> {

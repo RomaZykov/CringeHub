@@ -5,12 +5,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.hasParent
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -23,7 +19,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.adminguidecreation.GuideCreationScreen
 import com.example.adminguidecreation.navigation.GuideCreationRoute
 import com.example.adminhome.navigation.AdminHomeRoute
-import com.example.cringehub.admin.navigation.AdminNavigation
 import dagger.hilt.android.testing.HiltAndroidRule
 import org.junit.Before
 import org.junit.Rule
@@ -46,7 +41,7 @@ class NavigationTest {
         composeTestRule.activity.setContent {
             navController = rememberTestNavController()
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            AdminNavigation(navController = navController)
+            com.example.adminnavigation.AdminNavigation(navController = navController)
         }
         with(composeTestRule.onNodeWithContentDescription("AdminHomeScreen")) {
             assertExists()

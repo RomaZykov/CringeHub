@@ -10,7 +10,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:data"))
-    implementation(project(":features:adminGuideCreation"))
+    implementation(project(":core:adminNavigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

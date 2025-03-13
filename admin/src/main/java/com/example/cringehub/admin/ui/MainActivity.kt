@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.cringehub.admin.navigation.AdminNavigation
+import androidx.navigation.compose.rememberNavController
+import com.example.adminauth.navigation.AdminAuthRoute
+import com.example.adminnavigation.AdminNavigation
 import com.example.cringehub.theme.CringeHubTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +17,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CringeHubTheme {
-                AdminNavigation()
+                AdminNavigation(
+                    navController = rememberNavController(),
+                    startDestination = AdminAuthRoute
+                )
             }
         }
     }

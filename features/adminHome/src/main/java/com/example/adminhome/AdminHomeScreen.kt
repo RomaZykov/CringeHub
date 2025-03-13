@@ -5,14 +5,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.adminguidecreation.navigation.navigateToGuideCreation
 
 @Composable
 fun AdminHomeScreen(
     navController: NavController,
-    viewModel: AdminHomeViewModel = hiltViewModel()
+    viewModel: AdminHomeViewModel = hiltViewModel<AdminHomeViewModel.Base>()
 ) {
-    val uiState by viewModel.state().collectAsState()
+    val uiState by viewModel.adminHomeUiStateFlow().collectAsState()
 
-    uiState.Show(navController::navigateToGuideCreation)
+    uiState.Show(onGuideCreationClicked = {
+        viewModel.navigateToGuideCreation(navController)
+    })
 }

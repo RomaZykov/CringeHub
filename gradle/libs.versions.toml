@@ -24,7 +24,7 @@ composeBom = "2024.12.01"
 composeCompiler = "1.5.15"
 composeUi = "1.7.6"
 composeMaterial3 = "1.3.1"
-navigationCompose = "2.8.5"
+navigationCompose = "2.8.9"
 playServicesAuth = "21.3.0"
 room = "2.6.1"
 roomCompiler = "2.6.1"
@@ -36,13 +36,13 @@ firebaseAuth = "23.1.0"
 lifecycleViewmodelAndroid = "2.8.7"
 composeScreenshot = "0.0.1-alpha08"
 runner = "1.6.2"
+material = "1.12.0"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "26"
 jvm = "17"
-material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,6 +60,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 
 # Compose
@@ -106,7 +107,6 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

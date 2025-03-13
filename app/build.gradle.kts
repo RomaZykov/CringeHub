@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
+
     implementation(project(":features:auth"))
     implementation(project(":features:onboarding"))
     implementation(project(":features:hub"))

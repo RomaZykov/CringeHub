@@ -1,6 +1,5 @@
 package com.example.data.impl.admin.guide
 
-import com.example.data.model.GuideData
 import com.example.database.core.admin.GuideLocalDataSource
 import com.example.domain.model.Guide
 import com.example.domain.repositories.admin.guide.GuideRepository
@@ -27,8 +26,8 @@ class GuideRepositoryImpl @Inject constructor(
         // сохранить изменения в качестве черновика: сохранить / нет
         // если есть интернет соединение в network
         // если нет в cache
-        val newGuide = GuideData()
-        cacheDataSource.saveGuideAsDraft(newGuide.mappedValue())
+//        val newGuide = GuideData()
+//        cacheDataSource.saveGuideAsDraft(newGuide.mappedValue())
     }
 
     override suspend fun deleteGuide() {
