@@ -31,6 +31,7 @@
   - MVVM, Clean Architecture
   - Single-Activity
   - Jetpack Compose
+  - WorkManager
   - Hilt
   - Konsist
   - Firebase: Auth, Cloud Firestore
