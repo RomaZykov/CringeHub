@@ -47,3 +47,5 @@ include(":features:adminAuth")
 include(":features:adminHome")
 
 include(":konsist")
+include(":sync:sync-test")
+include(":sync:workmanager")

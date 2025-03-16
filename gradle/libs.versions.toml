@@ -3,17 +3,16 @@ androidGradlePlugin = "8.8.0"
 kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
-kotlinxCoroutinesAndroid = "1.9.0"
+kotlinxCoroutines = "1.10.1"
 richeditorCompose = "1.0.0-rc10"
 rules = "1.6.1"
 runtimeAndroid = "1.7.6"
 appcompat = "1.7.0"
 credentials = "1.3.0"
 googleid = "1.1.1"
-hilt = "2.52"
+hilt = "2.54"
 hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
-junitBom = "5.11.3"
 junitJupiter = "5.11.3"
 junitVersion = "1.2.1"
 coreKtx = "1.15.0"
@@ -27,16 +26,15 @@ composeMaterial3 = "1.3.1"
 navigationCompose = "2.8.9"
 playServicesAuth = "21.3.0"
 room = "2.6.1"
-roomCompiler = "2.6.1"
 kotlinxSerializationJson = "1.7.3"
 ksp = "2.1.0-1.0.29"
 gmsPlugin = "4.4.2"
 firebaseBom = "33.7.0"
 firebaseAuth = "23.1.0"
-lifecycleViewmodelAndroid = "2.8.7"
 composeScreenshot = "0.0.1-alpha08"
 runner = "1.6.2"
 material = "1.12.0"
+work-version = "2.10.0"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
@@ -47,15 +45,19 @@ jvm = "17"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-room = { module = "androidx.room:room-runtime", version.ref = "room" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
+androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleRuntimeKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android" }
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-version" }
+androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "work-version" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
@@ -82,7 +84,7 @@ compose-navigation-testing = { module = "androidx.navigation:navigation-testing"
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitBom" }
+test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitJupiter" }
 test-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 test-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 test-rules = { module = "androidx.test:rules", version.ref = "rules" }
