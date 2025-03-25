@@ -5,10 +5,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "guides_table")
-data class GuideLocal(
-    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
+data class GuideEntity(
+    @PrimaryKey @ColumnInfo(name = "id") val id: Long,
     @ColumnInfo(name = "title") val title: String,
-//    val content: String,
+    @ColumnInfo(name = "content") val content: String,
+    @ColumnInfo(name = "latestModified") val latestModified: Long,
+    @ColumnInfo(name = "isDraft") val isDraft: Boolean
 //    val isFree: Boolean,
 //    val images: List<String>
 )
