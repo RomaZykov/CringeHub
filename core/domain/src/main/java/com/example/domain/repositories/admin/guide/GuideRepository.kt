@@ -5,17 +5,19 @@ import kotlinx.coroutines.flow.Flow
 
 interface GuideRepository {
 
-    suspend fun synchronize()
+    suspend fun syncWithNetwork(): Boolean
 
-    fun fetchGuides(): Flow<List<Guide>>
+    fun fetchNonDraftGuides(): Flow<List<Guide>>
 
     interface Admin : GuideRepository {
 
-        suspend fun updateGuide(id: String)
+        fun fetchDraftGuides(): Flow<List<Guide>>
 
-        suspend fun saveGuideAsDraft()
+        suspend fun updateGuide(guideId: Long)
 
-        suspend fun deleteGuide()
+        suspend fun saveGuideAsDraft(title: String, content: String)
+
+        suspend fun deleteGuide(guideId: Long)
 
         suspend fun publishGuide()
     }

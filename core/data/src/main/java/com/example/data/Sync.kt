@@ -1,0 +1,51 @@
+package com.example.data
+
+import com.example.database.entities.GuideEntity
+import com.example.network.model.GuideNetwork
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import java.io.IOException
+
+interface SyncScheduler : Syncable {
+
+    fun scheduleUploadGuideWork(guide: GuideNetwork)
+}
+
+interface Syncable {
+    suspend fun sync(
+        fetchFromNetwork: suspend () -> List<GuideNetwork>,
+
+        fetchFromLocal: suspend () -> List<GuideEntity>,
+
+        updateLocalSource: suspend (
+            networkGuides: List<GuideNetwork>,
+            staleLocalGuides: List<GuideEntity>
+        ) -> Unit
+    ): Boolean {
+        val networkGuides = mutableListOf<GuideNetwork>()
+        val localGuides = mutableListOf<GuideEntity>()
+        return try {
+            coroutineScope {
+                launch {
+                    networkGuides.addAll(
+                        fetchFromNetwork.invoke()
+                    )
+                }
+
+                launch {
+                    localGuides.addAll(
+                        fetchFromLocal.invoke()
+                    )
+                }
+            }.join()
+
+            updateLocalSource(
+                networkGuides,
+                localGuides
+            )
+            true
+        } catch (e: IOException) {
+            false
+        }
+    }
+}

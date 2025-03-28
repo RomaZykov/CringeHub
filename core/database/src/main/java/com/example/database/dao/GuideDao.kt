@@ -1,23 +1,28 @@
 package com.example.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import com.example.database.entities.GuideLocal
+import androidx.room.Query
+import androidx.room.Upsert
+import com.example.database.entities.GuideEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GuideDao {
 
-//    @Query("SELECT * FROM numbers_table ORDER BY date DESC")
-//    fun allNumbers(): List<NumberCache>
+    @Upsert
+    fun upsertGuides(entities: List<GuideEntity>)
+
+    @Query("SELECT * FROM guides_table")
+    fun allGuides(): Flow<List<GuideEntity>>
+
+    @Query("SELECT * FROM guides_table WHERE id = :guideId")
+    fun getGuide(guideId: Long): Flow<GuideEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(guide: GuideLocal)
+    fun insert(guide: GuideEntity)
 
-    @Delete
-    fun delete(guide: GuideLocal)
-
-//    @Query("SELECT * FROM numbers_table WHERE number = :number")
-//    fun number(number: String): NumberCache?
+    @Query("delete from guides_table where id = :guideId")
+    fun delete(guideId: Long)
 }

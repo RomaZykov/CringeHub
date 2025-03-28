@@ -1,56 +1,79 @@
 package com.example.network.core.admin
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.network.model.GuideNetwork
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface GuideNetworkDataSource {
 
-    fun allGuides(): Flow<List<GuideNetwork>>
+    fun allGuides(): Flow<List<GuideNetwork?>>
 
-    fun getGuide(id: Int): Flow<GuideNetwork>
+    fun allDraftGuides(): Flow<List<GuideNetwork?>>
 
-//    suspend fun contains(number: String): Boolean
-//
-//    suspend fun saveNumber(numberData: NumberData)
-//
-//    class Base(
-//        private val dao: NumbersDao,
-//        private val dataToCache: NumberData.Mapper<NumberCache>
-//    ) : NumbersCacheDataSource {
-//
-//        private val mutex = Mutex()
-//
-//        override suspend fun allNumbers(): List<NumberData> = mutex.withLock {
-//            val data = dao.allNumbers()
-//            return data.map { NumberData(it.number, it.fact) }
-//        }
-//
-//        override suspend fun contains(number: String): Boolean = mutex.withLock {
-//            val data = dao.number(number)
-//            return data != null
-//        }
-//
-//        override suspend fun saveNumber(numberData: NumberData) = mutex.withLock {
-//            dao.insert(numberData.map(dataToCache))
-//        }
-//
-//        override suspend fun number(number: String): NumberData = mutex.withLock {
-//            val numberCache = dao.number(number) ?: NumberCache("", "", 0)
-//            return NumberData(numberCache.number, numberCache.fact)
-//        }
-//    }
+    fun getGuide(id: Long): Flow<GuideNetwork?>
+
+    suspend fun saveGuideAsDraft(guideNetwork: GuideNetwork): Boolean
+
+    suspend fun deleteGuide(guideId: Long): Boolean
 
     class Base @Inject constructor(
         private val db: FirebaseFirestore
     ) : GuideNetworkDataSource {
-        override fun allGuides(): Flow<List<GuideNetwork>> {
+
+        private val cachedNetworkGuides = mutableListOf<GuideNetwork>()
+
+        override fun allGuides(): Flow<List<GuideNetwork>> = flow {
+            val rawGuides = db.collection(GUIDES).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "Error getting guides document: ", exception)
+                }
+            val networkGuides = rawGuides.await().toObjects(GuideNetwork::class.java)
+            if (cachedNetworkGuides.isEmpty()) {
+                cachedNetworkGuides.addAll(networkGuides)
+            }
+            emit(networkGuides)
+        }
+
+        override fun allDraftGuides(): Flow<List<GuideNetwork>> = flow {
+            val draftGuides = cachedNetworkGuides.filter {
+                it.isDraft == true
+            }
+            emit(draftGuides)
+        }
+
+        override fun getGuide(id: Long): Flow<GuideNetwork?> = flow {
+            val guide = cachedNetworkGuides.find {
+                it.id == id
+            }
+            emit(guide)
+        }
+
+        override suspend fun saveGuideAsDraft(
+            guideNetwork: GuideNetwork,
+        ): Boolean {
+            return db.collection(GUIDES).document(guideNetwork.id.toString())
+                .set(guideNetwork)
+                .addOnSuccessListener { Log.d(TAG, "GuideSnapshot successfully written!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing guide", e) }
+                .isSuccessful
+        }
+
+        override suspend fun deleteGuide(guideId: Long): Boolean {
             TODO("Not yet implemented")
         }
 
-        override fun getGuide(id: Int): Flow<GuideNetwork> {
-            TODO("Not yet implemented")
+        companion object {
+            const val GUIDES = "guides"
         }
     }
 }

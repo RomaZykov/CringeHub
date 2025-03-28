@@ -42,7 +42,10 @@ dependencies {
     implementation(project(":features:adminHome"))
     implementation(project(":features:adminGuideCreation"))
 
+    implementation(project(":sync:workmanager"))
+
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.compose.activity)
@@ -52,6 +55,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3.android)
     implementation(libs.compose.navigation.testing)
+    implementation(libs.androidx.hilt.work)
 
     testImplementation(libs.junit)
 
