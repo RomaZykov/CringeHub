@@ -1,111 +1,130 @@
 package com.example.adminguidecreation
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import dagger.hilt.android.testing.HiltAndroidRule
-import org.junit.Before
+import com.example.adminguidecreation.model.InitialUi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.assertEquals
 
 @RunWith(AndroidJUnit4::class)
 class GuideCreationScreenTest {
 
-    @get:Rule(order = 0)
-    var hiltRule = HiltAndroidRule(this)
+    private class FakeGuideCreationViewModel : GuideCreationViewModel {
+        //        var loadBooksDataCalledCount = 0
+//        var selectBookCalledCount = 0
+//        var selectedBookId : String? = null
+        var uiStateFlowToReturn: GuideCreationUiState = InitialUi
+//        override fun loadBooksData() {
+//            loadBooksDataCalledCount++
+//        }
+//        override fun listScreenUiStateFlow(): StateFlow<ListScreenUiState> {
+//            wasListScreenUiStateFlowCalled = true
+//            return MutableStateFlow(listScreenUiStateFlowToReturn)
+//        }
+//        override fun selectBook(navController: NavController, bookId: String) {
+//            selectBookCalledCount++
+//            selectedBookId = bookId
+//        }
 
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+        override fun guideCreationUiStateFlow(): StateFlow<GuideCreationUiState> {
+            return MutableStateFlow(uiStateFlowToReturn)
+        }
 
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-        composeTestRule.setContent {
-            GuideCreationScreen()
+        override fun onPublishClicked() {
+        }
+
+        override fun saveContent(title: String, content: String) {
         }
     }
 
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+
     @Test
-    fun a() {
+    fun showDialog_whenTitleOrContentNotEmpty() {
+        val fakeViewModel = FakeGuideCreationViewModel()
+        composeTestRule.setContent {
+            GuideCreationScreen(
+                popBackStack = {},
+                viewModel = fakeViewModel
+            )
+        }
+        composeTestRule.onRoot(true).printToLog("GuideCreationScreenTest")
 
+        composeTestRule.onNodeWithContentDescription("title")
+            .assertExists()
+            .assertIsDisplayed()
+            .performTextInput("Test title")
+        composeTestRule.onNodeWithContentDescription("title")
+            .assertTextEquals("Test title")
+
+        composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
+
+        composeTestRule
+            .onNodeWithContentDescription("back button", true)
+            .performClick()
+
+        composeTestRule.onNodeWithContentDescription("discard changes dialog")
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeTestRule.onNodeWithText("cancel")
+            .assertExists()
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule.onNodeWithContentDescription(
+            "discard changes dialog"
+        ).assertDoesNotExist()
+
+        composeTestRule.onNodeWithContentDescription("title")
+            .performTextClearance()
+
+        composeTestRule.onNodeWithContentDescription("content")
+            .assertExists()
+            .assertIsDisplayed()
+            .performTextInput("Test content")
+        composeTestRule.onNodeWithContentDescription("content")
+            .assertTextEquals("Test content")
+
+        composeTestRule.onRoot().performClick()
+
+        composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
+
+        composeTestRule.onNodeWithContentDescription("content")
+            .performTextClearance()
+
+        for ((key, value) in composeTestRule.onNodeWithContentDescription("title")
+            .fetchSemanticsNode().config) {
+            if (key.name == SemanticsProperties.EditableText.name)
+                assertEquals("", value.toString())
+        }
+        for ((key, value) in composeTestRule.onNodeWithContentDescription("content")
+            .fetchSemanticsNode().config) {
+            if (key.name == SemanticsProperties.EditableText.name)
+                assertEquals("", value.toString())
+        }
+
+        composeTestRule.activityRule.scenario.onActivity { activity ->
+            activity.onBackPressedDispatcher.onBackPressed()
+        }
+
+        composeTestRule.onNodeWithContentDescription("discard changes dialog")
+            .assertDoesNotExist()
     }
-
-//    @Test
-//    fun feed_whenHasBookmarks_showsBookmarks() {
-//        composeTestRule.setContent {
-//            BookmarksScreen(
-//                feedState = NewsFeedUiState.Success(
-//                    userNewsResourcesTestData.take(2),
-//                ),
-//                onShowSnackbar = { _, _ -> false },
-//                removeFromBookmarks = {},
-//                onTopicClick = {},
-//                onNewsResourceViewed = {},
-//            )
-//        }
-//
-//        composeTestRule
-//            .onNodeWithText(
-//                userNewsResourcesTestData[0].title,
-//                substring = true,
-//            )
-//            .assertExists()
-//            .assertHasClickAction()
-//
-//        composeTestRule.onNode(hasScrollToNodeAction())
-//            .performScrollToNode(
-//                hasText(
-//                    userNewsResourcesTestData[1].title,
-//                    substring = true,
-//                ),
-//            )
-//
-//        composeTestRule
-//            .onNodeWithText(
-//                userNewsResourcesTestData[1].title,
-//                substring = true,
-//            )
-//            .assertExists()
-//            .assertHasClickAction()
-//    }
-//
-//    @Test
-//    fun feed_whenRemovingBookmark_removesBookmark() {
-//        var removeFromBookmarksCalled = false
-//
-//        composeTestRule.setContent {
-//            BookmarksScreen(
-//                feedState = NewsFeedUiState.Success(
-//                    userNewsResourcesTestData.take(2),
-//                ),
-//                onShowSnackbar = { _, _ -> false },
-//                removeFromBookmarks = { newsResourceId ->
-//                    kotlin.test.assertEquals(userNewsResourcesTestData[0].id, newsResourceId)
-//                    removeFromBookmarksCalled = true
-//                },
-//                onTopicClick = {},
-//                onNewsResourceViewed = {},
-//            )
-//        }
-//
-//        composeTestRule
-//            .onAllNodesWithContentDescription(
-//                composeTestRule.activity.getString(
-//                    com.google.samples.apps.nowinandroid.core.ui.R.string.core_ui_unbookmark,
-//                ),
-//            ).filter(
-//                hasAnyAncestor(
-//                    hasText(
-//                        userNewsResourcesTestData[0].title,
-//                        substring = true,
-//                    ),
-//                ),
-//            )
-//            .assertCountEquals(1)
-//            .onFirst()
-//            .performClick()
-//
-//        kotlin.test.assertTrue(removeFromBookmarksCalled)
-//    }
 }
