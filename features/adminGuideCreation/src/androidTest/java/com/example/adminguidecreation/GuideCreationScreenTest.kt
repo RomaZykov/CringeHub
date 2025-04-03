@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -16,6 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.adminguidecreation.model.InitialUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,21 +27,8 @@ import kotlin.test.assertEquals
 class GuideCreationScreenTest {
 
     private class FakeGuideCreationViewModel : GuideCreationViewModel {
-        //        var loadBooksDataCalledCount = 0
-//        var selectBookCalledCount = 0
-//        var selectedBookId : String? = null
+        var saveContentCalledCount = 0
         var uiStateFlowToReturn: GuideCreationUiState = InitialUi
-//        override fun loadBooksData() {
-//            loadBooksDataCalledCount++
-//        }
-//        override fun listScreenUiStateFlow(): StateFlow<ListScreenUiState> {
-//            wasListScreenUiStateFlowCalled = true
-//            return MutableStateFlow(listScreenUiStateFlowToReturn)
-//        }
-//        override fun selectBook(navController: NavController, bookId: String) {
-//            selectBookCalledCount++
-//            selectedBookId = bookId
-//        }
 
         override fun guideCreationUiStateFlow(): StateFlow<GuideCreationUiState> {
             return MutableStateFlow(uiStateFlowToReturn)
@@ -49,23 +38,31 @@ class GuideCreationScreenTest {
         }
 
         override fun saveContent(title: String, content: String) {
+            saveContentCalledCount++
         }
     }
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    @Test
-    fun showDialog_whenTitleOrContentNotEmpty() {
+    @Before
+    fun setUp() {
         val fakeViewModel = FakeGuideCreationViewModel()
         composeTestRule.setContent {
             GuideCreationScreen(
-                popBackStack = {},
+                popBackStack = {
+                    composeTestRule.activityRule.scenario.onActivity { activity ->
+                        activity.onBackPressedDispatcher.onBackPressed()
+                    }
+                },
                 viewModel = fakeViewModel
             )
         }
         composeTestRule.onRoot(true).printToLog("GuideCreationScreenTest")
+    }
 
+    @Test
+    fun showDialog_whenTitleOrContentNotEmpty() {
         composeTestRule.onNodeWithContentDescription("title")
             .assertExists()
             .assertIsDisplayed()
@@ -76,7 +73,7 @@ class GuideCreationScreenTest {
         composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
 
         composeTestRule
-            .onNodeWithContentDescription("back button", true)
+            .onNodeWithContentDescription("back button")
             .performClick()
 
         composeTestRule.onNodeWithContentDescription("discard changes dialog")
@@ -109,16 +106,15 @@ class GuideCreationScreenTest {
         composeTestRule.onNodeWithContentDescription("content")
             .performTextClearance()
 
-        for ((key, value) in composeTestRule.onNodeWithContentDescription("title")
-            .fetchSemanticsNode().config) {
-            if (key.name == SemanticsProperties.EditableText.name)
-                assertEquals("", value.toString())
-        }
-        for ((key, value) in composeTestRule.onNodeWithContentDescription("content")
-            .fetchSemanticsNode().config) {
-            if (key.name == SemanticsProperties.EditableText.name)
-                assertEquals("", value.toString())
-        }
+        assertTextFieldEquals("title", "")
+        composeTestRule.onNodeWithContentDescription("title")
+            .assertExists()
+            .assertIsDisplayed()
+
+        assertTextFieldEquals("content", "")
+        composeTestRule.onNodeWithContentDescription("content")
+            .assertExists()
+            .assertIsDisplayed()
 
         composeTestRule.activityRule.scenario.onActivity { activity ->
             activity.onBackPressedDispatcher.onBackPressed()
@@ -126,5 +122,33 @@ class GuideCreationScreenTest {
 
         composeTestRule.onNodeWithContentDescription("discard changes dialog")
             .assertDoesNotExist()
+    }
+
+    @Test
+    fun doesNotShowDialog_whenTitleAndContentEmpty() {
+        composeTestRule.onNodeWithContentDescription("title")
+            .assertExists()
+            .assertIsDisplayed()
+        assertTextFieldEquals("title", "")
+
+        composeTestRule.onNodeWithContentDescription("content")
+            .assertExists()
+            .assertIsDisplayed()
+        assertTextFieldEquals("content", "")
+
+        composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
+
+        composeTestRule.onNodeWithContentDescription("back button")
+            .performClick()
+
+        composeTestRule.onNode(isRoot()).assertDoesNotExist()
+    }
+
+    private fun assertTextFieldEquals(nodeWithContentDescription: String, expectedResult: String) {
+        for ((key, value) in composeTestRule.onNodeWithContentDescription(nodeWithContentDescription)
+            .fetchSemanticsNode().config) {
+            if (key.name == SemanticsProperties.EditableText.name)
+                assertEquals(expectedResult, value.toString())
+        }
     }
 }
