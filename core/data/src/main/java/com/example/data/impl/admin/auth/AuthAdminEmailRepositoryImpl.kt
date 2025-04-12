@@ -1,15 +1,19 @@
 package com.example.data.impl.admin.auth
 
+import com.example.data.MapperFactory
 import com.example.data.model.AdminUserData
-import com.example.domain.model.AdminUser
+import com.example.domain.model.AdminUserDomain
 import com.example.domain.repositories.AuthRepository
 import com.example.network.core.admin.AdminUserNetworkDataSource
 import javax.inject.Inject
 
-class AuthAdminEmailRepositoryImpl @Inject constructor(private val adminUserNetworkDataSource: AdminUserNetworkDataSource) :
+class AuthAdminEmailRepositoryImpl @Inject constructor(
+    private val adminUserNetworkDataSource: AdminUserNetworkDataSource,
+    private val mapperFactory: MapperFactory.AdminMapper
+) :
     AuthRepository.AdminAuthRepository {
 
-    override suspend fun signInWithEmail(email: String, password: String): Result<AdminUser> {
+    override suspend fun signInWithEmail(email: String, password: String): Result<AdminUserDomain> {
         return try {
             val currentAdminUser = adminUserNetworkDataSource.signInUserWithEmailAndPassword(
                 email,
@@ -19,7 +23,8 @@ class AuthAdminEmailRepositoryImpl @Inject constructor(private val adminUserNetw
             val adminUser = AdminUserData(
                 rawAdminUser?.email.orEmpty()
             )
-            Result.success(adminUser.mappedValue())
+            Result.success(mapperFactory.map(adminUser, AdminUserDomain::class.java))
+//            Result.success(adminUser.mappedValue())
         } catch (e: Exception) {
             Result.failure(e)
         }

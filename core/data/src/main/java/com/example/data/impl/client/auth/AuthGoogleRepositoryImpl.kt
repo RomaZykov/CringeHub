@@ -6,8 +6,9 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import com.example.common.core.HandleError
+import com.example.data.MapperFactory
 import com.example.data.model.UserData
-import com.example.domain.model.User
+import com.example.domain.model.UserDomain
 import com.example.domain.repositories.AuthRepository
 import com.example.network.core.UserNetworkDataSource
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -21,10 +22,11 @@ class AuthGoogleRepositoryImpl @Inject constructor(
     private val credentialManager: CredentialManager,
     private val credentialRequest: GetCredentialRequest,
     private val handleError: HandleError,
+    private val mapper: MapperFactory.UserMapper,
     private val dispatcher: CoroutineDispatcher
 ) : AuthRepository.GoogleAuthRepository {
 
-    override suspend fun signInWithGoogle(activityContext: Context): Result<User> =
+    override suspend fun signInWithGoogle(activityContext: Context): Result<UserDomain> =
         withContext(dispatcher) {
             try {
                 val credentialResult =
@@ -33,12 +35,13 @@ class AuthGoogleRepositoryImpl @Inject constructor(
 
                 val rawUser =
                     userNetworkDataSource.getUser()
-                val user = UserData(
+                val userData = UserData(
                     rawUser?.id.orEmpty(),
                     rawUser?.userName.orEmpty(),
                     isLoggedIn = true
                 )
-                Result.success(user.mappedValue())
+                Result.success(mapper.map(userData, UserDomain::class.java))
+//                Result.success(user.mappedValue())
             } catch (e: Exception) {
                 Result.failure(handleError.handle(e))
             }
