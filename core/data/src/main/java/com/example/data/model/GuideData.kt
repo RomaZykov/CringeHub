@@ -1,7 +1,7 @@
 package com.example.data.model
 
 data class GuideData(
-    val id: Long,
+    val id: String,
     val title: String,
     val content: String,
     val latestModified: Long,

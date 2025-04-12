@@ -12,17 +12,17 @@ import kotlinx.coroutines.flow.Flow
 interface GuideDao {
 
     @Upsert
-    fun upsertGuides(entities: List<GuideEntity>)
+    suspend fun upsertGuides(entities: List<GuideEntity>)
 
     @Query("SELECT * FROM guides_table")
     fun allGuides(): Flow<List<GuideEntity>>
 
     @Query("SELECT * FROM guides_table WHERE id = :guideId")
-    fun getGuide(guideId: Long): Flow<GuideEntity>
+    fun getGuide(guideId: String): Flow<GuideEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(guide: GuideEntity)
+    suspend fun insert(guide: GuideEntity)
 
     @Query("delete from guides_table where id = :guideId")
-    fun delete(guideId: Long)
+    suspend fun delete(guideId: Long)
 }

@@ -2,7 +2,7 @@ package com.example.database.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.database.GuideDatabase
+import com.example.database.GuidesDatabase
 import com.example.database.dao.GuideDao
 import dagger.Module
 import dagger.Provides
@@ -17,17 +17,17 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideGuideDatabase(@ApplicationContext context: Context): GuideDatabase {
+    fun provideGuideDatabase(@ApplicationContext context: Context): GuidesDatabase {
         return Room.databaseBuilder(
             context,
-            GuideDatabase::class.java,
+            GuidesDatabase::class.java,
             "guide_db"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideGuideDao(database: GuideDatabase): GuideDao {
+    fun provideGuideDao(database: GuidesDatabase): GuideDao {
         return database.getGuideDao()
     }
 }

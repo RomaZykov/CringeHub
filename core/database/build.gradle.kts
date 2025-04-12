@@ -8,8 +8,13 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.room)
-    implementation(libs.androidx.core.ktx)
+    implementation(project(":core:common"))
 
-    testImplementation(libs.hilt.android.testing)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.test.runner)
 }

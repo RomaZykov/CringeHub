@@ -1,28 +1,63 @@
 package com.example.database.core.admin
 
 import com.example.database.dao.GuideDao
-import com.example.database.entities.GuideLocal
+import com.example.database.entities.GuideEntity
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface GuideLocalDataSource {
 
-    fun getAllGuides(): Flow<List<GuideLocal>>
+    suspend fun upsertGuides(entities: List<GuideEntity>)
 
-    fun getGuide(id: Int): Flow<GuideLocal>
+    fun fetchAllGuides(): Flow<List<GuideEntity>>
 
-    suspend fun saveGuideAsDraft(guide: GuideLocal)
+    fun fetchDraftGuides(): Flow<List<GuideEntity>>
 
-    class Base @Inject constructor(private val dao: GuideDao) : GuideLocalDataSource {
-        override fun getAllGuides(): Flow<List<GuideLocal>> {
-            TODO("Not yet implemented")
+    fun getGuide(id: String): Flow<GuideEntity>
+
+    suspend fun saveGuideAsDraft(uid: String, title: String, content: String, latestModified: Long)
+
+    suspend fun deleteGuide(uid: String)
+
+    class Base @Inject constructor(
+        private val dao: GuideDao,
+        private val ioDispatcher: CoroutineDispatcher
+    ) : GuideLocalDataSource {
+
+        override suspend fun upsertGuides(entities: List<GuideEntity>) {
+            withContext(ioDispatcher) {
+                dao.upsertGuides(entities)
+            }
         }
 
-        override fun getGuide(id: Int): Flow<GuideLocal> {
-            TODO("Not yet implemented")
+        override fun fetchAllGuides(): Flow<List<GuideEntity>> = dao.allGuides()
+
+        // TODO: Replace with correct impl
+        override fun fetchDraftGuides(): Flow<List<GuideEntity>> = dao.allGuides()
+
+        override fun getGuide(id: String): Flow<GuideEntity> = dao.getGuide(id)
+
+        override suspend fun saveGuideAsDraft(
+            uid: String,
+            title: String,
+            content: String,
+            latestModified: Long
+        ) {
+            withContext(ioDispatcher) {
+                val guideAsDraft = GuideEntity(
+                    uid,
+                    title,
+                    content,
+                    System.currentTimeMillis(),
+                    true
+                )
+                dao.insert(guideAsDraft)
+            }
         }
 
-        override suspend fun saveGuideAsDraft(guide: GuideLocal) {
+        override suspend fun deleteGuide(uid: String) {
             TODO("Not yet implemented")
         }
     }
