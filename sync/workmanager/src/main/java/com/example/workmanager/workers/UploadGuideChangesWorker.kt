@@ -28,7 +28,7 @@ class UploadGuideChangesWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
-        val guide = inputData.keyValueMap[GUIDE_KEY] as GuideNetwork
+        val guide = getMappedGuide()
         val uploadChangesSuccessful = awaitAll(
             async { guideNetworkDataSource.saveGuideAsDraft(guide) },
             async { guide.id?.let { guideNetworkDataSource.deleteGuide(it) } }
@@ -41,8 +41,25 @@ class UploadGuideChangesWorker @AssistedInject constructor(
         }
     }
 
+    private fun getMappedGuide(): GuideNetwork = GuideNetwork(
+        id = inputData.getString(GUIDE_ID_KEY),
+        title = inputData.getString(GUIDE_TITLE_KEY),
+        content = inputData.getString(GUIDE_CONTENT_KEY),
+        isDraft = inputData.getBoolean(GUIDE_IS_DRAFT_KEY, true),
+        isFree = inputData.getBoolean(GUIDE_TITLE_KEY, false),
+        latestModified = inputData.getLong(GUIDE_TITLE_KEY, -1L),
+        images = inputData.getStringArray(GUIDE_IMAGES_KEY)?.toList()
+    )
+
     companion object {
         private const val ONLY_ONE_OPERATION_TRUE = 1
-        const val GUIDE_KEY = "guide_key"
+
+        const val GUIDE_ID_KEY = "guide_id"
+        const val GUIDE_TITLE_KEY = "guide_title"
+        const val GUIDE_CONTENT_KEY = "guide_content"
+        const val GUIDE_IS_DRAFT_KEY = "guide_isDraft"
+        const val GUIDE_IS_FREE_KEY = "guide_isFree"
+        const val GUIDE_LATEST_MODIFIED_KEY = "guide_latestModified"
+        const val GUIDE_IMAGES_KEY = "guide_images"
     }
 }
