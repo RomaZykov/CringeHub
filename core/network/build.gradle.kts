@@ -10,5 +10,7 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+
+    implementation(libs.androidx.work.runtime.ktx)
 }
 

@@ -1,7 +1,7 @@
 package com.example.network.model
 
 data class GuideNetwork(
-    val id: Long? = null,
+    val id: String? = null,
     val title: String? = null,
     val content: String? = null,
     val isDraft: Boolean? = null,

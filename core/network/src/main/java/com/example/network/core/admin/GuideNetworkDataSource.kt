@@ -15,11 +15,11 @@ interface GuideNetworkDataSource {
 
     fun allDraftGuides(): Flow<List<GuideNetwork?>>
 
-    fun getGuide(id: Long): Flow<GuideNetwork?>
+    fun getGuide(id: String): Flow<GuideNetwork?>
 
     suspend fun saveGuideAsDraft(guideNetwork: GuideNetwork): Boolean
 
-    suspend fun deleteGuide(guideId: Long): Boolean
+    suspend fun deleteGuide(guideId: String): Boolean
 
     class Base @Inject constructor(
         private val db: FirebaseFirestore
@@ -51,7 +51,7 @@ interface GuideNetworkDataSource {
             emit(draftGuides)
         }
 
-        override fun getGuide(id: Long): Flow<GuideNetwork?> = flow {
+        override fun getGuide(id: String): Flow<GuideNetwork?> = flow {
             val guide = cachedNetworkGuides.find {
                 it.id == id
             }
@@ -68,7 +68,7 @@ interface GuideNetworkDataSource {
                 .isSuccessful
         }
 
-        override suspend fun deleteGuide(guideId: Long): Boolean {
+        override suspend fun deleteGuide(guideId: String): Boolean {
             TODO("Not yet implemented")
         }
 
