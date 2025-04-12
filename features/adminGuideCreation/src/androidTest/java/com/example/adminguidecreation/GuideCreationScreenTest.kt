@@ -1,10 +1,13 @@
 package com.example.adminguidecreation
 
+import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.annotation.StringRes
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.isRoot
+import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -14,6 +17,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.adminguidecreation.model.InitialUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +29,9 @@ import kotlin.test.assertEquals
 
 @RunWith(AndroidJUnit4::class)
 class GuideCreationScreenTest {
+
+    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private fun string(@StringRes stringRes: Int): String = context.getString(stringRes)
 
     private class FakeGuideCreationViewModel : GuideCreationViewModel {
         var saveContentCalledCount = 0
@@ -45,10 +52,13 @@ class GuideCreationScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private lateinit var restorationTester: StateRestorationTester
+
     @Before
     fun setUp() {
         val fakeViewModel = FakeGuideCreationViewModel()
-        composeTestRule.setContent {
+        restorationTester = StateRestorationTester(composeTestRule)
+        restorationTester.setContent {
             GuideCreationScreen(
                 popBackStack = {
                     composeTestRule.activityRule.scenario.onActivity { activity ->
@@ -58,97 +68,126 @@ class GuideCreationScreenTest {
                 viewModel = fakeViewModel
             )
         }
-        composeTestRule.onRoot(true).printToLog("GuideCreationScreenTest")
+        composeTestRule.onRoot(true).printToLog("GuideCreationScreenTag")
+    }
+
+    @Test
+    fun transformAllTextToSeveralOptions_whenOnSameLine() {
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
+            .performTextInput("Short 1 paragraph\nLong Long Long Long Long Long 2 paragraph\nShort 3 paragraph")
+
+        composeTestRule.onNodeWithContentDescription(
+            GuideCreationUiState.BOLD_BUTTON,
+            useUnmergedTree = true
+        ).performClick()
+
+        // H1
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
+            .assertExists()
+            .assertIsDisplayed()
+
+        // H2
+
+        // Quote
+    }
+
+    @Test
+    fun undoTransformingAllTextFromSeveralOptions_whenOnSameLine() {
+        // H1
+
+        // H2
+
+        // Quote
+    }
+
+    @Test
+    fun showDialog_whenTitleOrContentNotEmpty_andBackButtonPressed() {
+
     }
 
     @Test
     fun showDialog_whenTitleOrContentNotEmpty() {
-        composeTestRule.onNodeWithContentDescription("title")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
             .assertExists()
             .assertIsDisplayed()
             .performTextInput("Test title")
-        composeTestRule.onNodeWithContentDescription("title")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
             .assertTextEquals("Test title")
 
-        composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
+            .assertDoesNotExist()
 
         composeTestRule
-            .onNodeWithContentDescription("back button")
+            .onNodeWithContentDescription(GuideCreationUiState.BACK_BUTTON)
             .performClick()
 
-        composeTestRule.onNodeWithContentDescription("discard changes dialog")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
             .assertExists()
             .assertIsDisplayed()
 
-        composeTestRule.onNodeWithText("cancel")
+        // Orientation changes check
+        restorationTester.emulateSavedInstanceStateRestore()
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
+            .assertIsDisplayed()
+            .assertExists()
+
+        composeTestRule.onNodeWithText(string(R.string.discard_changes))
             .assertExists()
             .assertIsDisplayed()
-            .performClick()
+        composeTestRule.onNodeWithText(string(R.string.save))
+            .assertExists()
+            .assertIsDisplayed()
 
-        composeTestRule.onNodeWithContentDescription(
-            "discard changes dialog"
-        ).assertDoesNotExist()
-
-        composeTestRule.onNodeWithContentDescription("title")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
             .performTextClearance()
 
-        composeTestRule.onNodeWithContentDescription("content")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
             .assertExists()
             .assertIsDisplayed()
             .performTextInput("Test content")
-        composeTestRule.onNodeWithContentDescription("content")
-            .assertTextEquals("Test content")
 
-        composeTestRule.onRoot().performClick()
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.BACK_BUTTON)
+            .performClick()
 
-        composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
+            .assertIsDisplayed()
+            .assertExists()
 
-        composeTestRule.onNodeWithContentDescription("content")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
             .performTextClearance()
-
-        assertTextFieldEquals("title", "")
-        composeTestRule.onNodeWithContentDescription("title")
-            .assertExists()
-            .assertIsDisplayed()
-
-        assertTextFieldEquals("content", "")
-        composeTestRule.onNodeWithContentDescription("content")
-            .assertExists()
-            .assertIsDisplayed()
 
         composeTestRule.activityRule.scenario.onActivity { activity ->
             activity.onBackPressedDispatcher.onBackPressed()
         }
 
-        composeTestRule.onNodeWithContentDescription("discard changes dialog")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
             .assertDoesNotExist()
     }
 
     @Test
-    fun doesNotShowDialog_whenTitleAndContentEmpty() {
-        composeTestRule.onNodeWithContentDescription("title")
+    fun doNotShowDialog_whenTitleAndContentEmpty() {
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
             .assertExists()
             .assertIsDisplayed()
-        assertTextFieldEquals("title", "")
+        assertTextFieldEquals(GuideCreationUiState.TITLE, "")
 
-        composeTestRule.onNodeWithContentDescription("content")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
             .assertExists()
             .assertIsDisplayed()
-        assertTextFieldEquals("content", "")
+        assertTextFieldEquals(GuideCreationUiState.CONTENT, "")
 
-        composeTestRule.onNodeWithContentDescription("discard changes dialog").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
+            .assertDoesNotExist()
 
-        composeTestRule.onNodeWithContentDescription("back button")
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.BACK_BUTTON)
             .performClick()
 
         composeTestRule.onNode(isRoot()).assertDoesNotExist()
     }
 
     private fun assertTextFieldEquals(nodeWithContentDescription: String, expectedResult: String) {
-        for ((key, value) in composeTestRule.onNodeWithContentDescription(nodeWithContentDescription)
-            .fetchSemanticsNode().config) {
-            if (key.name == SemanticsProperties.EditableText.name)
-                assertEquals(expectedResult, value.toString())
-        }
+        val actualText = composeTestRule.onNodeWithContentDescription(nodeWithContentDescription)
+            .fetchSemanticsNode().config[SemanticsProperties.EditableText].text
+        assertEquals(expectedResult, actualText)
     }
 }
