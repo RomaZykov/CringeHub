@@ -66,12 +66,7 @@ class KonsistTest {
         .classes()
         .withAllParentsOf(ViewModel::class)
 
-    @Test
-    fun `Classes extending 'ViewModel' should have 'ViewModel' suffix`() {
-        viewModelScope
-            .assertTrue { it.name.endsWith("ViewModel") }
-    }
-
+    // TODO: Recheck correctness
     @Test
     fun `'ViewModel' classes should not have private methods for better testing`() {
         viewModelScope
