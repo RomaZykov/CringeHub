@@ -8,8 +8,14 @@ import androidx.compose.ui.unit.sp
 
 @Immutable
 data class CringeHubTypography(
+    val title: TextStyle = TextStyle(
+        fontSize = 24.sp,
+        fontFamily = cringeHubFontFamily,
+        fontWeight = FontWeight.Bold,
+        color = PrimaryBlack
+    ),
     val body: TextStyle = TextStyle(
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         fontFamily = cringeHubFontFamily,
         fontWeight = FontWeight.Normal,
         color = PrimaryBlack
@@ -19,14 +25,8 @@ data class CringeHubTypography(
         fontFamily = googleButtonFontFamily,
         fontWeight = FontWeight.Normal
     ),
-    val title: TextStyle = TextStyle(
-        fontSize = 32.sp,
-        fontFamily = cringeHubFontFamily,
-        fontWeight = FontWeight.Black,
-        color = PrimaryBlack
-    ),
     val onContainerBody: TextStyle = TextStyle(
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         fontFamily = cringeHubFontFamily,
         fontWeight = FontWeight.ExtraBold,
         color = PrimaryWhite
