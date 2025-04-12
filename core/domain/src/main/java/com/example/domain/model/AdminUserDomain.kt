@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-data class AdminUser(
+data class AdminUserDomain(
     val email: String,
     val adminRole: AdminRole
 )

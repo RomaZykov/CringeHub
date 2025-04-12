@@ -1,19 +1,22 @@
 package com.example.domain.repositories
 
 import android.content.Context
-import com.example.domain.model.AdminUser
-import com.example.domain.model.User
+import com.example.domain.model.AdminUserDomain
+import com.example.domain.model.UserDomain
 
 interface AuthRepository {
 
+    // TODO: Add loggedIn
+//    val isLoggedIn: Flow<Boolean>
+
     interface AdminAuthRepository : AuthRepository {
-        suspend fun signInWithEmail(email: String, password: String): Result<AdminUser>
+        suspend fun signInWithEmail(email: String, password: String): Result<AdminUserDomain>
     }
 
     interface GoogleAuthRepository : AuthRepository {
         // Use specific activityContext for credential manager from Composable AuthScreen
         // does not work with @ApplicationContext from Hilt
-        suspend fun signInWithGoogle(activityContext: Context): Result<User>
+        suspend fun signInWithGoogle(activityContext: Context): Result<UserDomain>
     }
 
     suspend fun signOut()

@@ -6,7 +6,7 @@ import com.example.data.model.UserData
 import com.example.database.entities.GuideEntity
 import com.example.domain.model.AdminRole
 import com.example.domain.model.AdminUserDomain
-import com.example.domain.model.Guide
+import com.example.domain.model.GuideDomain
 import com.example.domain.model.UserDomain
 import com.example.network.model.GuideNetwork
 import javax.inject.Inject
@@ -92,8 +92,8 @@ interface MapperFactory {
                                 ) as R
                             }
 
-                            Guide::class.java -> {
-                                Guide(
+                            GuideDomain::class.java -> {
+                                GuideDomain(
                                     id = input.id,
                                     title = input.title,
                                     content = input.content,
@@ -131,8 +131,8 @@ interface MapperFactory {
                                 ) as R
                             }
 
-                            Guide::class.java -> {
-                                Guide(
+                            GuideDomain::class.java -> {
+                                GuideDomain(
                                     id = input.id ?: "",
                                     title = input.title ?: "",
                                     content = input.content ?: "",
@@ -170,8 +170,8 @@ interface MapperFactory {
                                 ) as R
                             }
 
-                            Guide::class.java -> {
-                                Guide(
+                            GuideDomain::class.java -> {
+                                GuideDomain(
                                     id = input.id,
                                     title = input.title,
                                     content = input.content,

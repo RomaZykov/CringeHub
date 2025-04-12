@@ -56,7 +56,7 @@ class NavigationTest {
     // TODO: Hard test to complete
     @Test
     fun firstDraftSaved_afterCreatingGuideCardClicked_withSomeTextInside() {
-        composeTestRule.onNodeWithText("Guide creation card").performClick()
+        composeTestRule.onNodeWithText("GuideDomain creation card").performClick()
 
         with(composeTestRule.onNodeWithContentDescription("GuideCreationScreen")) {
             assertExists()

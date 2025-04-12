@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GuideCreationViewModelTest {
+class GuideDomainCreationViewModelTest {
 
     @Test
     fun loadBooksData_invokes_use_case_and_updates_state_flow() = runTest {

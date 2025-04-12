@@ -1,7 +1,7 @@
 package com.example.domain.model
 
-data class Guide(
-    val id: Long,
+data class GuideDomain(
+    val id: String,
     val title: String,
     val content: String,
     val isFree: Boolean,

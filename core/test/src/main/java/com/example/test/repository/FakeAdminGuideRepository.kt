@@ -1,23 +1,23 @@
 package com.example.test.repository
 
-import com.example.domain.model.Guide
+import com.example.domain.model.GuideDomain
 import com.example.domain.repositories.admin.guide.GuideRepository
 import kotlinx.coroutines.flow.Flow
 
 class FakeAdminGuideRepository : GuideRepository.Admin {
-    override suspend fun synchronize() {
+    override fun fetchDraftGuides(): Flow<List<GuideDomain>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateGuide(id: String) {
+    override suspend fun updateGuide(guideId: String) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveGuideAsDraft() {
+    override suspend fun saveGuideAsDraft(title: String, content: String) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteGuide() {
+    override suspend fun deleteGuide(guideId: String) {
         TODO("Not yet implemented")
     }
 
@@ -25,7 +25,11 @@ class FakeAdminGuideRepository : GuideRepository.Admin {
         TODO("Not yet implemented")
     }
 
-    override fun fetchGuides(): Flow<List<Guide>> {
+    override suspend fun syncWithNetwork(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun fetchNonDraftGuides(): Flow<List<GuideDomain>> {
         TODO("Not yet implemented")
     }
 }

@@ -28,7 +28,7 @@ import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 @RunWith(AndroidJUnit4::class)
-class GuideCreationScreenTest {
+class GuideDomainCreationScreenTest {
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private fun string(@StringRes stringRes: Int): String = context.getString(stringRes)

@@ -5,7 +5,7 @@ import com.example.data.SyncScheduler
 import com.example.data.model.GuideData
 import com.example.database.core.admin.GuideLocalDataSource
 import com.example.database.entities.GuideEntity
-import com.example.domain.model.Guide
+import com.example.domain.model.GuideDomain
 import com.example.domain.repositories.admin.guide.GuideRepository
 import com.example.network.core.admin.GuideNetworkDataSource
 import com.example.network.model.GuideNetwork
@@ -46,10 +46,10 @@ class GuideRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun fetchDraftGuides(): Flow<List<Guide>> = localDataSource.fetchDraftGuides()
+    override fun fetchDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchDraftGuides()
         .map { localGuides ->
             localGuides.map {
-                mapperFactory.map(it, Guide::class.java)
+                mapperFactory.map(it, GuideDomain::class.java)
             }
         }
 
@@ -90,10 +90,10 @@ class GuideRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun fetchNonDraftGuides(): Flow<List<Guide>> = localDataSource.fetchAllGuides()
+    override fun fetchNonDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchAllGuides()
         .map { localGuides ->
             localGuides.map {
-                mapperFactory.map(it, Guide::class.java)
+                mapperFactory.map(it, GuideDomain::class.java)
             }
         }
 }

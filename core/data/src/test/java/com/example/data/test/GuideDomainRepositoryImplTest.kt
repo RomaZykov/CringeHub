@@ -2,7 +2,7 @@ package com.example.data.test
 
 import org.junit.jupiter.api.Test
 
-class GuideRepositoryImplTest {
+class GuideDomainRepositoryImplTest {
 
     @Test
     fun some_test() {
