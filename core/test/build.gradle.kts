@@ -8,8 +8,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+
     implementation(libs.hilt.android.testing)
     implementation(libs.test.runner)
     implementation(libs.test.rules)
-    implementation(project(":core:domain"))
 }

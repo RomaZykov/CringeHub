@@ -98,7 +98,6 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.navigation.testing)
     androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.espresso.core)
     androidTestImplementation(libs.test.compose.ui.junit4)
     androidTestImplementation(libs.hilt.android.testing)
 

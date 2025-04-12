@@ -14,6 +14,8 @@ android {
         applicationId = "com.example.cringehub.admin"
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "com.example.test.CringeHubTestRunner"
     }
 
     buildTypes {
@@ -59,8 +61,9 @@ dependencies {
 
     testImplementation(libs.junit)
 
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.espresso.core)
+    androidTestImplementation(libs.test.runner)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.test.compose.ui.junit4)
     androidTestImplementation(libs.hilt.android.testing)

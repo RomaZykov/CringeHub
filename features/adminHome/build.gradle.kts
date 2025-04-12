@@ -22,5 +22,4 @@ dependencies {
 
     androidTestImplementation(libs.test.compose.ui.junit4)
     androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.espresso.core)
 }
