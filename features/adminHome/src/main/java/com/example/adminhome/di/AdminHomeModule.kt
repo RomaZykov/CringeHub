@@ -1,7 +1,7 @@
 package com.example.adminhome.di
 
 import com.example.adminhome.navigation.AdminHomeRouteBuilder
-import com.example.adminhome.navigation.BaseAdminAuthRouteProvider
+import com.example.adminhome.navigation.BaseAdminHomeRouteProvider
 import com.example.adminnavigation.AdminHomeRouteProvider
 import com.example.adminnavigation.RouteBuilder
 import dagger.Module
@@ -17,7 +17,7 @@ object AuthModule {
 
     @Provides
     @ViewModelScoped
-    fun provideAdminHomeRouteProvider(): AdminHomeRouteProvider = BaseAdminAuthRouteProvider()
+    fun provideAdminHomeRouteProvider(): AdminHomeRouteProvider = BaseAdminHomeRouteProvider()
 
     @Provides
     @IntoSet

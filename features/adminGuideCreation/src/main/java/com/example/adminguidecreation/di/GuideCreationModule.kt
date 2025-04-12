@@ -1,16 +1,22 @@
 package com.example.adminguidecreation.di
 
-import com.example.adminguidecreation.GuideCreationUiState
-import com.example.common.core.FlowWrapper
+import com.example.adminguidecreation.navigation.BaseGuideCreationCreationRouteProvider
+import com.example.adminguidecreation.navigation.GuideCreationRouteBuilder
+import com.example.adminnavigation.GuideCreationRouteProvider
+import com.example.adminnavigation.RouteBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object GuideCreationModule {
+    @Provides
+    fun provideGuideCreationRouteProvider(): GuideCreationRouteProvider = BaseGuideCreationCreationRouteProvider()
 
     @Provides
-    fun provideFlowWrapper(): FlowWrapper<GuideCreationUiState> = FlowWrapper.Base(GuideCreationUiState.Initial)
+    @IntoSet
+    fun provideGuideCreationRouteBuilder(): RouteBuilder = GuideCreationRouteBuilder()
 }

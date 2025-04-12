@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.cringehub.android.library.compose)
     alias(libs.plugins.cringehub.android.feature)
+    alias(libs.plugins.cringehub.android.library.compose)
     alias(libs.plugins.cringehub.hilt)
 }
 
@@ -19,8 +19,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:test"))
     implementation(project(":core:common"))
+    implementation(project(":core:theme"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:adminNavigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -28,15 +30,19 @@ dependencies {
     implementation(libs.compose.material3)
     // Rich Text Editor
     implementation(libs.richeditor.compose)
-    implementation(project(":core:domain"))
+    implementation(libs.androidx.junit.ktx)
+
+//    kspTest(libs.hilt.compiler)
+
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.test.compose.ui.junit4)
+    debugImplementation(libs.test.compose.ui.manifest)
 
     testImplementation(libs.junit)
     testImplementation(libs.test.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     debugImplementation(libs.androidx.ui.tooling)
-
-    androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.espresso.core)
-    androidTestImplementation(libs.test.compose.ui.junit4)
-    androidTestImplementation(libs.hilt.android.testing)
 }

@@ -7,3 +7,7 @@ interface AdminAuthRouteProvider {
 interface AdminHomeRouteProvider {
     fun route(): Route
 }
+
+interface GuideCreationRouteProvider {
+    fun route(): Route
+}

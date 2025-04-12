@@ -3,7 +3,7 @@ package com.example.adminhome
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.adminhome.model.Initial
-import com.example.adminnavigation.AdminHomeRouteProvider
+import com.example.adminnavigation.GuideCreationRouteProvider
 import com.example.adminnavigation.navigateIfResumed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ interface AdminHomeViewModel {
 
     @HiltViewModel
     class Base @Inject constructor(
-        private val adminHomeRouteProvider: AdminHomeRouteProvider
+        private val guideCreationRouteProvider: GuideCreationRouteProvider
     ) : ViewModel(), AdminHomeViewModel {
 
         private val adminHomeScreenUiStateFlow = MutableStateFlow<AdminHomeUiState>(Initial)
@@ -29,7 +29,7 @@ interface AdminHomeViewModel {
         }
 
         override fun navigateToGuideCreation(navController: NavController) {
-            navController.navigateIfResumed(adminHomeRouteProvider.route())
+            navController.navigateIfResumed(guideCreationRouteProvider.route())
         }
     }
 }

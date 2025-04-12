@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.adminauth.navigation.AdminAuthRoute
 import com.example.adminguidecreation.GuideCreationScreen
 import com.example.adminguidecreation.navigation.GuideCreationRoute
 import com.example.adminhome.navigation.AdminHomeRoute
@@ -41,7 +42,10 @@ class NavigationTest {
         composeTestRule.activity.setContent {
             navController = rememberTestNavController()
             navController.navigatorProvider.addNavigator(ComposeNavigator())
-            com.example.adminnavigation.AdminNavigation(navController = navController)
+            com.example.adminnavigation.AdminNavigation(
+                navController = navController,
+                AdminAuthRoute
+            )
         }
         with(composeTestRule.onNodeWithContentDescription("AdminHomeScreen")) {
             assertExists()
