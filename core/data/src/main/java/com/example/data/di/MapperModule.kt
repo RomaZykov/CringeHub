@@ -1,6 +1,6 @@
 package com.example.data.di
 
-import com.example.data.MapperFactory
+import com.example.data.core.GuideMapperFactory
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,13 +13,13 @@ abstract class MapperModule {
 
     @Binds
     @Singleton
-    abstract fun bindsGuideMapper(impl: MapperFactory.GuideMapper.Base): MapperFactory.GuideMapper
+    abstract fun bindsGuideMapper(impl: GuideMapperFactory.GuideGuideMapper.Base): GuideMapperFactory.GuideGuideMapper
 
     @Binds
     @Singleton
-    abstract fun bindsAdminMapper(impl: MapperFactory.AdminMapper.Base): MapperFactory.AdminMapper
+    abstract fun bindsAdminMapper(impl: GuideMapperFactory.AdminUserGuideMapper.Base): GuideMapperFactory.AdminUserGuideMapper
 
     @Binds
     @Singleton
-    abstract fun bindsUserMapper(impl: MapperFactory.UserMapper.Base): MapperFactory.UserMapper
+    abstract fun bindsUserMapper(impl: GuideMapperFactory.UserGuideMapper.Base): GuideMapperFactory.UserGuideMapper
 }

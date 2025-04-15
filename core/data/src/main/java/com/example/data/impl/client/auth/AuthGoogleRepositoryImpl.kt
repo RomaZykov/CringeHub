@@ -6,7 +6,8 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import com.example.common.core.HandleError
-import com.example.data.MapperFactory
+import com.example.data.core.GuideMapperFactory
+import com.example.data.core.UserMapperFactory
 import com.example.data.model.UserData
 import com.example.domain.model.UserDomain
 import com.example.domain.repositories.AuthRepository
@@ -22,7 +23,7 @@ class AuthGoogleRepositoryImpl @Inject constructor(
     private val credentialManager: CredentialManager,
     private val credentialRequest: GetCredentialRequest,
     private val handleError: HandleError,
-    private val mapper: MapperFactory.UserMapper,
+    private val mapper: UserMapperFactory,
     private val dispatcher: CoroutineDispatcher
 ) : AuthRepository.GoogleAuthRepository {
 
@@ -40,8 +41,7 @@ class AuthGoogleRepositoryImpl @Inject constructor(
                     rawUser?.userName.orEmpty(),
                     isLoggedIn = true
                 )
-                Result.success(mapper.map(userData, UserDomain::class.java))
-//                Result.success(user.mappedValue())
+                Result.success(mapper.mapToDomain(userData))
             } catch (e: Exception) {
                 Result.failure(handleError.handle(e))
             }

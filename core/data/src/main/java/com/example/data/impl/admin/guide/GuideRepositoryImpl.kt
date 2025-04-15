@@ -1,14 +1,12 @@
 package com.example.data.impl.admin.guide
 
-import com.example.data.MapperFactory
 import com.example.data.SyncScheduler
+import com.example.data.core.GuideMapperFactory
 import com.example.data.model.GuideData
 import com.example.database.core.admin.GuideLocalDataSource
-import com.example.database.entities.GuideEntity
 import com.example.domain.model.GuideDomain
 import com.example.domain.repositories.admin.guide.GuideRepository
 import com.example.network.core.admin.GuideNetworkDataSource
-import com.example.network.model.GuideNetwork
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -18,7 +16,7 @@ import javax.inject.Inject
 class GuideRepositoryImpl @Inject constructor(
     private val networkDataSource: GuideNetworkDataSource,
     private val localDataSource: GuideLocalDataSource,
-    private val mapperFactory: MapperFactory.GuideMapper,
+    private val guideMapperFactory: GuideMapperFactory,
     private val syncScheduler: SyncScheduler
 ) : GuideRepository.Admin {
 
@@ -36,7 +34,7 @@ class GuideRepositoryImpl @Inject constructor(
 
             updateLocalSource = { networkGuides, guidesToDelete ->
                 val localGuides = networkGuides.map {
-                    mapperFactory.map(it, GuideEntity::class.java)
+                    guideMapperFactory.mapToEntity(it)
                 }
                 guidesToDelete.forEach {
                     localDataSource.deleteGuide(it.id)
@@ -49,7 +47,7 @@ class GuideRepositoryImpl @Inject constructor(
     override fun fetchDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchDraftGuides()
         .map { localGuides ->
             localGuides.map {
-                mapperFactory.map(it, GuideDomain::class.java)
+                guideMapperFactory.mapToDomain(it)
             }
         }
 
@@ -76,7 +74,7 @@ class GuideRepositoryImpl @Inject constructor(
         )
         localDataSource.saveGuideAsDraft(uid, title, content, latestModified)
 
-        val guideNetwork = mapperFactory.map(guideData, GuideNetwork::class.java)
+        val guideNetwork = guideMapperFactory.mapToNetwork(guideData)
         syncScheduler.scheduleUploadGuideWork(guideNetwork)
     }
 
@@ -93,7 +91,7 @@ class GuideRepositoryImpl @Inject constructor(
     override fun fetchNonDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchAllGuides()
         .map { localGuides ->
             localGuides.map {
-                mapperFactory.map(it, GuideDomain::class.java)
+                guideMapperFactory.mapToDomain(it)
             }
         }
 }
