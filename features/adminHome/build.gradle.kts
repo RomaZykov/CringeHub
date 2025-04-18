@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:adminNavigation"))
+    implementation(project(":core:domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -18,8 +19,10 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
 
-    testImplementation(libs.junit)
-
-    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
     androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.compose.navigation.testing)
+
+    testImplementation(libs.junit)
 }

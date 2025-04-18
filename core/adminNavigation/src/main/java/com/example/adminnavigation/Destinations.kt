@@ -11,3 +11,7 @@ interface AdminHomeRouteProvider {
 interface GuideCreationRouteProvider {
     fun route(): Route
 }
+
+interface DraftRouteProvider {
+    fun route(id: String): Route
+}
