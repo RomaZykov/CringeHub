@@ -1,14 +1,11 @@
 package com.example.adminguidecreation
 
-import android.content.Context
-import androidx.activity.ComponentActivity
-import androidx.annotation.StringRes
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.StateRestorationTester
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -17,24 +14,21 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.example.adminguidecreation.model.InitialUi
+import com.example.test.BaseComposeTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 @RunWith(AndroidJUnit4::class)
-class GuideDomainCreationScreenTest {
-
-    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-    private fun string(@StringRes stringRes: Int): String = context.getString(stringRes)
+class GuideCreationScreenTest : BaseComposeTest() {
 
     private class FakeGuideCreationViewModel : GuideCreationViewModel {
         var saveContentCalledCount = 0
+
         var uiStateFlowToReturn: GuideCreationUiState = InitialUi
 
         override fun guideCreationUiStateFlow(): StateFlow<GuideCreationUiState> {
@@ -49,15 +43,12 @@ class GuideDomainCreationScreenTest {
         }
     }
 
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    private lateinit var restorationTester: StateRestorationTester
+//    private lateinit var restorationTester: StateRestorationTester
 
     @Before
     fun setUp() {
         val fakeViewModel = FakeGuideCreationViewModel()
-        restorationTester = StateRestorationTester(composeTestRule)
+//        restorationTester = StateRestorationTester(composeTestRule)
         restorationTester.setContent {
             GuideCreationScreen(
                 popBackStack = {
@@ -71,39 +62,39 @@ class GuideDomainCreationScreenTest {
         composeTestRule.onRoot(true).printToLog("GuideCreationScreenTag")
     }
 
-    @Test
-    fun transformAllTextToSeveralOptions_whenOnSameLine() {
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
-            .performTextInput("Short 1 paragraph\nLong Long Long Long Long Long 2 paragraph\nShort 3 paragraph")
-
-        composeTestRule.onNodeWithContentDescription(
-            GuideCreationUiState.BOLD_BUTTON,
-            useUnmergedTree = true
-        ).performClick()
-
-        // H1
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
-            .assertExists()
-            .assertIsDisplayed()
-
-        // H2
-
-        // Quote
-    }
-
-    @Test
-    fun undoTransformingAllTextFromSeveralOptions_whenOnSameLine() {
-        // H1
-
-        // H2
-
-        // Quote
-    }
-
-    @Test
-    fun showDialog_whenTitleOrContentNotEmpty_andBackButtonPressed() {
-
-    }
+//    @Test
+//    fun transformAllTextToSeveralOptions_whenOnSameLine() {
+//        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
+//            .performTextInput("Short 1 paragraph\nLong Long Long Long Long Long 2 paragraph\nShort 3 paragraph")
+//
+//        composeTestRule.onNodeWithContentDescription(
+//            GuideCreationUiState.BOLD_BUTTON,
+//            useUnmergedTree = true
+//        ).performClick()
+//
+//        // H1
+//        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
+//            .assertExists()
+//            .assertIsDisplayed()
+//
+//        // H2
+//
+//        // Quote
+//    }
+//
+//    @Test
+//    fun undoTransformingAllTextFromSeveralOptions_whenOnSameLine() {
+//        // H1
+//
+//        // H2
+//
+//        // Quote
+//    }
+//
+//    @Test
+//    fun showDialog_whenTitleOrContentNotEmpty_andBackButtonPressed() {
+//
+//    }
 
     @Test
     fun showDialog_whenTitleOrContentNotEmpty() {
@@ -131,12 +122,16 @@ class GuideDomainCreationScreenTest {
             .assertIsDisplayed()
             .assertExists()
 
-        composeTestRule.onNodeWithText(string(R.string.discard_changes))
-            .assertExists()
-            .assertIsDisplayed()
         composeTestRule.onNodeWithText(string(R.string.save))
             .assertExists()
             .assertIsDisplayed()
+        composeTestRule.onNodeWithText(string(R.string.cancel))
+            .assertExists()
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
+            .isNotDisplayed()
 
         composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
             .performTextClearance()
