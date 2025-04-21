@@ -28,6 +28,7 @@ navigationCompose = "2.8.9"
 playServicesAuth = "21.3.0"
 room = "2.6.1"
 kotlinxSerializationJson = "1.7.3"
+junitKtx = "1.2.1"
 ksp = "2.1.0-1.0.29"
 gmsPlugin = "4.4.2"
 firebaseBom = "33.7.0"
@@ -36,13 +37,13 @@ composeScreenshot = "0.0.1-alpha09"
 runner = "1.6.2"
 material = "1.12.0"
 work-version = "2.10.0"
+uiJunit4 = "1.7.8"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "26"
 jvm = "17"
-junitKtx = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -86,12 +87,13 @@ compose-navigation-testing = { module = "androidx.navigation:navigation-testing"
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+test-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitJupiter" }
 test-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 test-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 test-rules = { module = "androidx.test:rules", version.ref = "rules" }
 test-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
-test-compose-ui-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+test-compose-ui-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiJunit4" }
 test-compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 # Hilt
@@ -112,7 +114,6 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

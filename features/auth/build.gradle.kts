@@ -27,7 +27,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
 
     androidTestImplementation(project(":core:test"))
-    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
 
     testImplementation(project(":core:test"))
 }

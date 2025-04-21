@@ -98,7 +98,9 @@ private fun rememberTestNavController(): TestNavHostController {
             navigatorProvider.addNavigator(ComposeNavigator())
             graph = createGraph(startDestination = AdminHomeRoute) {
                 composable<GuideCreationRoute> {
-                    GuideCreationScreen()
+                    GuideCreationScreen(
+                        popBackStack = {}
+                    )
                 }
             }
         }

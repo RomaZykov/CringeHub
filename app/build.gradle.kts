@@ -98,7 +98,7 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.navigation.testing)
     androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
     androidTestImplementation(libs.hilt.android.testing)
 
     ksp(libs.androidx.room.compiler)

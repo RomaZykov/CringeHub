@@ -13,4 +13,8 @@ dependencies {
     implementation(libs.hilt.android.testing)
     implementation(libs.test.runner)
     implementation(libs.test.rules)
+    implementation(libs.test.compose.ui.junit4.android)
+
+
+    debugImplementation(libs.test.compose.ui.manifest)
 }

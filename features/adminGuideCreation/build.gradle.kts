@@ -30,19 +30,18 @@ dependencies {
     implementation(libs.compose.material3)
     // Rich Text Editor
     implementation(libs.richeditor.compose)
-    implementation(libs.androidx.junit.ktx)
+    implementation(libs.test.junit.ktx)
 
 //    kspTest(libs.hilt.compiler)
 
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.junit)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(libs.test.compose.ui.junit4)
-    debugImplementation(libs.test.compose.ui.manifest)
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
+
+    debugImplementation(libs.androidx.ui.tooling)
 
     testImplementation(libs.junit)
     testImplementation(libs.test.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
-
-    debugImplementation(libs.androidx.ui.tooling)
 }
