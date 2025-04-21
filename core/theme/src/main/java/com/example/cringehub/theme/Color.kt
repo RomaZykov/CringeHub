@@ -6,6 +6,7 @@ val PrimaryYellow = Color(0xFFF2AC30)
 val PrimaryBlack = Color(0xFF282828)
 val PrimaryGray = Color(0xFF707070)
 val PrimaryWhite = Color(0xFFFBE4CB)
+val PrimaryRed = Color(0xFFFF0900)
 
 val SecondaryBlack = Color(0xFF0D0E10)
 val SecondaryGray = Color(0xFF737379)
