@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -77,7 +79,7 @@ object InitialUi : GuideCreationUiState {
             titleState.annotatedString.isBlank() && contentState.annotatedString.isBlank()
         var openDialog by rememberSaveable { mutableStateOf(false) }
         if (openDialog && !whenTextFieldsEmpty) {
-            ShowDraftDialog(onOpenDraftChanged = {
+            ShowDialog(onOpenDraftChanged = {
                 openDialog = it
             }, popBackStack, saveContent, titleState, contentState)
         }
@@ -146,27 +148,36 @@ object InitialUi : GuideCreationUiState {
                         .wrapContentHeight(),
                     enabled = controlStateEnabled,
                     onBoldClick = { selected ->
-                        if (selected) {
-                            contentState.addSpanStyle(
-                                SpanStyle(fontWeight = FontWeight.Bold),
-                                TextRange(
-                                    contentState.annotatedString.paragraphStyles[cursorParagraph].start,
-                                    contentState.annotatedString.paragraphStyles[cursorParagraph].end
-                                )
-                            )
-                        } else {
-                            contentState.removeSpanStyle(
-                                SpanStyle(fontWeight = FontWeight.Bold),
-                                TextRange(
-                                    contentState.annotatedString.paragraphStyles[cursorParagraph].start,
-                                    contentState.annotatedString.paragraphStyles[cursorParagraph].end
-                                )
-                            )
-                        }
+                        handleTextStyle(selected, contentState, cursorParagraph)
                     }
                 )
             }
         }
+    }
+
+}
+
+private fun handleTextStyle(
+    selected: Boolean,
+    contentState: RichTextState,
+    cursorParagraph: Int
+) {
+    if (selected) {
+        contentState.addSpanStyle(
+            SpanStyle(fontWeight = FontWeight.Bold),
+            TextRange(
+                contentState.annotatedString.paragraphStyles[cursorParagraph].start,
+                contentState.annotatedString.paragraphStyles[cursorParagraph].end
+            )
+        )
+    } else {
+        contentState.removeSpanStyle(
+            SpanStyle(fontWeight = FontWeight.Bold),
+            TextRange(
+                contentState.annotatedString.paragraphStyles[cursorParagraph].start,
+                contentState.annotatedString.paragraphStyles[cursorParagraph].end
+            )
+        )
     }
 }
 
@@ -221,31 +232,57 @@ private fun EditorControls(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ShowDraftDialog(
+private fun ShowDialog(
     onOpenDraftChanged: (Boolean) -> Unit,
     popBackStack: () -> Unit,
     saveContent: (String, String) -> Unit,
     titleState: RichTextState,
     contentState: RichTextState
 ) {
+    saveContent.invoke(titleState.toText(), contentState.toText())
     BasicAlertDialog(modifier = Modifier.semantics {
         contentDescription = GuideCreationUiState.DIALOG
     }, onDismissRequest = {
         onOpenDraftChanged.invoke(false)
     }) {
-        Row {
-            Button(onClick = {
-                saveContent.invoke(titleState.toText(), contentState.toText())
-                popBackStack.invoke()
-            }) {
-                Text(text = stringResource(R.string.save))
-            }
-            Button(
-                onClick = {
-                    popBackStack.invoke()
+        Box(
+            modifier = Modifier
+                .background(
+                    CringeHubTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(CringeHubTheme.dimensions.medium)
+                )
+                .padding(CringeHubTheme.dimensions.medium),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.small),
+                    text = stringResource(R.string.draft_saved),
+                    style = CringeHubTheme.typography.title
+                )
+                Row {
+                    Button(
+                        colors = ButtonDefaults.buttonColors()
+                            .copy(containerColor = CringeHubTheme.colorScheme.errorContainer),
+                        shape = RoundedCornerShape(CringeHubTheme.dimensions.medium),
+                        onClick = {
+                            popBackStack.invoke()
+                        }) {
+                        Text(text = stringResource(R.string.save))
+                    }
+                    Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.small))
+                    Button(
+                        colors = ButtonDefaults.buttonColors()
+                            .copy(containerColor = CringeHubTheme.colorScheme.secondary),
+                        shape = RoundedCornerShape(CringeHubTheme.dimensions.medium),
+                        onClick = {
+                            // Dismiss dialog
+                            onOpenDraftChanged.invoke(false)
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
                 }
-            ) {
-                Text(text = stringResource(R.string.discard_changes))
             }
         }
     }
@@ -294,7 +331,6 @@ private fun ColumnScope.Content(contentState: RichTextState, focusChanged: (Bool
         },
         textStyle = TextStyle.Default.copy(
             textAlign = TextAlign.Justify,
-            // 18 sp
             fontSize = CringeHubTheme.typography.body.fontSize,
             baselineShift = BaselineShift(0.75f),
             lineHeight = TextUnit(value = 24f, type = TextUnitType.Sp),
@@ -311,13 +347,13 @@ private fun ColumnScope.Content(contentState: RichTextState, focusChanged: (Bool
 private fun ControlWrapper(
     selected: Boolean,
     enabled: Boolean,
-    selectedColor: Color = CringeHubTheme.colorScheme.primary,
-    unSelectedColor: Color = CringeHubTheme.colorScheme.secondary,
-    notEnabledColor: Color = CringeHubTheme.colorScheme.error,
     onClick: (Boolean) -> Unit,
     contentDesc: String,
     content: @Composable () -> Unit
 ) {
+    val selectedColor: Color = CringeHubTheme.colorScheme.primary
+    val unSelectedColor: Color = CringeHubTheme.colorScheme.secondary
+    val notEnabledColor: Color = CringeHubTheme.colorScheme.error
     Box(
         modifier = Modifier
             .semantics {
@@ -346,6 +382,18 @@ private fun ControlWrapper(
     ) {
         content()
     }
+}
+
+@Preview
+@Composable
+internal fun DialogPreview() {
+    ShowDialog(
+        onOpenDraftChanged = { },
+        popBackStack = { },
+        saveContent = { _, _ -> },
+        titleState = rememberRichTextState(),
+        contentState = rememberRichTextState()
+    )
 }
 
 @Preview(showSystemUi = true)

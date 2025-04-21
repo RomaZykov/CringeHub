@@ -2,8 +2,9 @@
 <resources>
     <string name="content">Content</string>
     <string name="title">Title</string>
-    <string name="discard_changes">discard \nchanges</string>
-    <string name="save">save</string>
-    <string name="publish">publish</string>
+    <string name="cancel">Cancel</string>
+    <string name="draft_saved">Draft is saved</string>
+    <string name="save">Save and exit</string>
+    <string name="publish">Publish</string>
     <string name="create_guide_app_bar_title">Create guide</string>
 </resources>

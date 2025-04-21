@@ -2,8 +2,9 @@
 <resources>
     <string name="content">Контент</string>
     <string name="title">Заголовок</string>
-    <string name="discard_changes">отменить изменения</string>
-    <string name="save">сохранить</string>
+    <string name="cancel">Отменить</string>
+    <string name="draft_saved">Черновик сохранён</string>
+    <string name="save">Выйти</string>
     <string name="publish">Опубликовать</string>
     <string name="create_guide_app_bar_title">Создать гайд</string>
 </resources>
