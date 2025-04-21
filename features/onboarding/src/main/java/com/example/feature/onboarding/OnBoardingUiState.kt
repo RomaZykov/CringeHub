@@ -108,7 +108,7 @@ interface OnBoardingUiState {
                         }
                     })
 
-                Spacer(modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.spaceLarge))
+                Spacer(modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.large))
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     HorizontalPager(
@@ -133,7 +133,7 @@ private fun TopSection(
     onSkipClicked: () -> Unit
 ) {
     Box(
-        modifier = Modifier.fillMaxWidth().padding(CringeHubTheme.dimensions.spaceMedium)
+        modifier = Modifier.fillMaxWidth().padding(CringeHubTheme.dimensions.medium)
     ) {
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.CenterStart),
@@ -201,7 +201,7 @@ private fun OnBoardingItem(items: OnBoardingItems) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            modifier = Modifier.padding(horizontal = CringeHubTheme.dimensions.spaceLarge),
+            modifier = Modifier.padding(horizontal = CringeHubTheme.dimensions.large),
             text = stringResource(id = items.desc),
             style = CringeHubTheme.typography.body,
             color = CringeHubTheme.colorScheme.onBackground,
@@ -246,7 +246,7 @@ private fun BoxScope.NextButton(
             .fillMaxWidth()
             .align(Alignment.BottomCenter)
             .windowInsetsPadding(WindowInsets.navigationBarsIgnoringVisibility)
-            .padding(CringeHubTheme.dimensions.spaceMedium),
+            .padding(CringeHubTheme.dimensions.medium),
         colors = ButtonColors(
             CringeHubTheme.colorScheme.secondary,
             contentColor = CringeHubTheme.colorScheme.onBackground,
@@ -261,7 +261,7 @@ private fun BoxScope.NextButton(
         }
     ) {
         Text(
-            modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.spaceSmall),
+            modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.small),
             text = stringResource(R.string.onboarding_next),
             style = CringeHubTheme.typography.onContainerBody
         )

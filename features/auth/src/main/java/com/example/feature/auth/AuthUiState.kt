@@ -63,9 +63,9 @@ interface AuthUiState {
             ) {
                 Spacer(modifier = Modifier.weight(0.1f))
                 WelcomeLogoAndTitle()
-                Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.spaceSmall))
+                Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.small))
                 WelcomeView()
-                Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.spaceMedium))
+                Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.medium))
                 WelcomeText()
                 Spacer(modifier = Modifier.weight(0.1f))
 
@@ -107,13 +107,13 @@ private fun WelcomeLogoAndTitle() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(CringeHubTheme.dimensions.spaceSmall),
+            .padding(CringeHubTheme.dimensions.small),
         horizontalArrangement = Arrangement.Center
     ) {
         val mainLogo = ImageVector.vectorResource(id = R.drawable.main_logo)
         Image(mainLogo, "")
 
-        Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.spaceExtraSmall))
+        Spacer(modifier = Modifier.padding(CringeHubTheme.dimensions.extraSmall))
 
         val mainTitle = ImageVector.vectorResource(id = R.drawable.main_title)
         Image(mainTitle, "")
@@ -123,7 +123,7 @@ private fun WelcomeLogoAndTitle() {
 @Composable
 private fun WelcomeView() {
     Image(
-        modifier = Modifier.padding(horizontal = CringeHubTheme.dimensions.spaceSmall),
+        modifier = Modifier.padding(horizontal = CringeHubTheme.dimensions.small),
         painter = painterResource(R.drawable.login_view),
         contentDescription = ""
     )
