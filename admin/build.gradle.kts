@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.compose.material3.android)
     implementation(libs.compose.navigation.testing)
     implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.testing)
 
     testImplementation(libs.junit)
 
@@ -67,7 +68,9 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.test.compose.ui.junit4.android)
     androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.hilt.navigation.compose)
 
+    debugImplementation(project(":ui-test-hilt-manifest"))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.test.compose.ui.manifest)
 }
