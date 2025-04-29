@@ -7,7 +7,7 @@ interface GuideRepository {
 
     suspend fun syncWithNetwork(): Boolean
 
-    fun fetchNonDraftGuides(): Flow<List<GuideDomain>>
+    fun fetchPublishedGuides(): Flow<List<GuideDomain>>
 
     interface Admin : GuideRepository {
 

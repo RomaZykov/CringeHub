@@ -88,7 +88,7 @@ class GuideRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun fetchNonDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchAllGuides()
+    override fun fetchPublishedGuides(): Flow<List<GuideDomain>> = localDataSource.fetchAllGuides()
         .map { localGuides ->
             localGuides.map {
                 guideMapperFactory.mapToDomain(it)

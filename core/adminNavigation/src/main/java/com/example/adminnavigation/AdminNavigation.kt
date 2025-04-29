@@ -6,7 +6,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.createGraph
 
 @Composable
 fun AdminNavigation(

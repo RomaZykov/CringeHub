@@ -6,7 +6,6 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import com.example.common.core.HandleError
-import com.example.data.core.GuideMapperFactory
 import com.example.data.core.UserMapperFactory
 import com.example.data.model.UserData
 import com.example.domain.model.UserDomain
