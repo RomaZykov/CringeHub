@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,22 +28,24 @@ import androidx.compose.ui.unit.sp
 import com.example.adminhome.AdminHomeUiState
 import com.example.adminhome.R
 import com.example.adminhome.components.CardItem
-import com.example.adminhome.components.DraftGuideItem
 import com.example.cringehub.theme.CringeHubTheme
 
-data class InitialUi(val drafts: List<DraftGuideItem>) : AdminHomeUiState {
+data class InitialUi(val allGuides: List<GuideUi>) : AdminHomeUiState {
 
     @Composable
-    override fun Show(onGuideCreationClicked: () -> Unit) {
+    override fun Show(initWhenAnyGuidesExist: () -> Unit, onGuideCreationClicked: () -> Unit) {
+        LaunchedEffect(allGuides.isNotEmpty()) {
+            initWhenAnyGuidesExist.invoke()
+        }
         Column {
             NavigationItems(onGuideCreationClicked)
-            Drafts(drafts)
+            Drafts(allGuides)
         }
     }
 }
 
 @Composable
-private fun Drafts(drafts: List<DraftGuideItem>) {
+private fun Drafts(drafts: List<GuideUi>) {
     if (drafts.isNotEmpty()) {
         Column(modifier = Modifier.padding(CringeHubTheme.dimensions.medium)) {
             Text(text = stringResource(R.string.drafts), style = CringeHubTheme.typography.title)
@@ -89,12 +92,12 @@ private fun Drafts(drafts: List<DraftGuideItem>) {
 private fun NavigationItems(onGuideCreationClicked: () -> Unit) {
     val items = listOf(
         CardItem(
-            stringResource(R.string.create_guide),
+            stringResource(R.string.create_guide_grid_button),
             image = R.drawable.image_placeholder,
             onClick = onGuideCreationClicked
         ),
         CardItem(
-            stringResource(R.string.create_practical_task),
+            stringResource(R.string.create_practical_task_grid_button),
             image = R.drawable.image_placeholder,
             onClick = {}
         )
@@ -144,17 +147,23 @@ private fun CardInGrid(index: Int, item: CardItem) {
 @Composable
 fun AdminHomePreview() {
     val drafts = listOf(
-        DraftGuideItem(
+        GuideUi(
             "1",
             "Title 1",
-            "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content"
+            "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content",
+            false,
+            true
         ),
-        DraftGuideItem(
+        GuideUi(
             "2",
             "Long Long Long Long Long Long  Long Long Long Long Long Title 2",
-            "Short Content"
+            "Short Content",
+            false,
+            true
         ),
-        DraftGuideItem("3", "Title 3", "")
+        GuideUi(
+            "3", "Title 3", "", false, true
+        )
     )
-    InitialUi(drafts).Show {}
+    InitialUi(drafts).Show({}) {}
 }
