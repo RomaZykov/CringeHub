@@ -3,10 +3,12 @@ package com.example.test.repository
 import com.example.domain.model.GuideDomain
 import com.example.domain.repositories.admin.guide.GuideRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FakeAdminGuideRepository : GuideRepository.Admin {
-    override fun fetchDraftGuides(): Flow<List<GuideDomain>> {
-        TODO("Not yet implemented")
+    val guides = mutableListOf<GuideDomain>()
+    override fun fetchDraftGuides(): Flow<List<GuideDomain>> = flow {
+        emit(guides.filter { it.isDraft })
     }
 
     override suspend fun updateGuide(guideId: String) {
@@ -29,7 +31,7 @@ class FakeAdminGuideRepository : GuideRepository.Admin {
         TODO("Not yet implemented")
     }
 
-    override fun fetchNonDraftGuides(): Flow<List<GuideDomain>> {
-        TODO("Not yet implemented")
+    override fun fetchPublishedGuides(): Flow<List<GuideDomain>> = flow {
+        emit(guides.filter { !it.isDraft })
     }
 }
