@@ -16,7 +16,7 @@ hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
 junitJupiter = "5.11.3"
 junitVersion = "1.2.1"
-coreKtx = "1.15.0"
+coreKtx = "1.16.0"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
@@ -38,6 +38,7 @@ runner = "1.6.2"
 material = "1.12.0"
 work-version = "2.10.0"
 uiJunit4 = "1.7.8"
+testCoreKtx = "1.6.1"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
@@ -86,6 +87,7 @@ compose-navigation-testing = { module = "androidx.navigation:navigation-testing"
 
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "testCoreKtx" }
 test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 test-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 test-junit-bom = { module = "org.junit:junit-bom", version.ref = "junitJupiter" }
