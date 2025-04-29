@@ -7,7 +7,7 @@ import com.example.adminnavigation.Route
 import kotlinx.serialization.Serializable
 
 @Serializable
-object GuideCreationRoute : Route {
+data class GuideCreationRoute(private val guideId: String = "") : Route {
     @Composable
     override fun Content(navController: NavController) {
         GuideCreationScreen(popBackStack = navController::popBackStack)

@@ -5,7 +5,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.isRoot
-import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -43,12 +42,9 @@ class GuideCreationScreenTest : BaseComposeTest() {
         }
     }
 
-//    private lateinit var restorationTester: StateRestorationTester
-
     @Before
     fun setUp() {
         val fakeViewModel = FakeGuideCreationViewModel()
-//        restorationTester = StateRestorationTester(composeTestRule)
         restorationTester.setContent {
             GuideCreationScreen(
                 popBackStack = {
@@ -89,11 +85,6 @@ class GuideCreationScreenTest : BaseComposeTest() {
 //        // H2
 //
 //        // Quote
-//    }
-//
-//    @Test
-//    fun showDialog_whenTitleOrContentNotEmpty_andBackButtonPressed() {
-//
 //    }
 
     @Test

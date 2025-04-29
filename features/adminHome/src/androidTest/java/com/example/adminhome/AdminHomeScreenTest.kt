@@ -6,10 +6,12 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
+import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.adminhome.components.DraftGuideItem
+import com.example.adminhome.model.GuideUi
 import com.example.adminhome.model.InitialUi
 import com.example.test.BaseComposeTest
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +25,6 @@ class AdminHomeScreenTest : BaseComposeTest() {
     private lateinit var navController: TestNavHostController
 
     private val fakeViewModel = object : AdminHomeViewModel {
-
         var uiStateFlowToReturn = InitialUi(emptyList())
 
         override fun adminHomeUiStateFlow(): StateFlow<AdminHomeUiState> {
@@ -32,17 +33,24 @@ class AdminHomeScreenTest : BaseComposeTest() {
 
         override fun init() {
             val drafts = listOf(
-                DraftGuideItem(
+                GuideUi(
                     "1",
                     "Title 1",
-                    "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content"
+                    "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content",
+                    isDraft = true,
+                    isFree = false
                 ),
-                DraftGuideItem(
+                GuideUi(
                     "2",
                     "Long Long Long Long Long Long  Long Long Long Long Long Title 2",
-                    "Short Content"
+                    "Short Content",
+                    isDraft = true,
+                    isFree = false
                 ),
-                DraftGuideItem("3", "Title 3", "")
+                GuideUi(
+                    "3", "Title 3", "", isDraft = true,
+                    isFree = false
+                )
             )
             uiStateFlowToReturn = InitialUi(drafts)
         }
@@ -82,5 +90,22 @@ class AdminHomeScreenTest : BaseComposeTest() {
             .assertDoesNotExist()
 
         composeTestRule.onAllNodes(hasContentDescription("draft")).assertCountEquals(0)
+    }
+
+    @Test
+    fun navigateToDraft_whenBySpecificDraftCLicked() {
+        fakeViewModel.init()
+        restorationTester.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            AdminHomeScreen(
+                navController = navController,
+                viewModel = fakeViewModel
+            )
+        }
+
+        composeTestRule.onNodeWithText("Long Long Long Long Long Long  Long Long Long Long Long Title 2")
+            .performClick()
+
     }
 }

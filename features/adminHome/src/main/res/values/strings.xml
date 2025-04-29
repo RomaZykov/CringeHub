@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="create_guide">Создать \nгайд</string>
-    <string name="create_practical_task">Создать \nпрактическое \nзадание</string>
+    <string name="create_guide_grid_button">Создать \nгайд</string>
+    <string name="create_practical_task_grid_button">Создать \nпрактическое \nзадание</string>
     <string name="drafts">Черновики</string>
     <string name="draft">draft</string>
 </resources>

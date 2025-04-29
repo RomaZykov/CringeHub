@@ -16,13 +16,19 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
+    implementation(libs.test.junit.ktx)
 
     debugImplementation(libs.androidx.ui.tooling)
 
+    implementation(libs.compose.navigation.testing)
+
     androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.test.core.ktx)
     androidTestImplementation(libs.test.compose.ui.junit4.android)
     androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.compose.navigation.testing)
 
+    testImplementation(project(":core:test"))
     testImplementation(libs.junit)
+    testImplementation(libs.test.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

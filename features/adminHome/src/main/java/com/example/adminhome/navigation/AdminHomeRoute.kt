@@ -10,6 +10,6 @@ import kotlinx.serialization.Serializable
 object AdminHomeRoute : Route {
     @Composable
     override fun Content(navController: NavController) {
-        AdminHomeScreen(navController)
+        AdminHomeScreen(navController = navController)
     }
 }
