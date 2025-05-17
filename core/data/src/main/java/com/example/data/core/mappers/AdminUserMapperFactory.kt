@@ -1,9 +1,8 @@
-package com.example.data.core
+package com.example.data.core.mappers
 
 import com.example.data.model.AdminUserData
 import com.example.domain.model.AdminRole
 import com.example.domain.model.AdminUserDomain
-import com.example.network.model.AdminUserNetwork
 import javax.inject.Inject
 
 interface AdminUserMapperFactory {

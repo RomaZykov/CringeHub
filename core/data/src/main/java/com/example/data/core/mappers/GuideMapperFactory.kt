@@ -1,4 +1,4 @@
-package com.example.data.core
+package com.example.data.core.mappers
 
 import com.example.data.model.GuideData
 import com.example.database.entities.GuideEntity

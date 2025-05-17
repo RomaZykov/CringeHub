@@ -1,4 +1,4 @@
-package com.example.data.core
+package com.example.data.core.mappers
 
 import com.example.data.model.UserData
 import com.example.domain.model.UserDomain

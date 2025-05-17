@@ -1,8 +1,8 @@
 package com.example.data.di
 
-import com.example.data.core.AdminUserMapperFactory
-import com.example.data.core.GuideMapperFactory
-import com.example.data.core.UserMapperFactory
+import com.example.data.core.mappers.AdminUserMapperFactory
+import com.example.data.core.mappers.GuideMapperFactory
+import com.example.data.core.mappers.UserMapperFactory
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
