@@ -17,15 +17,4 @@ class GuideCreationViewModelTest {
 //        )
 //        assertEquals(expectedUiState, actualUiState)
 //    }
-//
-//    private class FakeHomeRouteProvider {
-//        var wasRouteCalled = false
-//        override fun route(id: String): Route {
-//            wasRouteCalled = true
-//            return object : Route {
-//                @Composable
-//                override fun Content(navController: NavController) = Unit
-//            }
-//        }
-//    }
 }

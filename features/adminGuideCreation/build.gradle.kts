@@ -28,14 +28,12 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
+    implementation(libs.test.junit.ktx)
     // Rich Text Editor
     implementation(libs.richeditor.compose)
-    implementation(libs.test.junit.ktx)
-
-//    kspTest(libs.hilt.compiler)
 
     androidTestImplementation(project(":core:test"))
-    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.junit.ktx)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.test.compose.ui.junit4.android)
 

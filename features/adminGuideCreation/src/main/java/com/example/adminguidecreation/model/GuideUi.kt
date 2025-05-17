@@ -1,12 +1,9 @@
 package com.example.adminguidecreation.model
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,9 +23,11 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,11 +36,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -51,37 +48,59 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.BaselineShift
-import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.adminguidecreation.GuideCreationUiState
 import com.example.adminguidecreation.R
+import com.example.adminguidecreation.core.ConcreteActionButton
+import com.example.adminguidecreation.core.ControlWrapperFactory
 import com.example.cringehub.theme.CringeHubTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
 
-object InitialUi : GuideCreationUiState {
+data class GuideUi(
+    val guideId: String = "",
+    val title: String = "",
+    val content: String = ""
+) : GuideCreationUiState {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun Show(
         popBackStack: () -> Unit,
-        saveContent: (String, String) -> Unit,
+        saveContent: (GuideUi) -> Unit,
         onPublishClicked: () -> Unit
     ) {
-        val titleState = rememberRichTextState()
-        val contentState = rememberRichTextState()
-        val whenTextFieldsEmpty =
+        val titleState = rememberRichTextState().apply {
+            LaunchedEffect(key1 = title) {
+                this@apply.setText(title)
+            }
+        }
+        val contentState = rememberRichTextState().apply {
+            LaunchedEffect(key1 = content) {
+                this@apply.setText(content)
+            }
+        }
+
+        val textFieldsEmpty =
             titleState.annotatedString.isBlank() && contentState.annotatedString.isBlank()
-        var openDialog by rememberSaveable { mutableStateOf(false) }
-        if (openDialog && !whenTextFieldsEmpty) {
+
+        var shouldOpenDialog by rememberSaveable { mutableStateOf(false) }
+        if (shouldOpenDialog && !textFieldsEmpty) {
+            saveContent.invoke(
+                this.copy(
+                    title = titleState.toText(),
+                    content = contentState.toText()
+                )
+            )
             ShowDialog(onOpenDraftChanged = {
-                openDialog = it
-            }, popBackStack, saveContent, titleState, contentState)
+                shouldOpenDialog = it
+            }, popBackStack)
         }
 
         Scaffold(
@@ -94,10 +113,10 @@ object InitialUi : GuideCreationUiState {
                         IconButton(modifier = Modifier.semantics {
                             contentDescription = GuideCreationUiState.BACK_BUTTON
                         }, onClick = {
-                            if (whenTextFieldsEmpty) {
+                            if (textFieldsEmpty) {
                                 popBackStack.invoke()
                             } else {
-                                openDialog = true
+                                shouldOpenDialog = true
                             }
                         }) {
                             Icon(
@@ -130,12 +149,12 @@ object InitialUi : GuideCreationUiState {
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                var controlStateEnabled by remember { mutableStateOf(false) }
                 val cursorParagraph by remember {
                     derivedStateOf {
                         getParagraphIndexPosition(contentState)
                     }
                 }
-                var controlStateEnabled by remember { mutableStateOf(false) }
                 Title(titleState)
                 Content(contentState) { focused ->
                     controlStateEnabled = focused
@@ -147,14 +166,14 @@ object InitialUi : GuideCreationUiState {
                         }
                         .wrapContentHeight(),
                     enabled = controlStateEnabled,
-                    onBoldClick = { selected ->
+                    onBoldClicked = { selected ->
                         handleTextStyle(selected, contentState, cursorParagraph)
-                    }
+                    },
+                    onQuoteClicked = {}
                 )
             }
         }
     }
-
 }
 
 private fun handleTextStyle(
@@ -200,33 +219,35 @@ private fun getParagraphIndexPosition(contentState: RichTextState): Int {
     return lineList.size
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun EditorControls(
     modifier: Modifier,
     enabled: Boolean,
-    onBoldClick: (Boolean) -> Unit,
+    onBoldClicked: (Boolean) -> Unit,
+    onQuoteClicked: (Boolean) -> Unit
 ) {
-    var boldSelected by rememberSaveable { mutableStateOf(false) }
+    val controlWrapperFactory: ControlWrapperFactory = ControlWrapperFactory.Base(
+        listOf(
+            ConcreteActionButton(
+                contentDesc = GuideCreationUiState.BOLD_BUTTON,
+                enabled = enabled,
+                paintRes = R.drawable.placeholder_icon,
+                onClicked = {
+                    onBoldClicked.invoke(it)
+                }
+            ),
+            ConcreteActionButton(
+                contentDesc = GuideCreationUiState.QUOTE_BUTTON,
+                enabled = enabled,
+                paintRes = R.drawable.placeholder_icon,
+                onClicked = {
+                    onQuoteClicked.invoke(it)
+                }
+            ),
+        )
+    )
     FlowRow(modifier = modifier.padding(8.dp)) {
-        // Make paragraph in bold style
-        ControlWrapper(
-            contentDesc = GuideCreationUiState.BOLD_BUTTON,
-            enabled = enabled,
-            selected = boldSelected,
-            onClick = { selected ->
-                boldSelected = selected
-                onBoldClick.invoke(boldSelected)
-            }
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.placeholder_icon),
-                contentDescription = "bold control",
-                tint = if (boldSelected) CringeHubTheme.colorScheme.secondary else CringeHubTheme.colorScheme.primary
-            )
-        }
-        // Add quote
-        // Add image
+        controlWrapperFactory.CreateAll()
     }
 }
 
@@ -234,12 +255,8 @@ private fun EditorControls(
 @Composable
 private fun ShowDialog(
     onOpenDraftChanged: (Boolean) -> Unit,
-    popBackStack: () -> Unit,
-    saveContent: (String, String) -> Unit,
-    titleState: RichTextState,
-    contentState: RichTextState
+    popBackStack: () -> Unit
 ) {
-    saveContent.invoke(titleState.toText(), contentState.toText())
     BasicAlertDialog(modifier = Modifier.semantics {
         contentDescription = GuideCreationUiState.DIALOG
     }, onDismissRequest = {
@@ -315,7 +332,9 @@ private fun Title(titleState: RichTextState) {
 
 @Composable
 private fun ColumnScope.Content(contentState: RichTextState, focusChanged: (Boolean) -> Unit) {
+    val fontPadding = 2
     RichTextEditor(
+        state = contentState,
         modifier = Modifier
             .semantics {
                 contentDescription = GuideCreationUiState.CONTENT
@@ -325,63 +344,23 @@ private fun ColumnScope.Content(contentState: RichTextState, focusChanged: (Bool
             }
             .fillMaxWidth()
             .weight(0.9f),
-        state = contentState,
         placeholder = {
-            Text(color = Color.Gray, text = stringResource(R.string.content))
+            Text(fontSize = 18.sp, color = Color.Gray, text = stringResource(R.string.content))
         },
-        textStyle = TextStyle.Default.copy(
-            textAlign = TextAlign.Justify,
-            fontSize = CringeHubTheme.typography.body.fontSize,
-            baselineShift = BaselineShift(0.75f),
-            lineHeight = TextUnit(value = 24f, type = TextUnitType.Sp),
-            lineBreak = LineBreak.Paragraph.copy(
-                strategy = LineBreak.Strategy.HighQuality,
-                strictness = LineBreak.Strictness.Normal,
-                wordBreak = LineBreak.WordBreak.Phrase
+        textStyle = LocalTextStyle.current.merge(
+            TextStyle(
+                textAlign = TextAlign.Justify,
+                fontFamily = CringeHubTheme.typography.body.fontFamily,
+                fontSize = CringeHubTheme.typography.body.fontSize,
+                letterSpacing = 0.2.sp,
+                lineHeight = TextUnit(
+                    CringeHubTheme.typography.body.fontSize.value + fontPadding,
+                    TextUnitType.Sp
+                ),
+                baselineShift = BaselineShift(0.35f)
             )
         )
     )
-}
-
-@Composable
-private fun ControlWrapper(
-    selected: Boolean,
-    enabled: Boolean,
-    onClick: (Boolean) -> Unit,
-    contentDesc: String,
-    content: @Composable () -> Unit
-) {
-    val selectedColor: Color = CringeHubTheme.colorScheme.primary
-    val unSelectedColor: Color = CringeHubTheme.colorScheme.secondary
-    val notEnabledColor: Color = CringeHubTheme.colorScheme.error
-    Box(
-        modifier = Modifier
-            .semantics {
-                contentDescription = contentDesc
-            }
-            .clip(RoundedCornerShape(6.dp))
-            .clickable(enabled = enabled) {
-                onClick.invoke(!selected)
-            }
-            .background(
-                if (enabled) {
-                    if (selected)
-                        selectedColor
-                    else
-                        unSelectedColor
-                } else {
-                    notEnabledColor
-                }
-            )
-            .border(
-                width = 1.dp,
-                color = CringeHubTheme.colorScheme.secondary,
-                shape = RoundedCornerShape(size = 6.dp)
-            )
-            .padding(8.dp)
-    ) {
-        content()
-    }
 }
 
 @Preview
@@ -389,18 +368,20 @@ private fun ControlWrapper(
 internal fun DialogPreview() {
     ShowDialog(
         onOpenDraftChanged = { },
-        popBackStack = { },
-        saveContent = { _, _ -> },
-        titleState = rememberRichTextState(),
-        contentState = rememberRichTextState()
+        popBackStack = { }
     )
 }
 
 @Preview(showSystemUi = true)
 @Composable
 internal fun GuideCreationScreenPreview() {
-    InitialUi.Show(
+    GuideUi(
+        content = "long\n" +
+                "longlong\n" +
+                "longlonglonglonglonglonglonglonglonglong\n" +
+                "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong"
+    ).Show(
         {},
-        { _, _ -> },
+        { _ -> },
         {})
 }

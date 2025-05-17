@@ -1,13 +1,14 @@
 package com.example.adminguidecreation
 
 import androidx.compose.runtime.Composable
+import com.example.adminguidecreation.model.GuideUi
 
 interface GuideCreationUiState {
 
     @Composable
     fun Show(
         popBackStack: () -> Unit,
-        saveContent: (String, String) -> Unit,
+        saveContent: (GuideUi) -> Unit,
         onPublishClicked: () -> Unit
     )
 
@@ -22,6 +23,8 @@ interface GuideCreationUiState {
 
         const val PUBLISH_BUTTON = "publish_button"
         const val BACK_BUTTON = "back_button"
+
         const val BOLD_BUTTON = "bold_button"
+        const val QUOTE_BUTTON = "quote_button"
     }
 }

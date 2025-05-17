@@ -1,6 +1,7 @@
 package com.example.adminguidecreation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -13,14 +14,19 @@ fun GuideCreationScreen(
     modifier: Modifier = Modifier.semantics {
         contentDescription = GuideCreationUiState.GUIDE_CREATION_SCREEN
     },
+    guideId: String,
     popBackStack: () -> Unit,
     viewModel: GuideCreationViewModel = hiltViewModel<GuideCreationViewModel.Base>()
 ) {
+    LaunchedEffect(guideId) {
+        viewModel.loadGuideWithId(guideId)
+    }
     val uiState by viewModel.guideCreationUiStateFlow().collectAsState()
-
     uiState.Show(
-        popBackStack,
-        viewModel::saveContent,
-        viewModel::onPublishClicked
+        popBackStack = popBackStack,
+        saveContent = {
+            viewModel.saveContent(it.guideId, it.title, it.content)
+        },
+        onPublishClicked = viewModel::onPublishClicked
     )
 }

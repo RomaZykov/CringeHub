@@ -10,6 +10,6 @@ import kotlinx.serialization.Serializable
 data class GuideCreationRoute(private val guideId: String = "") : Route {
     @Composable
     override fun Content(navController: NavController) {
-        GuideCreationScreen(popBackStack = navController::popBackStack)
+        GuideCreationScreen(guideId = guideId, popBackStack = navController::popBackStack)
     }
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.adminguidecreation.model.InitialUi
+import com.example.adminguidecreation.model.GuideUi
 import com.example.test.BaseComposeTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,17 +28,22 @@ class GuideCreationScreenTest : BaseComposeTest() {
     private class FakeGuideCreationViewModel : GuideCreationViewModel {
         var saveContentCalledCount = 0
 
-        var uiStateFlowToReturn: GuideCreationUiState = InitialUi
+        var uiStateFlowToReturn: GuideCreationUiState = GuideUi()
 
         override fun guideCreationUiStateFlow(): StateFlow<GuideCreationUiState> {
             return MutableStateFlow(uiStateFlowToReturn)
         }
 
-        override fun onPublishClicked() {
+        override fun loadGuideWithId(guideId: String) {
+            TODO("Not yet implemented")
         }
 
-        override fun saveContent(title: String, content: String) {
+        override fun saveContent(id: String, title: String, content: String) {
             saveContentCalledCount++
+        }
+
+        override fun onPublishClicked() {
+            TODO("Not yet implemented")
         }
     }
 
@@ -52,6 +57,7 @@ class GuideCreationScreenTest : BaseComposeTest() {
                         activity.onBackPressedDispatcher.onBackPressed()
                     }
                 },
+                guideId = "",
                 viewModel = fakeViewModel
             )
         }
