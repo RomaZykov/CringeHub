@@ -17,5 +17,5 @@ dependencies {
 
     testImplementation(libs.junit)
 
-    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.junit.ktx)
 }
