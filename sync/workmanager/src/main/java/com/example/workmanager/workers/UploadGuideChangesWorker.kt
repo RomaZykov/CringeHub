@@ -30,7 +30,7 @@ class UploadGuideChangesWorker @AssistedInject constructor(
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         val guide = getMappedGuide()
         val uploadChangesSuccessful = awaitAll(
-            async { guideNetworkDataSource.saveGuideAsDraft(guide) },
+            async { guideNetworkDataSource.upsertGuide(guide) },
             async { guide.id?.let { guideNetworkDataSource.deleteGuide(it) } }
         )
 

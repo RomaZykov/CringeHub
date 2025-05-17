@@ -8,11 +8,19 @@ import java.io.IOException
 
 interface SyncScheduler : Syncable {
 
+    override suspend fun syncSuccessful(
+        fetchFromNetwork: suspend () -> List<GuideNetwork>,
+        fetchFromLocal: suspend () -> List<GuideEntity>,
+        updateLocalSource: suspend (networkGuides: List<GuideNetwork>, staleLocalGuides: List<GuideEntity>) -> Unit
+    ): Boolean {
+        return super.syncSuccessful(fetchFromNetwork, fetchFromLocal, updateLocalSource)
+    }
+
     fun scheduleUploadGuideWork(guide: GuideNetwork)
 }
 
 interface Syncable {
-    suspend fun sync(
+    suspend fun syncSuccessful(
         fetchFromNetwork: suspend () -> List<GuideNetwork>,
 
         fetchFromLocal: suspend () -> List<GuideEntity>,

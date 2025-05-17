@@ -16,8 +16,8 @@ import kotlinx.coroutines.withContext
  * Sync between network and local data sources when start app.
  * For example:
  * 1) If there is no local data (user cleared app data)
- * -> fetch from network to sync with local;
- * 2) If there is latest data from local -> update network data.
+ * -> fetch from network to syncSuccessful with local;
+ * 2) If there is the latest data from local -> update network data.
  */
 @HiltWorker
 class SyncLatestGuidesWorker @AssistedInject constructor(

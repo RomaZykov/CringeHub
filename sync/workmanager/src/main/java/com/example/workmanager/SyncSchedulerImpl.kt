@@ -38,7 +38,7 @@ internal class SyncSchedulerImpl @Inject constructor(
             .build()
 
         workManager.enqueueUniqueWork(
-            setUniqueWorkerName(guide.id!!),
+            setUniqueWorkerName(guide.id),
             ExistingWorkPolicy.REPLACE,
             syncWorkRequest
         )
@@ -60,6 +60,6 @@ internal class SyncSchedulerImpl @Inject constructor(
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
 
-    private fun setUniqueWorkerName(guideId: String): String =
-        "upload changes for guide with id = $guideId"
+    private fun setUniqueWorkerName(guideId: String?): String =
+        "UploadGuideWorker with guideId = $guideId"
 }
