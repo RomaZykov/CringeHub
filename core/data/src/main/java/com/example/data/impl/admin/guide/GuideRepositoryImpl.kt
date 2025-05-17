@@ -1,7 +1,7 @@
 package com.example.data.impl.admin.guide
 
 import com.example.data.SyncScheduler
-import com.example.data.core.GuideMapperFactory
+import com.example.data.core.mappers.GuideMapperFactory
 import com.example.data.model.GuideData
 import com.example.database.core.admin.GuideLocalDataSource
 import com.example.domain.model.GuideDomain
@@ -21,7 +21,7 @@ class GuideRepositoryImpl @Inject constructor(
 ) : GuideRepository.Admin {
 
     override suspend fun syncWithNetwork(): Boolean {
-        return syncScheduler.sync(
+        return syncScheduler.syncSuccessful(
             fetchFromNetwork = {
                 val networkGuides = networkDataSource.allGuides().first()
                 networkGuides.requireNoNulls()
@@ -44,27 +44,14 @@ class GuideRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun fetchDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchDraftGuides()
-        .map { localGuides ->
-            localGuides.map {
-                guideMapperFactory.mapToDomain(it)
-            }
-        }
-
-    override suspend fun updateGuide(guideId: String) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun saveGuideAsDraft(
+    override suspend fun upsertGuide(
+        id: String,
         title: String,
         content: String
     ) {
-        // При нажатии на кнопку назад -> показать диалоговое окно, если title или content не пустой
-        // сохранить изменения в качестве черновика: сохранить / нет
-        val uid = UUID.randomUUID().toString()
         val latestModified = System.currentTimeMillis()
         val guideData = GuideData(
-            id = uid,
+            id = id.ifBlank { UUID.randomUUID().toString() },
             title = title,
             content = content,
             latestModified = latestModified,
@@ -72,7 +59,7 @@ class GuideRepositoryImpl @Inject constructor(
             isFree = false,
             images = emptyList()
         )
-        localDataSource.saveGuideAsDraft(uid, title, content, latestModified)
+        localDataSource.upsertGuide(guideMapperFactory.mapToEntity(guideData))
 
         val guideNetwork = guideMapperFactory.mapToNetwork(guideData)
         syncScheduler.scheduleUploadGuideWork(guideNetwork)
@@ -89,6 +76,13 @@ class GuideRepositoryImpl @Inject constructor(
     }
 
     override fun fetchPublishedGuides(): Flow<List<GuideDomain>> = localDataSource.fetchAllGuides()
+        .map { localGuides ->
+            localGuides.map {
+                guideMapperFactory.mapToDomain(it)
+            }
+        }
+
+    override fun fetchDraftGuides(): Flow<List<GuideDomain>> = localDataSource.fetchDraftGuides()
         .map { localGuides ->
             localGuides.map {
                 guideMapperFactory.mapToDomain(it)

@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.network.model.GuideNetwork
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -17,9 +18,9 @@ interface GuideNetworkDataSource {
 
     fun getGuide(id: String): Flow<GuideNetwork?>
 
-    suspend fun saveGuideAsDraft(guideNetwork: GuideNetwork): Boolean
+    suspend fun upsertGuide(guideNetwork: GuideNetwork): Result<Boolean>
 
-    suspend fun deleteGuide(guideId: String): Boolean
+    suspend fun deleteGuide(guideId: String): Result<Boolean>
 
     class Base @Inject constructor(
         private val db: FirebaseFirestore
@@ -58,17 +59,19 @@ interface GuideNetworkDataSource {
             emit(guide)
         }
 
-        override suspend fun saveGuideAsDraft(
+        override suspend fun upsertGuide(
             guideNetwork: GuideNetwork,
-        ): Boolean {
-            return db.collection(GUIDES).document(guideNetwork.id.toString())
-                .set(guideNetwork)
-                .addOnSuccessListener { Log.d(TAG, "GuideSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing guide", e) }
-                .isSuccessful
+        ): Result<Boolean> {
+            return try {
+                db.collection(GUIDES).document(guideNetwork.id.toString())
+                    .set(guideNetwork)
+                Result.success(true)
+            } catch (e: FirebaseFirestoreException) {
+                Result.failure(e)
+            }
         }
 
-        override suspend fun deleteGuide(guideId: String): Boolean {
+        override suspend fun deleteGuide(guideId: String): Result<Boolean> {
             TODO("Not yet implemented")
         }
 

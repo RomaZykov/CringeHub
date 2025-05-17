@@ -1,9 +1,11 @@
 package com.example.database.core.admin
 
+import android.util.Log
 import com.example.database.dao.GuideDao
 import com.example.database.entities.GuideEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -15,9 +17,11 @@ interface GuideLocalDataSource {
 
     fun fetchDraftGuides(): Flow<List<GuideEntity>>
 
+    fun fetchPublishedGuides(): Flow<List<GuideEntity>>
+
     fun getGuide(id: String): Flow<GuideEntity>
 
-    suspend fun saveGuideAsDraft(uid: String, title: String, content: String, latestModified: Long)
+    suspend fun upsertGuide(guide: GuideEntity)
 
     suspend fun deleteGuide(uid: String)
 
@@ -34,26 +38,25 @@ interface GuideLocalDataSource {
 
         override fun fetchAllGuides(): Flow<List<GuideEntity>> = dao.allGuides()
 
-        // TODO: Replace with correct impl
-        override fun fetchDraftGuides(): Flow<List<GuideEntity>> = dao.allGuides()
+        override fun fetchDraftGuides(): Flow<List<GuideEntity>> {
+            return dao.allGuides().map { guideList ->
+                guideList.filter { it.isDraft }
+            }
+        }
+
+        override fun fetchPublishedGuides(): Flow<List<GuideEntity>> {
+            return dao.allGuides().map { guideList ->
+                guideList.filter { !it.isDraft }
+            }
+        }
 
         override fun getGuide(id: String): Flow<GuideEntity> = dao.getGuide(id)
 
-        override suspend fun saveGuideAsDraft(
-            uid: String,
-            title: String,
-            content: String,
-            latestModified: Long
+        override suspend fun upsertGuide(
+            guide: GuideEntity
         ) {
             withContext(ioDispatcher) {
-                val guideAsDraft = GuideEntity(
-                    uid,
-                    title,
-                    content,
-                    System.currentTimeMillis(),
-                    true
-                )
-                dao.insert(guideAsDraft)
+                dao.upsert(guide)
             }
         }
 

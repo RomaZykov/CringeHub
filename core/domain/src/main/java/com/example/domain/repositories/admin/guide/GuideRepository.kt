@@ -13,9 +13,7 @@ interface GuideRepository {
 
         fun fetchDraftGuides(): Flow<List<GuideDomain>>
 
-        suspend fun updateGuide(guideId: String)
-
-        suspend fun saveGuideAsDraft(title: String, content: String)
+        suspend fun upsertGuide(id: String, title: String, content: String)
 
         suspend fun deleteGuide(guideId: String)
 
