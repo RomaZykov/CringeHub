@@ -25,7 +25,7 @@ dependencies {
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.core.ktx)
     androidTestImplementation(libs.test.compose.ui.junit4.android)
-    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.junit.ktx)
 
     testImplementation(project(":core:test"))
     testImplementation(libs.junit)

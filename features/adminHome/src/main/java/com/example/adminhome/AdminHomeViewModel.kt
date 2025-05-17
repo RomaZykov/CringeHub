@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -49,17 +50,17 @@ interface AdminHomeViewModel {
                 combine(
                     guideRepository.fetchDraftGuides(),
                     guideRepository.fetchPublishedGuides()
-                ) { draftGuides, publishedGuides ->
-                    (draftGuides + publishedGuides).map { guide ->
+                ) { drafts, published ->
+                    (drafts + published).toSet().map { guide ->
                         GuideUi(
                             id = guide.id,
                             title = guide.title,
                             content = guide.content,
                             isFree = guide.isFree,
-                            isDraft = guide.isDraft,
+                            isDraft = guide.isDraft
                         )
                     }
-                }.collect {
+                }.collectLatest {
                     _uiState.value = InitialUi(
                         allGuides = it
                     )

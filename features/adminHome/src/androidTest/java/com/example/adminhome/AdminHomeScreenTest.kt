@@ -4,9 +4,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.printToLog
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
@@ -27,32 +30,33 @@ class AdminHomeScreenTest : BaseComposeTest() {
     private val fakeViewModel = object : AdminHomeViewModel {
         var uiStateFlowToReturn = InitialUi(emptyList())
 
+        val testDrafts = mutableListOf(
+            GuideUi(
+                "1",
+                "Title 1",
+                "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content",
+                isDraft = true,
+                isFree = false
+            ),
+            GuideUi(
+                "2",
+                "Long Long Long Long Long Long  Long Long Long Long Long Title 2",
+                "Short Content",
+                isDraft = true,
+                isFree = false
+            ),
+            GuideUi(
+                "3", "Title 3", "", isDraft = true,
+                isFree = false
+            )
+        )
+
         override fun adminHomeUiStateFlow(): StateFlow<AdminHomeUiState> {
             return MutableStateFlow(uiStateFlowToReturn)
         }
 
         override fun init() {
-            val drafts = listOf(
-                GuideUi(
-                    "1",
-                    "Title 1",
-                    "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content",
-                    isDraft = true,
-                    isFree = false
-                ),
-                GuideUi(
-                    "2",
-                    "Long Long Long Long Long Long  Long Long Long Long Long Title 2",
-                    "Short Content",
-                    isDraft = true,
-                    isFree = false
-                ),
-                GuideUi(
-                    "3", "Title 3", "", isDraft = true,
-                    isFree = false
-                )
-            )
-            uiStateFlowToReturn = InitialUi(drafts)
+            uiStateFlowToReturn = InitialUi(testDrafts)
         }
     }
 
@@ -68,7 +72,7 @@ class AdminHomeScreenTest : BaseComposeTest() {
         }
         composeTestRule.onRoot().printToLog("AdminHomeScreen")
 
-        composeTestRule.onNodeWithText("Черновики")
+        composeTestRule.onNodeWithText(string(R.string.drafts))
             .assertExists()
             .assertIsDisplayed()
 
@@ -93,6 +97,63 @@ class AdminHomeScreenTest : BaseComposeTest() {
     }
 
     @Test
+    fun scrollToEndPosition_whenDraftIsNotVisibleInInitialScreenState() {
+        // Long drafts list
+        fakeViewModel.testDrafts.addAll(
+            listOf(
+                GuideUi(
+                    "4", "Title 4", "", isDraft = true,
+                    isFree = false
+                ),
+                GuideUi(
+                    "5", "Title 5", "", isDraft = true,
+                    isFree = false
+                ),
+                GuideUi(
+                    "6", "Title 6", "", isDraft = true,
+                    isFree = false
+                ),
+                GuideUi(
+                    "7", "Title 7", "", isDraft = true,
+                    isFree = false
+                ),
+                GuideUi(
+                    "8", "Title 8", "", isDraft = true,
+                    isFree = false
+                ),
+                GuideUi(
+                    "9", "Title 9", "", isDraft = true,
+                    isFree = false
+                ),
+                GuideUi(
+                    "10", "Title 10", "", isDraft = true,
+                    isFree = false
+                )
+            )
+        )
+        fakeViewModel.init()
+        restorationTester.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            AdminHomeScreen(
+                navController = navController,
+                viewModel = fakeViewModel
+            )
+        }
+        composeTestRule.onRoot().printToLog("AdminHomeScreenTest")
+        composeTestRule.onNodeWithText("Title 1")
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeTestRule.onNodeWithContentDescription(
+            AdminHomeUiState.DRAFT_LIST,
+            useUnmergedTree = true
+        ).performScrollToNode(hasText("Title 10"))
+        composeTestRule.onNodeWithText("Title 10")
+            .assertExists()
+            .assertIsDisplayed()
+    }
+
+    @Test
     fun navigateToDraft_whenBySpecificDraftCLicked() {
         fakeViewModel.init()
         restorationTester.setContent {
@@ -106,6 +167,5 @@ class AdminHomeScreenTest : BaseComposeTest() {
 
         composeTestRule.onNodeWithText("Long Long Long Long Long Long  Long Long Long Long Long Title 2")
             .performClick()
-
     }
 }

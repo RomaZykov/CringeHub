@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -33,58 +35,74 @@ import com.example.cringehub.theme.CringeHubTheme
 data class InitialUi(val allGuides: List<GuideUi>) : AdminHomeUiState {
 
     @Composable
-    override fun Show(initWhenAnyGuidesExist: () -> Unit, onGuideCreationClicked: () -> Unit) {
+    override fun Show(
+        initWhenAnyGuidesExist: () -> Unit,
+        onGuideCreationClicked: () -> Unit,
+        onDraftClicked: (String) -> Unit
+    ) {
         LaunchedEffect(allGuides.isNotEmpty()) {
             initWhenAnyGuidesExist.invoke()
         }
-        Column {
+        Column(modifier = Modifier.statusBarsPadding()) {
             NavigationItems(onGuideCreationClicked)
-            Drafts(allGuides)
+            Drafts(allGuides.filter { it.isDraft }, onDraftClicked)
         }
     }
 }
 
 @Composable
-private fun Drafts(drafts: List<GuideUi>) {
+private fun Drafts(drafts: List<GuideUi>, onDraftClicked: (String) -> Unit) {
     if (drafts.isNotEmpty()) {
         Column(modifier = Modifier.padding(CringeHubTheme.dimensions.medium)) {
             Text(text = stringResource(R.string.drafts), style = CringeHubTheme.typography.title)
-            drafts.forEach {
-                Column {
-                    val contentDesc = stringResource(R.string.draft)
-                    Card(
-                        modifier = Modifier
-                            .semantics {
-                                contentDescription = contentDesc
-                            }
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = CringeHubTheme.dimensions.small
-                            )
-                    ) {
-                        val modifier = Modifier.padding(
-                            top = CringeHubTheme.dimensions.small,
-                            start = CringeHubTheme.dimensions.small,
-                            end = CringeHubTheme.dimensions.small
-                        )
-                        Text(
-                            modifier = modifier,
-                            text = it.title,
-                            style = CringeHubTheme.typography.body,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            modifier = modifier.padding(bottom = CringeHubTheme.dimensions.small),
-                            text = it.content,
-                            style = CringeHubTheme.typography.body,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+            LazyColumn(modifier = Modifier.semantics {
+                contentDescription = AdminHomeUiState.DRAFT_LIST
+            }) {
+                drafts.forEach {
+                    item {
+                        Draft(it, onDraftClicked)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun Draft(guide: GuideUi, onDraftClicked: (String) -> Unit) {
+    val contentDesc = stringResource(R.string.draft, guide.title)
+    Card(
+        modifier = Modifier
+            .semantics {
+                contentDescription = contentDesc
+            }
+            .clickable {
+                onDraftClicked.invoke(guide.id)
+            }
+            .fillMaxWidth()
+            .padding(
+                vertical = CringeHubTheme.dimensions.small
+            )
+    ) {
+        val modifier = Modifier.padding(
+            top = CringeHubTheme.dimensions.small,
+            start = CringeHubTheme.dimensions.small,
+            end = CringeHubTheme.dimensions.small
+        )
+        Text(
+            modifier = modifier,
+            text = guide.title,
+            style = CringeHubTheme.typography.body,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            modifier = modifier.padding(bottom = CringeHubTheme.dimensions.small),
+            text = guide.content,
+            style = CringeHubTheme.typography.body,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -163,7 +181,16 @@ fun AdminHomePreview() {
         ),
         GuideUi(
             "3", "Title 3", "", false, true
+        ),
+        GuideUi(
+            "4", "Title 4", "", false, true
+        ),
+        GuideUi(
+            "5", "Title 5", "", false, true
+        ),
+        GuideUi(
+            "6", "Title 6", "", false, true
         )
     )
-    InitialUi(drafts).Show({}) {}
+    InitialUi(drafts).Show({}, {}) {}
 }
