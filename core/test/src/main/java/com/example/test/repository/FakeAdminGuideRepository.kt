@@ -4,19 +4,24 @@ import com.example.domain.model.GuideDomain
 import com.example.domain.repositories.admin.guide.GuideRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class FakeAdminGuideRepository : GuideRepository.Admin {
+class FakeAdminGuideRepository @Inject constructor() : GuideRepository.Admin {
+
     val guides = mutableListOf<GuideDomain>()
+
     override fun fetchDraftGuides(): Flow<List<GuideDomain>> = flow {
         emit(guides.filter { it.isDraft })
     }
 
-    override suspend fun updateGuide(guideId: String) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun saveGuideAsDraft(title: String, content: String) {
-        TODO("Not yet implemented")
+    override suspend fun upsertGuide(id: String, title: String, content: String) {
+        var indexToChange = -1
+        guides.forEachIndexed { index, guideDomain ->
+            if (guideDomain.id == id) {
+                indexToChange = index
+                guides[index] = guideDomain.copy(title, content)
+            }
+        }
     }
 
     override suspend fun deleteGuide(guideId: String) {
