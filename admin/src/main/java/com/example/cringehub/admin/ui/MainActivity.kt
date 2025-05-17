@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
-import com.example.adminauth.navigation.AdminAuthRoute
+import com.example.adminhome.navigation.AdminHomeRoute
 import com.example.adminnavigation.AdminNavigation
 import com.example.cringehub.theme.CringeHubTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +19,8 @@ class MainActivity : ComponentActivity() {
             CringeHubTheme {
                 AdminNavigation(
                     navController = rememberNavController(),
-                    startDestination = AdminAuthRoute
+                    // TODO: Replace for prod
+                    startDestination = AdminHomeRoute
                 )
             }
         }
