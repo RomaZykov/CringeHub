@@ -22,7 +22,7 @@ interface AdminAuthViewModel {
 
     @HiltViewModel
     class Base @Inject constructor(
-        private val adminAuthRepository: AuthRepository.AdminAuthRepository,
+        private val admin: AuthRepository.Admin,
         private val adminHomeRouteProvider: AdminHomeRouteProvider
     ) : ViewModel(), AdminAuthViewModel {
 
@@ -33,7 +33,7 @@ interface AdminAuthViewModel {
         override fun onSignInClick(email: String, password: String, navController: NavController) {
             viewModelScope.launch {
                 _uiState.value = InitialUi
-                adminAuthRepository.signInWithEmail(email, password)
+                admin.signInWithEmail(email, password)
                     .onSuccess {
                         navController.navigateIfResumed(adminHomeRouteProvider.route())
                     }.onFailure {

@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val flowWrapper: FlowWrapper<AuthUiState>,
-    private val repository: AuthRepository.GoogleAuthRepository
+    private val authRepository: AuthRepository.Client
 ) : ViewModel(), ViewModelActions {
 
     fun state() = flowWrapper.state()
@@ -21,7 +21,7 @@ class AuthViewModel @Inject constructor(
     override fun onSignInClick(activityContext: Context) {
         viewModelScope.launch {
             flowWrapper.setValue(AuthUiState.Initial)
-            repository.signInWithGoogle(activityContext)
+            authRepository.signInWithGoogle(activityContext)
                 .onSuccess {
                     flowWrapper.setValue(AuthUiState.Success)
                 }.onFailure {

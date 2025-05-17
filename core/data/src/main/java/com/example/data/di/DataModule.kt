@@ -1,9 +1,9 @@
 package com.example.data.di
 
 import com.example.common.core.HandleError
-import com.example.data.impl.admin.auth.AuthAdminEmailRepositoryImpl
+import com.example.data.impl.admin.auth.AuthAdminRepositoryImpl
 import com.example.data.impl.admin.guide.GuideRepositoryImpl
-import com.example.data.impl.client.auth.AuthGoogleRepositoryImpl
+import com.example.data.impl.client.auth.ClientAuthRepositoryImpl
 import com.example.domain.repositories.AuthRepository
 import com.example.domain.repositories.admin.guide.GuideRepository
 import com.example.network.exceptions.HandleNetworkException
@@ -17,14 +17,14 @@ import dagger.hilt.components.SingletonComponent
 abstract class DataModule {
 
     @Binds
-    abstract fun bindsGoogleAuthRepository(
-        googleAuthRepository: AuthGoogleRepositoryImpl
-    ): AuthRepository.GoogleAuthRepository
+    abstract fun bindsClientAuthRepository(
+        clientAuthRepository: ClientAuthRepositoryImpl
+    ): AuthRepository.Client
 
     @Binds
     abstract fun bindsAdminAuthRepository(
-        adminAuthRepository: AuthAdminEmailRepositoryImpl
-    ): AuthRepository.AdminAuthRepository
+        adminAuthRepository: AuthAdminRepositoryImpl
+    ): AuthRepository.Admin
 
     @Binds
     abstract fun bindsGuideRepository(

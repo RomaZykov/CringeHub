@@ -1,17 +1,16 @@
 package com.example.data.impl.admin.auth
 
-import com.example.data.core.AdminUserMapperFactory
+import com.example.data.core.mappers.AdminUserMapperFactory
 import com.example.data.model.AdminUserData
 import com.example.domain.model.AdminUserDomain
 import com.example.domain.repositories.AuthRepository
 import com.example.network.core.admin.AdminUserNetworkDataSource
 import javax.inject.Inject
 
-class AuthAdminEmailRepositoryImpl @Inject constructor(
+class AuthAdminRepositoryImpl @Inject constructor(
     private val adminUserNetworkDataSource: AdminUserNetworkDataSource,
     private val mapper: AdminUserMapperFactory
-) :
-    AuthRepository.AdminAuthRepository {
+) : AuthRepository.Admin {
 
     override suspend fun signInWithEmail(email: String, password: String): Result<AdminUserDomain> {
         return try {

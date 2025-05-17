@@ -6,7 +6,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import com.example.common.core.HandleError
-import com.example.data.core.UserMapperFactory
+import com.example.data.core.mappers.UserMapperFactory
 import com.example.data.model.UserData
 import com.example.domain.model.UserDomain
 import com.example.domain.repositories.AuthRepository
@@ -17,14 +17,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class AuthGoogleRepositoryImpl @Inject constructor(
+class ClientAuthRepositoryImpl @Inject constructor(
     private val userNetworkDataSource: UserNetworkDataSource,
     private val credentialManager: CredentialManager,
     private val credentialRequest: GetCredentialRequest,
     private val handleError: HandleError,
     private val mapper: UserMapperFactory,
     private val dispatcher: CoroutineDispatcher
-) : AuthRepository.GoogleAuthRepository {
+) : AuthRepository.Client {
 
     override suspend fun signInWithGoogle(activityContext: Context): Result<UserDomain> =
         withContext(dispatcher) {

@@ -13,7 +13,7 @@ import dagger.multibindings.IntoSet
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object AuthModule {
+object AdminHomeModule {
 
     @Provides
     @ViewModelScoped
