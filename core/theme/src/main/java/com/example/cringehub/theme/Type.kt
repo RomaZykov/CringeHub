@@ -15,7 +15,7 @@ data class CringeHubTypography(
         color = PrimaryBlack
     ),
     val body: TextStyle = TextStyle(
-        fontSize = 18.sp,
+        fontSize = 20.sp,
         fontFamily = cringeHubFontFamily,
         fontWeight = FontWeight.Normal,
         color = PrimaryBlack
