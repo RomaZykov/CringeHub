@@ -13,10 +13,13 @@ dependencies {
     api(project(":core:domain"))
     api(project(":core:database"))
     api(project(":core:network"))
+    api(project(":core:test"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.hilt.android.testing)
 
+    // Auth
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
