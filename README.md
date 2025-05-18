@@ -40,7 +40,7 @@ Itz yor hub of Cringe :)
   - [x] Google signIn/signUp
   - [ ] Lessons on topics (where YouTubers steal content from, etc.)
   - [ ] A content store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
-  - [ ] Crazy cringe features
+  - [ ] ??? Secret Epic Feature
   - [ ] Level Up's and the equivalent of the season pass
 
 ## Features (admin panel side)
