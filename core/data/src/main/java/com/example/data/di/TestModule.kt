@@ -25,4 +25,8 @@ object TestModule {
     @Provides
     @Singleton
     fun provideFakeClientAuthRepo(): AuthRepository.Client = TODO()
+
+    @Provides
+    @Singleton
+    fun provideFakeGuideRepo(): GuideRepository = TODO()
 }
