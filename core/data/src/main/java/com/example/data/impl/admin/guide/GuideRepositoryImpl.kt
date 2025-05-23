@@ -49,6 +49,7 @@ class GuideRepositoryImpl @Inject constructor(
         title: String,
         content: String
     ) {
+        // TODO: Don`t generate id if exist (e.g. when dialog is shown but you decided to cancel)
         val latestModified = System.currentTimeMillis()
         val guideData = GuideData(
             id = id.ifBlank { UUID.randomUUID().toString() },

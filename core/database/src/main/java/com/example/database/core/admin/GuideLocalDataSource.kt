@@ -1,6 +1,5 @@
 package com.example.database.core.admin
 
-import android.util.Log
 import com.example.database.dao.GuideDao
 import com.example.database.entities.GuideEntity
 import kotlinx.coroutines.CoroutineDispatcher
