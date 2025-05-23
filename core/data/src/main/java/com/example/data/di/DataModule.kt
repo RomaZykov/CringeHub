@@ -27,9 +27,15 @@ abstract class DataModule {
     ): AuthRepository.Admin
 
     @Binds
+    abstract fun bindsAdminGuideRepository(
+        adminGuideRepositoryImpl: GuideRepositoryImpl
+    ): GuideRepository.Admin
+
+    // TODO: Implement common repository not specific
+    @Binds
     abstract fun bindsGuideRepository(
         guideRepositoryImpl: GuideRepositoryImpl
-    ): GuideRepository.Admin
+    ): GuideRepository
 
     @Binds
     abstract fun bindsNetworkErrorHandling(

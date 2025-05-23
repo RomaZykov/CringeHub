@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.work.testing)
 
+    ksp(libs.hilt.compiler)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(project(":core:test"))

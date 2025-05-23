@@ -16,9 +16,12 @@ interface SyncScheduler : Syncable {
         return super.syncSuccessful(fetchFromNetwork, fetchFromLocal, updateLocalSource)
     }
 
-    fun scheduleUploadGuideWork(guide: GuideNetwork)
+    suspend fun scheduleUploadGuideWork(guide: GuideNetwork)
+
+    suspend fun scheduleSyncLatestWork()
 }
 
+// TODO: Update with deleting
 interface Syncable {
     suspend fun syncSuccessful(
         fetchFromNetwork: suspend () -> List<GuideNetwork>,

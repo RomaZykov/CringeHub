@@ -14,6 +14,9 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
+
+    ksp(libs.hilt.ext.compiler)
 
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.work.testing)

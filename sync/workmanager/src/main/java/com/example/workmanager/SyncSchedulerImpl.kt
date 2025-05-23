@@ -11,6 +11,7 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.example.data.SyncScheduler
 import com.example.network.model.GuideNetwork
+import com.example.workmanager.workers.SyncLatestGuidesWorker
 import com.example.workmanager.workers.UploadGuideChangesWorker
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_CONTENT_KEY
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_ID_KEY
@@ -19,32 +20,55 @@ import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_IS_FREE_KEY
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_LATEST_MODIFIED_KEY
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_TITLE_KEY
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 internal class SyncSchedulerImpl @Inject constructor(
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val coroutineDispatcher: CoroutineDispatcher
 ) : SyncScheduler {
 
-    override fun scheduleUploadGuideWork(guide: GuideNetwork) {
-        val syncWorkRequest = OneTimeWorkRequestBuilder<UploadGuideChangesWorker>()
-            .setConstraints(getWorkConstraints())
-            .setInputData(generateInputData(guide))
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-            .setBackoffCriteria(
-                BackoffPolicy.LINEAR,
-                15, TimeUnit.SECONDS
-            )
-            .build()
+    override suspend fun scheduleSyncLatestWork() {
+        withContext(coroutineDispatcher) {
+            val syncWorkRequest = OneTimeWorkRequestBuilder<SyncLatestGuidesWorker>()
+                .setConstraints(getWorkConstraints())
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR,
+                    15, TimeUnit.SECONDS
+                )
+                .build()
 
-        workManager.enqueueUniqueWork(
-            setUniqueWorkerName(guide.id),
-            ExistingWorkPolicy.REPLACE,
-            syncWorkRequest
-        )
+            workManager.enqueueUniqueWork(
+                SyncLatestGuidesWorker.SYNC_GUIDES_WORK_NAME,
+                ExistingWorkPolicy.REPLACE,
+                syncWorkRequest
+            )
+        }
     }
 
-    private fun generateInputData(guide: GuideNetwork) : Data {
+    override suspend fun scheduleUploadGuideWork(guide: GuideNetwork) {
+        withContext(coroutineDispatcher) {
+            val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadGuideChangesWorker>()
+                .setConstraints(getWorkConstraints())
+                .setInputData(generateInputData(guide))
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .setBackoffCriteria(
+                    BackoffPolicy.LINEAR,
+                    15, TimeUnit.SECONDS
+                )
+                .build()
+
+            workManager.enqueueUniqueWork(
+                setUniqueWorkerName(guide.id),
+                ExistingWorkPolicy.REPLACE,
+                uploadWorkRequest
+            )
+        }
+    }
+
+    private fun generateInputData(guide: GuideNetwork): Data {
         return workDataOf(
             GUIDE_ID_KEY to guide.id,
             GUIDE_TITLE_KEY to guide.title,
