@@ -1,8 +1,8 @@
-package com.example.adminhome.components
+package com.example.adminhome.model
 
 data class CardItem(
     val title: String,
     val description: String = "",
     val image: Int,
-    val onClick: () -> Unit
+    val onClicked: () -> Unit
 )

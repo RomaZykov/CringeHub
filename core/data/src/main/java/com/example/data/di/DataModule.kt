@@ -31,7 +31,7 @@ abstract class DataModule {
         adminGuideRepositoryImpl: GuideRepositoryImpl
     ): GuideRepository.Admin
 
-    // TODO: Implement common repository not specific
+    // TODO: Implement common repository - not specific
     @Binds
     abstract fun bindsGuideRepository(
         guideRepositoryImpl: GuideRepositoryImpl
