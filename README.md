@@ -39,14 +39,14 @@ Itz yor hub of Cringe :)
 ## Features (product side)
   - [x] Google signIn/signUp
   - [ ] Lessons on topics (where YouTubers steal content from, etc.)
-  - [ ] A content store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
+  - [ ] Store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
+  - [ ] Level Up's and the equivalent
   - [ ] ??? Secret Epic Feature
-  - [ ] Level Up's and the equivalent of the season pass
 
 ## Features (admin panel side)
   - [x] Only login via Email and password, no registration directly, manual registration via Firebase
-  - [ ] Creating content with practice
-  - [ ] Drafts of the created content (offline-first approach based on push synchronization)
+  - [x] Drafts of the created content (offline-first approach based on push synchronization)
+  - [ ] Practice as addition for topic
 
 ## Features (development)
   - Design from Figma (I did it)
