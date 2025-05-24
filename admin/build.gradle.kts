@@ -14,6 +14,8 @@ android {
         applicationId = "com.example.cringehub.admin"
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "com.example.test.CringeHubTestRunner"
     }
 
     buildTypes {
@@ -35,11 +37,18 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))
+    implementation(project(":core:adminNavigation"))
     implementation(project(":core:theme"))
+
     implementation(project(":features:adminAuth"))
     implementation(project(":features:adminHome"))
+    implementation(project(":features:adminGuideCreation"))
+
+    implementation(project(":sync:workmanager"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.compose.activity)
     implementation(platform(libs.compose.bom))
@@ -47,14 +56,23 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3.android)
+    implementation(libs.compose.navigation.testing)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.testing)
+
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
 
-    androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.espresso.core)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.test.junit.ktx)
+    androidTestImplementation(libs.test.runner)
     androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.hilt.navigation.compose)
 
+    debugImplementation(project(":ui-test-hilt-manifest"))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.test.compose.ui.manifest)
 }

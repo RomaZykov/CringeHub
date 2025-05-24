@@ -1,7 +1,6 @@
 plugins {
-    alias(libs.plugins.cringehub.android.library)
-    alias(libs.plugins.cringehub.android.library.compose)
     alias(libs.plugins.cringehub.android.feature)
+    alias(libs.plugins.cringehub.android.library.compose)
     alias(libs.plugins.cringehub.hilt)
     alias(libs.plugins.compose.screenshot)
 }
@@ -24,9 +23,11 @@ dependencies {
 
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
+
     debugImplementation(libs.androidx.ui.tooling)
 
     testImplementation(project(":core:test"))
+
     androidTestImplementation(project(":core:test"))
-    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
 }

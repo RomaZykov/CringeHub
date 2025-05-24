@@ -15,6 +15,7 @@ private val LightColorScheme = lightColorScheme(
     primary = PrimaryYellow,
     secondary = PrimaryBlack,
     tertiary = PrimaryGray,
+    errorContainer = PrimaryRed,
     // Google button
     background = GoogleBackgroundGray,
     onBackground = GoogleFontBlack
@@ -25,6 +26,7 @@ private val DarkColorScheme = darkColorScheme(
     secondary = PrimaryYellow,
     tertiary = PrimaryGray,
     surfaceBright = PrimaryWhite,
+    errorContainer = PrimaryRed,
     // Google button
     background = GoogleBackgroundBlack,
     onBackground = GoogleFontWhite

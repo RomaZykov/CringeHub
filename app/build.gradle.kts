@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:theme"))
+
     implementation(project(":features:auth"))
     implementation(project(":features:onboarding"))
     implementation(project(":features:hub"))
@@ -88,17 +89,13 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.navigation)
 
-    testRuntimeOnly(libs.test.junit.platform.launcher)
-    testImplementation(platform(libs.test.junit.bom))
-    testImplementation(libs.test.junit.jupiter)
-    testImplementation(libs.test.junit)
+    testImplementation(kotlin("test"))
 
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.navigation.testing)
-    androidTestImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.espresso.core)
-    androidTestImplementation(libs.test.compose.ui.junit4)
+    androidTestImplementation(libs.test.junit.ktx)
+    androidTestImplementation(libs.test.compose.ui.junit4.android)
     androidTestImplementation(libs.hilt.android.testing)
 
     ksp(libs.androidx.room.compiler)

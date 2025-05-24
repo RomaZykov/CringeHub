@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content">Content</string>
+    <string name="title">Title</string>
+    <string name="cancel">Cancel</string>
+    <string name="draft_saved">Draft is saved</string>
+    <string name="save">Save and exit</string>
+    <string name="publish">Publish</string>
+    <string name="create_guide_app_bar_title">Create guide</string>
+</resources>

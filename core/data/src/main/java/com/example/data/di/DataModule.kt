@@ -1,34 +1,43 @@
 package com.example.data.di
 
 import com.example.common.core.HandleError
-import com.example.data.impl.adminAuth.AuthAdminEmailRepositoryImpl
-import com.example.data.impl.auth.AuthGoogleRepositoryImpl
-import com.example.domain.repositories.auth.AuthRepository
+import com.example.data.impl.admin.auth.AuthAdminRepositoryImpl
+import com.example.data.impl.admin.guide.GuideRepositoryImpl
+import com.example.data.impl.client.auth.ClientAuthRepositoryImpl
+import com.example.domain.repositories.AuthRepository
+import com.example.domain.repositories.admin.guide.GuideRepository
 import com.example.network.exceptions.HandleNetworkException
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
 
     @Binds
-    @Singleton
-    abstract fun bindsGoogleAuthRepository(
-        googleAuthRepository: AuthGoogleRepositoryImpl
-    ): AuthRepository.GoogleAuthRepository
+    abstract fun bindsClientAuthRepository(
+        clientAuthRepository: ClientAuthRepositoryImpl
+    ): AuthRepository.Client
 
     @Binds
-    @Singleton
     abstract fun bindsAdminAuthRepository(
-        adminAuthRepository: AuthAdminEmailRepositoryImpl
-    ): AuthRepository.AdminAuthRepository
+        adminAuthRepository: AuthAdminRepositoryImpl
+    ): AuthRepository.Admin
 
     @Binds
-    @Singleton
+    abstract fun bindsAdminGuideRepository(
+        adminGuideRepositoryImpl: GuideRepositoryImpl
+    ): GuideRepository.Admin
+
+    // TODO: Implement common repository - not specific
+    @Binds
+    abstract fun bindsGuideRepository(
+        guideRepositoryImpl: GuideRepositoryImpl
+    ): GuideRepository
+
+    @Binds
     abstract fun bindsNetworkErrorHandling(
         handleError: HandleNetworkException
     ): HandleError

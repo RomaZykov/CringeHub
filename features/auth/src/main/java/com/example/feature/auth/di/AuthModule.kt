@@ -1,15 +1,16 @@
 package com.example.feature.auth.di
 
-import com.example.feature.auth.core.FlowWrapper
-import dagger.Binds
+import com.example.common.core.FlowWrapper
+import com.example.feature.auth.AuthUiState
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class AuthModule {
+object AuthModule {
 
-    @Binds
-    abstract fun bindsFlowWrapper(flowWrapper: FlowWrapper.Base): FlowWrapper
+    @Provides
+    fun provideFlowWrapper(): FlowWrapper<AuthUiState> = FlowWrapper.Base(AuthUiState.Initial)
 }

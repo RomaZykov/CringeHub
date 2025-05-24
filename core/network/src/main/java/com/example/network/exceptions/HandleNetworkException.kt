@@ -1,9 +1,6 @@
 package com.example.network.exceptions
 
-import androidx.credentials.exceptions.CreateCredentialCancellationException
-import androidx.credentials.exceptions.CreateCredentialException
 import androidx.credentials.exceptions.GetCredentialCancellationException
-import androidx.credentials.exceptions.GetCredentialException
 import com.example.common.core.HandleError
 import com.example.common.core.ManageResources
 import com.example.network.R
@@ -12,7 +9,6 @@ import com.example.network.exceptions.FirebaseCustomException.Companion.NO_USER_
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 
-// TODO: hardcode
 class HandleNetworkException @Inject constructor(private val manageResources: ManageResources) :
     HandleError {
     override fun handle(error: Exception): Throwable {

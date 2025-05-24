@@ -39,7 +39,7 @@ fun GoogleSignInButton(onSignInClick: () -> Unit) {
         )
         ProvideTextStyle(value = CringeHubTheme.typography.googleButton) {
             Text(
-                modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.spaceMedium),
+                modifier = Modifier.padding(vertical = CringeHubTheme.dimensions.medium),
                 text = stringResource(R.string.google_sign_in),
                 color = CringeHubTheme.colorScheme.onBackground
             )

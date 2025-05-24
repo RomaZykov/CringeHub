@@ -7,7 +7,10 @@ plugins {
 android {
     namespace = "com.example.network"
 }
+
 dependencies {
     implementation(project(":core:common"))
+
+    implementation(libs.androidx.work.runtime.ktx)
 }
 

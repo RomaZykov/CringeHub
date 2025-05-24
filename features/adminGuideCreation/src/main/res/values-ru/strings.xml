@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content">Контент</string>
+    <string name="title">Заголовок</string>
+    <string name="cancel">Отменить</string>
+    <string name="draft_saved">Черновик сохранён</string>
+    <string name="save">Выйти</string>
+    <string name="publish">Опубликовать</string>
+    <string name="create_guide_app_bar_title">Создать гайд</string>
+</resources>
