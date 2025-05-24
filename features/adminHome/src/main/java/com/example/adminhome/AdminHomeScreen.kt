@@ -20,11 +20,15 @@ fun AdminHomeScreen(
     val uiState by viewModel.adminHomeUiStateFlow().collectAsState()
 
     uiState.Show(
-        initWhenAnyGuidesExist = viewModel::init, onGuideCreationClicked = {
+        initWhenAnyGuidesExist = viewModel::init,
+        onGuideCreationClicked = {
             viewModel.navigateToGuideCreation(navController)
         },
         onDraftClicked = {
             viewModel.navigateToDraft(navController, it)
+        },
+        onDraftDeleted = {
+            viewModel.deleteGuide(it)
         }
     )
 }

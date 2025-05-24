@@ -25,6 +25,8 @@ interface AdminHomeViewModel {
 
     fun init()
 
+    fun deleteGuide(id: String) = Unit
+
     fun navigateToGuideCreation(navController: NavController) = Unit
 
     fun navigateToDraft(navController: NavController, draftId: String) = Unit
@@ -42,6 +44,7 @@ interface AdminHomeViewModel {
                 emptyList()
             )
         )
+
 
         override fun adminHomeUiStateFlow(): StateFlow<AdminHomeUiState> = _uiState.asStateFlow()
 
@@ -65,6 +68,12 @@ interface AdminHomeViewModel {
                         allGuides = it
                     )
                 }
+            }
+        }
+
+        override fun deleteGuide(id: String) {
+            viewModelScope.launch(ioDispatcher) {
+                guideRepository.deleteGuide(id)
             }
         }
 

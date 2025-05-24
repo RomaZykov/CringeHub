@@ -22,5 +22,5 @@ interface GuideDao {
     suspend fun upsert(guide: GuideEntity)
 
     @Query("delete from guides_table where id = :guideId")
-    suspend fun delete(guideId: Long)
+    suspend fun delete(guideId: String)
 }

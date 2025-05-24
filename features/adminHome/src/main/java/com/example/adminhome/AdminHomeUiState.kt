@@ -8,7 +8,8 @@ interface AdminHomeUiState {
     fun Show(
         initWhenAnyGuidesExist: () -> Unit,
         onGuideCreationClicked: () -> Unit,
-        onDraftClicked: (String) -> Unit
+        onDraftClicked: (String) -> Unit,
+        onDraftDeleted: (String) -> Unit
     )
 
     companion object {

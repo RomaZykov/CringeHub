@@ -60,7 +60,9 @@ interface GuideLocalDataSource {
         }
 
         override suspend fun deleteGuide(uid: String) {
-            TODO("Not yet implemented")
+            withContext(ioDispatcher) {
+                dao.delete(uid)
+            }
         }
     }
 }

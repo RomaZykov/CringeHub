@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -23,13 +22,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.adminhome.AdminHomeUiState
 import com.example.adminhome.R
-import com.example.adminhome.components.CardItem
+import com.example.adminhome.components.Draft
 import com.example.cringehub.theme.CringeHubTheme
 
 data class InitialUi(val allGuides: List<GuideUi>) : AdminHomeUiState {
@@ -38,20 +36,25 @@ data class InitialUi(val allGuides: List<GuideUi>) : AdminHomeUiState {
     override fun Show(
         initWhenAnyGuidesExist: () -> Unit,
         onGuideCreationClicked: () -> Unit,
-        onDraftClicked: (String) -> Unit
+        onDraftClicked: (String) -> Unit,
+        onDraftDeleted: (String) -> Unit
     ) {
         LaunchedEffect(allGuides.isNotEmpty()) {
             initWhenAnyGuidesExist.invoke()
         }
         Column(modifier = Modifier.statusBarsPadding()) {
             NavigationItems(onGuideCreationClicked)
-            Drafts(allGuides.filter { it.isDraft }, onDraftClicked)
+            Drafts(allGuides.filter { it.isDraft }, onDraftClicked, onDraftDeleted)
         }
     }
 }
 
 @Composable
-private fun Drafts(drafts: List<GuideUi>, onDraftClicked: (String) -> Unit) {
+private fun Drafts(
+    drafts: List<GuideUi>,
+    onDraftClicked: (String) -> Unit,
+    onDraftDeleted: (String) -> Unit
+) {
     if (drafts.isNotEmpty()) {
         Column(modifier = Modifier.padding(CringeHubTheme.dimensions.medium)) {
             Text(text = stringResource(R.string.drafts), style = CringeHubTheme.typography.title)
@@ -60,7 +63,7 @@ private fun Drafts(drafts: List<GuideUi>, onDraftClicked: (String) -> Unit) {
             }) {
                 drafts.forEach {
                     item {
-                        Draft(it, onDraftClicked)
+                        Draft(it, onDraftClicked, onDraftDeleted)
                     }
                 }
             }
@@ -69,55 +72,17 @@ private fun Drafts(drafts: List<GuideUi>, onDraftClicked: (String) -> Unit) {
 }
 
 @Composable
-private fun Draft(guide: GuideUi, onDraftClicked: (String) -> Unit) {
-    val contentDesc = stringResource(R.string.draft, guide.title)
-    Card(
-        modifier = Modifier
-            .semantics {
-                contentDescription = contentDesc
-            }
-            .clickable {
-                onDraftClicked.invoke(guide.id)
-            }
-            .fillMaxWidth()
-            .padding(
-                vertical = CringeHubTheme.dimensions.small
-            )
-    ) {
-        val modifier = Modifier.padding(
-            top = CringeHubTheme.dimensions.small,
-            start = CringeHubTheme.dimensions.small,
-            end = CringeHubTheme.dimensions.small
-        )
-        Text(
-            modifier = modifier,
-            text = guide.title,
-            style = CringeHubTheme.typography.body,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            modifier = modifier.padding(bottom = CringeHubTheme.dimensions.small),
-            text = guide.content,
-            style = CringeHubTheme.typography.body,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
 private fun NavigationItems(onGuideCreationClicked: () -> Unit) {
     val items = listOf(
         CardItem(
             stringResource(R.string.create_guide_grid_button),
-            image = R.drawable.image_placeholder,
-            onClick = onGuideCreationClicked
+            image = com.example.ui.R.drawable.placeholder_medium_icon,
+            onClicked = onGuideCreationClicked
         ),
         CardItem(
             stringResource(R.string.create_practical_task_grid_button),
-            image = R.drawable.image_placeholder,
-            onClick = {}
+            image = com.example.ui.R.drawable.placeholder_medium_icon,
+            onClicked = {}
         )
     )
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
@@ -139,7 +104,7 @@ private fun CardInGrid(index: Int, item: CardItem) {
             )
             .heightIn(172.dp, 172.dp)
             .clickable {
-                item.onClick.invoke()
+                item.onClicked.invoke()
             }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -192,5 +157,5 @@ fun AdminHomePreview() {
             "6", "Title 6", "", false, true
         )
     )
-    InitialUi(drafts).Show({}, {}) {}
+    InitialUi(drafts).Show({}, {}, {}) {}
 }
