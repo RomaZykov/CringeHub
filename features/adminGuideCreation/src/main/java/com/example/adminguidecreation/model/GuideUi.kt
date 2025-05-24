@@ -231,7 +231,7 @@ private fun EditorControls(
             ConcreteActionButton(
                 contentDesc = GuideCreationUiState.BOLD_BUTTON,
                 enabled = enabled,
-                paintRes = R.drawable.placeholder_icon,
+                paintRes = com.example.ui.R.drawable.placeholder_small_icon,
                 onClicked = {
                     onBoldClicked.invoke(it)
                 }
@@ -239,7 +239,7 @@ private fun EditorControls(
             ConcreteActionButton(
                 contentDesc = GuideCreationUiState.QUOTE_BUTTON,
                 enabled = enabled,
-                paintRes = R.drawable.placeholder_icon,
+                paintRes = com.example.ui.R.drawable.placeholder_small_icon,
                 onClicked = {
                     onQuoteClicked.invoke(it)
                 }
