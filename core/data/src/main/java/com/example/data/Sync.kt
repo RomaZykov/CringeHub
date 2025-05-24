@@ -16,7 +16,7 @@ interface SyncScheduler : Syncable {
         return super.syncSuccessful(fetchFromNetwork, fetchFromLocal, updateLocalSource)
     }
 
-    suspend fun scheduleUploadGuideWork(guide: GuideNetwork)
+    suspend fun scheduleUploadGuideWork(guide: GuideNetwork, deleteRequest: Boolean = false)
 
     suspend fun scheduleSyncLatestWork()
 }

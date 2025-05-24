@@ -60,7 +60,7 @@ interface GuideNetworkDataSource {
         }
 
         override suspend fun upsertGuide(
-            guideNetwork: GuideNetwork,
+            guideNetwork: GuideNetwork
         ): Result<Boolean> {
             return try {
                 db.collection(GUIDES).document(guideNetwork.id.toString())
@@ -72,7 +72,12 @@ interface GuideNetworkDataSource {
         }
 
         override suspend fun deleteGuide(guideId: String): Result<Boolean> {
-            TODO("Not yet implemented")
+            return try {
+                db.collection(GUIDES).document(guideId).delete()
+                Result.success(true)
+            } catch (e: FirebaseFirestoreException) {
+                Result.failure(e)
+            }
         }
 
         companion object {

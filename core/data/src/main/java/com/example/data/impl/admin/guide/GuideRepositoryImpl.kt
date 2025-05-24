@@ -23,23 +23,27 @@ class GuideRepositoryImpl @Inject constructor(
     override suspend fun syncWithNetwork(): Boolean {
         return syncScheduler.syncSuccessful(
             fetchFromNetwork = {
-                val networkGuides = networkDataSource.allGuides().first()
-                networkGuides.requireNoNulls()
+                networkDataSource.allGuides().first().requireNoNulls()
             },
 
             fetchFromLocal = {
-                val localGuides = localDataSource.fetchAllGuides().first()
-                localGuides
+                localDataSource.fetchAllGuides().first()
             },
 
-            updateLocalSource = { networkGuides, guidesToDelete ->
-                val localGuides = networkGuides.map {
+            updateLocalSource = { networkGuides, localGuides ->
+                val updatedLocalGuides = networkGuides.map {
                     guideMapperFactory.mapToEntity(it)
+                }
+                val guidesToDelete = localGuides.filter { localGuide ->
+                    val similarGuides = networkGuides.filter { networkGuide ->
+                        localGuide.id == networkGuide.id
+                    }.map { it.id }
+                    !similarGuides.contains(localGuide.id)
                 }
                 guidesToDelete.forEach {
                     localDataSource.deleteGuide(it.id)
                 }
-                localDataSource.upsertGuides(localGuides)
+                localDataSource.upsertGuides(updatedLocalGuides)
             }
         )
     }
@@ -68,8 +72,10 @@ class GuideRepositoryImpl @Inject constructor(
 
     override suspend fun deleteGuide(guideId: String) {
         localDataSource.deleteGuide(guideId)
-        val networkGuide = networkDataSource.getGuide(guideId).first()
-        syncScheduler.scheduleUploadGuideWork(networkGuide!!)
+        syncScheduler.scheduleUploadGuideWork(
+            guideMapperFactory.mapToNetwork(GuideData(guideId)),
+            deleteRequest = true
+        )
     }
 
     override suspend fun publishGuide() {

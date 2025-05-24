@@ -13,7 +13,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 /**
@@ -35,11 +34,14 @@ class UploadGuideChangesWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
-        val guide = getMappedGuide()
-        val uploadChangesSuccessful = awaitAll(
-            async { guideNetworkDataSource.upsertGuide(guide) },
-            async { guide.id?.let { guideNetworkDataSource.deleteGuide(it) } }
-        ).all { it?.isSuccess ?: false }
+        val (guide, deleteRequest) = getMappedWorkData()
+        val uploadChangesSuccessful = if (deleteRequest) {
+            async {
+                guideNetworkDataSource.deleteGuide(guide.id!!)
+            }
+        } else {
+            async { guideNetworkDataSource.upsertGuide(guide) }
+        }.await().isSuccess
 
         if (uploadChangesSuccessful) {
             Result.success()
@@ -48,14 +50,20 @@ class UploadGuideChangesWorker @AssistedInject constructor(
         }
     }
 
-    private fun getMappedGuide(): GuideNetwork = GuideNetwork(
-        id = inputData.getString(GUIDE_ID_KEY),
-        title = inputData.getString(GUIDE_TITLE_KEY),
-        content = inputData.getString(GUIDE_CONTENT_KEY),
-        isDraft = inputData.getBoolean(GUIDE_IS_DRAFT_KEY, true),
-        isFree = inputData.getBoolean(GUIDE_TITLE_KEY, false),
-        latestModified = inputData.getLong(GUIDE_TITLE_KEY, -1L),
-        images = inputData.getStringArray(GUIDE_IMAGES_KEY)?.toList()
+    private fun getMappedWorkData(): Pair<GuideNetwork, Boolean> = Pair(
+        GuideNetwork(
+            id = inputData.getString(GUIDE_ID_KEY),
+            title = inputData.getString(GUIDE_TITLE_KEY),
+            content = inputData.getString(GUIDE_CONTENT_KEY),
+            isDraft = inputData.getBoolean(GUIDE_IS_DRAFT_KEY, true),
+            isFree = inputData.getBoolean(GUIDE_TITLE_KEY, false),
+            latestModified = inputData.getLong(GUIDE_TITLE_KEY, -1L),
+            images = inputData.getStringArray(GUIDE_IMAGES_KEY)?.toList()
+        ),
+        inputData.getBoolean(
+            DELETE_REQUEST_KEY,
+            defaultValue = false
+        )
     )
 
     private fun createNotification(appContext: Context): Notification =
@@ -67,6 +75,8 @@ class UploadGuideChangesWorker @AssistedInject constructor(
     companion object {
         private const val UPLOAD_NOTIFICATION_CHANNEL_ID = "Upload Notification Channel"
         private const val UPLOAD_NOTIFICATION_ID = 1
+
+        const val DELETE_REQUEST_KEY = "delete_request"
 
         const val GUIDE_ID_KEY = "guide_id"
         const val GUIDE_TITLE_KEY = "guide_title"

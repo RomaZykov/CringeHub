@@ -13,6 +13,7 @@ import com.example.data.SyncScheduler
 import com.example.network.model.GuideNetwork
 import com.example.workmanager.workers.SyncLatestGuidesWorker
 import com.example.workmanager.workers.UploadGuideChangesWorker
+import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.DELETE_REQUEST_KEY
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_CONTENT_KEY
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_ID_KEY
 import com.example.workmanager.workers.UploadGuideChangesWorker.Companion.GUIDE_IMAGES_KEY
@@ -48,11 +49,11 @@ internal class SyncSchedulerImpl @Inject constructor(
         }
     }
 
-    override suspend fun scheduleUploadGuideWork(guide: GuideNetwork) {
+    override suspend fun scheduleUploadGuideWork(guide: GuideNetwork, deleteRequest: Boolean) {
         withContext(coroutineDispatcher) {
             val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadGuideChangesWorker>()
                 .setConstraints(getWorkConstraints())
-                .setInputData(generateInputData(guide))
+                .setInputData(generateInputData(guide, deleteRequest))
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 .setBackoffCriteria(
                     BackoffPolicy.LINEAR,
@@ -62,13 +63,13 @@ internal class SyncSchedulerImpl @Inject constructor(
 
             workManager.enqueueUniqueWork(
                 setUniqueWorkerName(guide.id),
-                ExistingWorkPolicy.REPLACE,
+                ExistingWorkPolicy.APPEND_OR_REPLACE,
                 uploadWorkRequest
             )
         }
     }
 
-    private fun generateInputData(guide: GuideNetwork): Data {
+    private fun generateInputData(guide: GuideNetwork, deleteRequest: Boolean): Data {
         return workDataOf(
             GUIDE_ID_KEY to guide.id,
             GUIDE_TITLE_KEY to guide.title,
@@ -76,7 +77,9 @@ internal class SyncSchedulerImpl @Inject constructor(
             GUIDE_IS_DRAFT_KEY to guide.isDraft,
             GUIDE_IS_FREE_KEY to guide.isFree,
             GUIDE_LATEST_MODIFIED_KEY to guide.latestModified,
-            GUIDE_IMAGES_KEY to (guide.images?.toTypedArray() ?: emptyList<String>().toTypedArray())
+            GUIDE_IMAGES_KEY to (guide.images?.toTypedArray()
+                ?: emptyList<String>().toTypedArray()),
+            DELETE_REQUEST_KEY to deleteRequest
         )
     }
 
