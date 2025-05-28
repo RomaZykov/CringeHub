@@ -1,7 +1,6 @@
 package com.example.admin
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -21,9 +20,6 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.work.Configuration
-import androidx.work.impl.utils.SynchronousExecutor
-import androidx.work.testing.WorkManagerTestInitHelper
 import com.example.adminauth.navigation.AdminAuthRoute
 import com.example.adminguidecreation.GuideCreationUiState
 import com.example.adminguidecreation.R
@@ -52,6 +48,9 @@ class NavigationTest {
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
+    var workManagerRule = WorkManagerRule()
+
+    @get:Rule(order = 2)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -67,14 +66,6 @@ class NavigationTest {
     @Before
     fun setup() {
         hiltRule.inject()
-
-        // Some screens contains viewModel with workManager
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val config = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setExecutor(SynchronousExecutor())
-            .build()
-        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
     }
 
     @After
