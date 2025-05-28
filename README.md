@@ -40,6 +40,7 @@ Itz yor hub of Cringe :)
   - [x] Google signIn/signUp
   - [ ] Lessons on topics (where YouTubers steal content from, etc.)
   - [ ] Store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
+  - [ ] In-app currency
   - [ ] Level Up's and progression
   - [ ] ??? Secret Epic Feature
 
@@ -48,6 +49,9 @@ Itz yor hub of Cringe :)
   - [x] Drafts of the created content (offline-first approach based on push synchronization)
   - [x] CRUD operations with drafts
   - [ ] Practice as addition for topic
+  - [ ] Option to add images
+  - [ ] Option to add gifs
+  - [ ] Option to add videos
   - [ ] Publish draft operation for user feed
 
 ## Features (development)
