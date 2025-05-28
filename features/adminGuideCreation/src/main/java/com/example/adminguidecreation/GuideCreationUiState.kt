@@ -26,5 +26,6 @@ interface GuideCreationUiState {
 
         const val BOLD_BUTTON = "bold_button"
         const val QUOTE_BUTTON = "quote_button"
+        const val IMAGE_BUTTON = "image_button"
     }
 }

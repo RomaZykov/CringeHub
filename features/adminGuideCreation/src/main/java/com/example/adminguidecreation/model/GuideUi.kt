@@ -1,5 +1,6 @@
 package com.example.adminguidecreation.model
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import com.example.adminguidecreation.GuideCreationUiState
 import com.example.adminguidecreation.R
 import com.example.adminguidecreation.core.ConcreteActionButton
+import com.example.adminguidecreation.core.ConcreteMediaActionButton
 import com.example.adminguidecreation.core.ControlWrapperFactory
 import com.example.cringehub.theme.CringeHubTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -159,6 +161,7 @@ data class GuideUi(
                 Content(contentState) { focused ->
                     controlStateEnabled = focused
                 }
+//                var images by rememberSaveable { mutableStateOf<Uri?>(null) }
                 EditorControls(
                     modifier = Modifier
                         .semantics {
@@ -169,7 +172,13 @@ data class GuideUi(
                     onBoldClicked = { selected ->
                         handleTextStyle(selected, contentState, cursorParagraph)
                     },
-                    onQuoteClicked = {}
+                    onQuoteClicked = {},
+                    onMediaClicked = {
+                        contentState.addTextAtIndex(
+                            contentState.selection.start,
+                            "\n$it\n"
+                        )
+                    }
                 )
             }
         }
@@ -224,7 +233,8 @@ private fun EditorControls(
     modifier: Modifier,
     enabled: Boolean,
     onBoldClicked: (Boolean) -> Unit,
-    onQuoteClicked: (Boolean) -> Unit
+    onQuoteClicked: (Boolean) -> Unit,
+    onMediaClicked: (Uri) -> Unit
 ) {
     val controlWrapperFactory: ControlWrapperFactory = ControlWrapperFactory.Base(
         listOf(
@@ -244,6 +254,14 @@ private fun EditorControls(
                     onQuoteClicked.invoke(it)
                 }
             ),
+            ConcreteMediaActionButton(
+                contentDesc = GuideCreationUiState.QUOTE_BUTTON,
+                enabled = enabled,
+                paintRes = com.example.ui.R.drawable.placeholder_small_icon,
+                onMediaClicked = {
+                    onMediaClicked.invoke(it)
+                }
+            )
         )
     )
     FlowRow(modifier = modifier.padding(8.dp)) {
