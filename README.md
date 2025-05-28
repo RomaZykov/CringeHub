@@ -49,9 +49,7 @@ Itz yor hub of Cringe :)
   - [x] Drafts of the created content (offline-first approach based on push synchronization)
   - [x] CRUD operations with drafts
   - [ ] Practice as addition for topic
-  - [ ] Option to add images
-  - [ ] Option to add gifs
-  - [ ] Option to add videos
+  - [ ] Option to add images/videos/gifs
   - [ ] Publish draft operation for user feed
 
 ## Features (development)
