@@ -32,6 +32,9 @@ dependencies {
     implementation(libs.test.junit.ktx)
     // Rich Text Editor
     implementation(libs.richeditor.compose)
+    // Glide
+    implementation(libs.glide)
+    implementation(libs.glide.compose)
 
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.junit.ktx)

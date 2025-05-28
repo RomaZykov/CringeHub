@@ -38,6 +38,8 @@ work-version = "2.10.0"
 testCoreKtx = "1.6.1"
 testExtJunit = "1.2.1"
 uiTestJunit = "1.8.1"
+glideCompose = "1.0.0-beta01"
+glide = "4.14.2)"
 
 # Used directly in gradle plugins
 compile-sdk = "35"
@@ -111,6 +113,9 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glideCompose" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
