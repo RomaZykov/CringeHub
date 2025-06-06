@@ -114,7 +114,7 @@ interface GuideMapperFactory {
                         content = input.content,
                         isDraft = input.isDraft,
                         isFree = false,
-                        images = emptyList()
+                        media = emptyList()
                     )
                 }
 
@@ -125,7 +125,7 @@ interface GuideMapperFactory {
                         content = input.content ?: "",
                         isDraft = input.isDraft ?: true,
                         isFree = input.isFree ?: false,
-                        images = emptyList()
+                        media = emptyList()
                     )
                 }
 
@@ -136,7 +136,7 @@ interface GuideMapperFactory {
                         content = input.content,
                         isDraft = input.isDraft,
                         isFree = input.isFree,
-                        images = emptyList()
+                        media = emptyList()
                     )
                 }
 

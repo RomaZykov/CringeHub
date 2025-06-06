@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -24,51 +25,46 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.BaselineShift
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.adminguidecreation.GuideCreationUiState
 import com.example.adminguidecreation.R
+import com.example.adminguidecreation.components.ContentItem
 import com.example.adminguidecreation.core.ConcreteActionButton
 import com.example.adminguidecreation.core.ConcreteMediaActionButton
 import com.example.adminguidecreation.core.ControlWrapperFactory
 import com.example.cringehub.theme.CringeHubTheme
-import com.mohamedrejeb.richeditor.model.RichTextState
-import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
 
 data class GuideUi(
     val guideId: String = "",
     val title: String = "",
-    val content: String = ""
+    val content: List<ContentItem> = listOf(ContentItem.Text(""))
 ) : GuideCreationUiState {
 
     @Composable
@@ -78,26 +74,21 @@ data class GuideUi(
         saveContent: (GuideUi) -> Unit,
         onPublishClicked: () -> Unit
     ) {
-        val titleState = rememberRichTextState().apply {
-            LaunchedEffect(key1 = title) {
-                this@apply.setText(title)
+        val titleState = rememberSaveable(inputs = arrayOf(guideId)) { mutableStateOf(title) }
+        val paragraphs = rememberSaveable(inputs = arrayOf(guideId), saver = ParagraphsListSaver) {
+            mutableStateListOf<ContentItem>().apply {
+                addAll(content)
             }
         }
-        val contentState = rememberRichTextState().apply {
-            LaunchedEffect(key1 = content) {
-                this@apply.setText(content)
-            }
-        }
-
         val textFieldsEmpty =
-            titleState.annotatedString.isBlank() && contentState.annotatedString.isBlank()
+            titleState.value.isBlank() && paragraphs.toList().all { it.content.isEmpty() }
 
         var shouldOpenDialog by rememberSaveable { mutableStateOf(false) }
         if (shouldOpenDialog && !textFieldsEmpty) {
             saveContent.invoke(
                 this.copy(
-                    title = titleState.toText(),
-                    content = contentState.toText()
+                    title = titleState.value,
+                    content = paragraphs.toList()
                 )
             )
             ShowDialog(onOpenDraftChanged = {
@@ -143,7 +134,7 @@ data class GuideUi(
                     }
                 )
             }
-        ) {
+        ) { it ->
             Column(
                 modifier = Modifier
                     .imePadding()
@@ -151,17 +142,12 @@ data class GuideUi(
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                val contentCurrentCursorParagraph = rememberSaveable { mutableIntStateOf(0) }
                 var controlStateEnabled by remember { mutableStateOf(false) }
-                val cursorParagraph by remember {
-                    derivedStateOf {
-                        getParagraphIndexPosition(contentState)
-                    }
-                }
                 Title(titleState)
-                Content(contentState) { focused ->
+                Content(paragraphs, contentCurrentCursorParagraph) { focused ->
                     controlStateEnabled = focused
                 }
-//                var images by rememberSaveable { mutableStateOf<Uri?>(null) }
                 EditorControls(
                     modifier = Modifier
                         .semantics {
@@ -170,62 +156,21 @@ data class GuideUi(
                         .wrapContentHeight(),
                     enabled = controlStateEnabled,
                     onBoldClicked = { selected ->
-                        handleTextStyle(selected, contentState, cursorParagraph)
+//                        handleTextStyle(selected, contentState, cursorParagraph)
                     },
                     onQuoteClicked = {},
-                    onMediaClicked = {
-                        contentState.addTextAtIndex(
-                            contentState.selection.start,
-                            "\n$it\n"
-                        )
+                    onMediaClicked = { imageUri ->
+                        imageUri.let {
+                            paragraphs.add(
+                                ++contentCurrentCursorParagraph.intValue,
+                                ContentItem.Media.Image(it.toString())
+                            )
+                        }
                     }
                 )
             }
         }
     }
-}
-
-private fun handleTextStyle(
-    selected: Boolean,
-    contentState: RichTextState,
-    cursorParagraph: Int
-) {
-    if (selected) {
-        contentState.addSpanStyle(
-            SpanStyle(fontWeight = FontWeight.Bold),
-            TextRange(
-                contentState.annotatedString.paragraphStyles[cursorParagraph].start,
-                contentState.annotatedString.paragraphStyles[cursorParagraph].end
-            )
-        )
-    } else {
-        contentState.removeSpanStyle(
-            SpanStyle(fontWeight = FontWeight.Bold),
-            TextRange(
-                contentState.annotatedString.paragraphStyles[cursorParagraph].start,
-                contentState.annotatedString.paragraphStyles[cursorParagraph].end
-            )
-        )
-    }
-}
-
-private fun getParagraphIndexPosition(contentState: RichTextState): Int {
-    val cursor = contentState.selection.start
-    val lineList = mutableListOf<Int>()
-    contentState.toText().forEachIndexed { index, char ->
-        if (char == '\n') {
-            lineList.add(index)
-        }
-    }
-    if (lineList.isEmpty()) {
-        return 0
-    }
-    lineList.forEachIndexed { index, i ->
-        if (cursor <= i) {
-            return index
-        }
-    }
-    return lineList.size
 }
 
 @Composable
@@ -324,19 +269,18 @@ private fun ShowDialog(
 }
 
 @Composable
-private fun Title(titleState: RichTextState) {
-    RichTextEditor(
+private fun Title(titleState: MutableState<String>) {
+    TextField(
         modifier = Modifier
-            .semantics {
-                contentDescription = GuideCreationUiState.TITLE
-            }
             .fillMaxWidth()
             .wrapContentHeight(),
-        state = titleState,
+        value = titleState.value,
+        onValueChange = {
+            titleState.value = it
+        },
         textStyle = TextStyle.Default.copy(
             fontSize = CringeHubTheme.typography.title.fontSize,
-            fontWeight = CringeHubTheme.typography.title.fontWeight,
-            lineHeight = TextUnit(CringeHubTheme.typography.title.fontSize.value, TextUnitType.Sp)
+            fontWeight = CringeHubTheme.typography.title.fontWeight
         ),
         singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -349,37 +293,108 @@ private fun Title(titleState: RichTextState) {
 }
 
 @Composable
-private fun ColumnScope.Content(contentState: RichTextState, focusChanged: (Boolean) -> Unit) {
-    val fontPadding = 2
-    RichTextEditor(
-        state = contentState,
+private fun ColumnScope.Content(
+    contentState: SnapshotStateList<ContentItem>,
+    cursorParagraph: MutableState<Int>,
+    focusChanged: (Boolean) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+    LazyColumn(
         modifier = Modifier
-            .semantics {
-                contentDescription = GuideCreationUiState.CONTENT
-            }
-            .onFocusChanged {
-                focusChanged.invoke(it.isFocused)
-            }
             .fillMaxWidth()
-            .weight(0.9f),
-        placeholder = {
-            Text(fontSize = 18.sp, color = Color.Gray, text = stringResource(R.string.content))
-        },
-        textStyle = LocalTextStyle.current.merge(
-            TextStyle(
-                textAlign = TextAlign.Justify,
-                fontFamily = CringeHubTheme.typography.body.fontFamily,
-                fontSize = CringeHubTheme.typography.body.fontSize,
-                letterSpacing = 0.2.sp,
-                lineHeight = TextUnit(
-                    CringeHubTheme.typography.body.fontSize.value + fontPadding,
-                    TextUnitType.Sp
-                ),
-                baselineShift = BaselineShift(0.35f)
-            )
-        )
-    )
+            .onFocusChanged {
+                focusChanged.invoke(it.hasFocus)
+            }
+            .weight(0.9f)
+    ) {
+        contentState.forEachIndexed { paragraphIndex, textOrMedia ->
+            item {
+                textOrMedia.Display(
+                    CurrentPreset(contentState, cursorParagraph, paragraphIndex, focusManager)
+                )
+            }
+        }
+    }
 }
+
+data class CurrentPreset(
+    val contentState: SnapshotStateList<ContentItem>,
+    val cursorParagraph: MutableState<Int>,
+    val paragraphIndex: Int,
+    val focusManager: FocusManager
+)
+
+private val ParagraphsListSaver = listSaver(
+    save = { stateList ->
+        // use types that is saveable to Bundle
+        stateList.map {
+            when (it) {
+                is ContentItem.Text -> {
+                    val type = "TEXT"
+                    val text = it.content
+                    val start = it.selectionStart
+                    val end = it.selectionEnd
+                    listOf(type, text, start, end)
+                }
+
+                is ContentItem.Media.Image -> {
+                    val type = "IMAGE"
+                    listOf(type, it.content)
+                }
+
+                is ContentItem.Media.Video -> {
+                    val type = "VIDEO"
+                    listOf(type, it.content)
+                }
+
+                else -> IllegalArgumentException()
+            }
+        }
+    },
+    restore = { restoredList ->
+        mutableStateListOf<ContentItem>().apply {
+            if (restoredList.isNotEmpty()) {
+                (restoredList as? List<List<*>>)?.forEach { itemData ->
+                    val type = itemData[0] as? String ?: ""
+                    when (type) {
+                        "TEXT" -> {
+                            val text = itemData[1] as? String ?: ""
+                            val start = itemData[2] as? Int ?: 0
+                            val end = itemData[3] as? Int ?: 0
+                            add(
+                                ContentItem.Text(
+                                    text,
+                                    selectionStart = start,
+                                    selectionEnd = end
+                                )
+                            )
+                        }
+
+                        "IMAGE" -> {
+                            val uri = itemData[1] as? String ?: ""
+                            add(
+                                ContentItem.Media.Image(
+                                    uri
+                                )
+                            )
+                        }
+
+                        "VIDEO" -> {
+                            val uri = itemData[1] as? String ?: ""
+                            add(
+                                ContentItem.Media.Video(
+                                    uri
+                                )
+                            )
+                        }
+
+                        else -> IllegalArgumentException()
+                    }
+                }
+            }
+        }
+    }
+)
 
 @Preview
 @Composable
@@ -394,10 +409,12 @@ internal fun DialogPreview() {
 @Composable
 internal fun GuideCreationScreenPreview() {
     GuideUi(
-        content = "long\n" +
+        content = ("long\n" +
                 "longlong\n" +
                 "longlonglonglonglonglonglonglonglonglong\n" +
-                "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong"
+                "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong").split(
+            '\n'
+        ).map { ContentItem.Text(it) }
     ).Show(
         {},
         { _ -> },
