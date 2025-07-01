@@ -16,6 +16,10 @@ android {
             )
         }
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -43,6 +47,7 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
 
+    testImplementation(project(":core:test"))
     testImplementation(libs.junit)
     testImplementation(libs.test.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
