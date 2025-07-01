@@ -15,10 +15,8 @@ class FakeAdminGuideRepository @Inject constructor() : GuideRepository.Admin {
     }
 
     override suspend fun upsertGuide(id: String, title: String, content: String) {
-        var indexToChange = -1
         guides.forEachIndexed { index, guideDomain ->
             if (guideDomain.id == id) {
-                indexToChange = index
                 guides[index] = guideDomain.copy(title, content)
             }
         }
