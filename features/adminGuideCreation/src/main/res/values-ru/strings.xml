@@ -7,4 +7,5 @@
     <string name="save">Выйти</string>
     <string name="publish">Опубликовать</string>
     <string name="create_guide_app_bar_title">Создать гайд</string>
+    <string name="guide_page">a</string>
 </resources>

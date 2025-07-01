@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -61,10 +60,12 @@ import com.example.adminguidecreation.core.ConcreteMediaActionButton
 import com.example.adminguidecreation.core.ControlWrapperFactory
 import com.example.cringehub.theme.CringeHubTheme
 
+// GuideUi for admin could contain several pages with content inside (text, media)
 data class GuideUi(
     val guideId: String = "",
     val title: String = "",
-    val content: List<ContentItem> = listOf(ContentItem.Text(""))
+//    val content: Map<Int, List<ContentItem>> = mapOf(0 to listOf(ContentItem.TextItem("")))
+    val content: List<ContentItem> = listOf(ContentItem.TextItem(""))
 ) : GuideCreationUiState {
 
     @Composable
@@ -142,12 +143,39 @@ data class GuideUi(
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Title(titleState)
+
+                val contentCurrentPage = rememberSaveable { mutableIntStateOf(0) }
                 val contentCurrentCursorParagraph = rememberSaveable { mutableIntStateOf(0) }
                 var controlStateEnabled by remember { mutableStateOf(false) }
-                Title(titleState)
-                Content(paragraphs, contentCurrentCursorParagraph) { focused ->
-                    controlStateEnabled = focused
+                val pages = rememberSaveable { mutableIntStateOf(1) }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.9f)
+                ) {
+                    items(pages.intValue) {
+                        PageContent(
+                            paragraphs,
+                            contentCurrentPage,
+                            contentCurrentCursorParagraph
+                        ) { focused ->
+                            controlStateEnabled = focused
+                        }
+                    }
+
+                    // Create new page button
+                    item {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(CringeHubTheme.dimensions.extraSmall),
+                            onClick = { ++pages.intValue }) {
+                            Text("Добавить страницу")
+                        }
+                    }
                 }
+
                 EditorControls(
                     modifier = Modifier
                         .semantics {
@@ -272,6 +300,9 @@ private fun ShowDialog(
 private fun Title(titleState: MutableState<String>) {
     TextField(
         modifier = Modifier
+            .semantics {
+                contentDescription = GuideCreationUiState.TITLE
+            }
             .fillMaxWidth()
             .wrapContentHeight(),
         value = titleState.value,
@@ -293,24 +324,38 @@ private fun Title(titleState: MutableState<String>) {
 }
 
 @Composable
-private fun ColumnScope.Content(
+private fun PageContent(
     contentState: SnapshotStateList<ContentItem>,
+    currentPage: MutableState<Int>,
     cursorParagraph: MutableState<Int>,
     focusChanged: (Boolean) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
+    val contentDescWithPageNumeration = stringResource(R.string.guide_page, currentPage.value)
     LazyColumn(
         modifier = Modifier
+            .semantics {
+                contentDescription = contentDescWithPageNumeration
+            }
             .fillMaxWidth()
             .onFocusChanged {
                 focusChanged.invoke(it.hasFocus)
-            }
-            .weight(0.9f)
+            },
+        userScrollEnabled = false
     ) {
+        item {
+            Text("${currentPage.value} Page")
+        }
         contentState.forEachIndexed { paragraphIndex, textOrMedia ->
             item {
                 textOrMedia.Display(
-                    CurrentPreset(contentState, cursorParagraph, paragraphIndex, focusManager)
+                    CurrentPreset(
+                        contentState,
+                        currentPage,
+                        cursorParagraph,
+                        paragraphIndex,
+                        focusManager
+                    )
                 )
             }
         }
@@ -319,6 +364,7 @@ private fun ColumnScope.Content(
 
 data class CurrentPreset(
     val contentState: SnapshotStateList<ContentItem>,
+    val currentPage: MutableState<Int>,
     val cursorParagraph: MutableState<Int>,
     val paragraphIndex: Int,
     val focusManager: FocusManager
@@ -329,8 +375,8 @@ private val ParagraphsListSaver = listSaver(
         // use types that is saveable to Bundle
         stateList.map {
             when (it) {
-                is ContentItem.Text -> {
-                    val type = "TEXT"
+                is ContentItem.TextItem -> {
+                    val type = ContentItem.TYPE_TEXT
                     val text = it.content
                     val start = it.selectionStart
                     val end = it.selectionEnd
@@ -338,12 +384,12 @@ private val ParagraphsListSaver = listSaver(
                 }
 
                 is ContentItem.Media.Image -> {
-                    val type = "IMAGE"
+                    val type = ContentItem.TYPE_IMAGE
                     listOf(type, it.content)
                 }
 
                 is ContentItem.Media.Video -> {
-                    val type = "VIDEO"
+                    val type = ContentItem.TYPE_VIDEO
                     listOf(type, it.content)
                 }
 
@@ -357,12 +403,12 @@ private val ParagraphsListSaver = listSaver(
                 (restoredList as? List<List<*>>)?.forEach { itemData ->
                     val type = itemData[0] as? String ?: ""
                     when (type) {
-                        "TEXT" -> {
+                        ContentItem.TYPE_TEXT -> {
                             val text = itemData[1] as? String ?: ""
                             val start = itemData[2] as? Int ?: 0
                             val end = itemData[3] as? Int ?: 0
                             add(
-                                ContentItem.Text(
+                                ContentItem.TextItem(
                                     text,
                                     selectionStart = start,
                                     selectionEnd = end
@@ -370,7 +416,7 @@ private val ParagraphsListSaver = listSaver(
                             )
                         }
 
-                        "IMAGE" -> {
+                        ContentItem.TYPE_IMAGE -> {
                             val uri = itemData[1] as? String ?: ""
                             add(
                                 ContentItem.Media.Image(
@@ -379,7 +425,7 @@ private val ParagraphsListSaver = listSaver(
                             )
                         }
 
-                        "VIDEO" -> {
+                        ContentItem.TYPE_VIDEO -> {
                             val uri = itemData[1] as? String ?: ""
                             add(
                                 ContentItem.Media.Video(
@@ -414,7 +460,7 @@ internal fun GuideCreationScreenPreview() {
                 "longlonglonglonglonglonglonglonglonglong\n" +
                 "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong").split(
             '\n'
-        ).map { ContentItem.Text(it) }
+        ).map { ContentItem.TextItem(it) }
     ).Show(
         {},
         { _ -> },
