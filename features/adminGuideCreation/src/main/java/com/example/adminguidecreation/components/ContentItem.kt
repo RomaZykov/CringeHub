@@ -1,166 +1,148 @@
 package com.example.adminguidecreation.components
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.adminguidecreation.R
 import com.example.adminguidecreation.model.CurrentPreset
+import java.util.UUID
 
 interface ContentItem {
 
+    val uniqueKey: String
     val content: String
 
     @Composable
     fun Display(
+        focusRequester: FocusRequester,
         currentPreset: CurrentPreset
     )
 
     data class TextItem(
+        override val uniqueKey: String = UUID.randomUUID().toString(),
         override val content: String = "",
         val selectionStart: Int = content.length,
         val selectionEnd: Int = content.length
     ) : ContentItem {
+
         @Composable
         override fun Display(
+            focusRequester: FocusRequester,
             currentPreset: CurrentPreset
         ) {
-            val textFieldValue = TextFieldValue(
-                content,
-                TextRange(selectionStart, selectionEnd)
+            val textFieldState = rememberTextFieldState(content)
+            val currentPage = currentPreset.currentPage
+            val currentParagraphIndex = currentPreset.paragraphIndex
+            val needDownTransition = rememberSaveable { mutableStateOf(false) }
+
+            val contentDesc = stringResource(
+                R.string.guide_page_paragraph_content_desc,
+                currentPage,
+                currentParagraphIndex,
+                TYPE_TEXT
             )
-            val currentTextEmpty = textFieldValue.text.isEmpty()
-            val currentIndex = currentPreset.paragraphIndex
 
-            val previousItemIsTextItem =
-                currentIndex != 0 && currentPreset.contentState[currentIndex - 1] is TextItem
-            val previousItemHasTextItem =
-                previousItemIsTextItem && (currentPreset.contentState[currentIndex - 1] as TextItem).content.isNotEmpty()
-
-            val nextItemIsTextItem =
-                currentIndex + 1 < currentPreset.contentState.size && currentPreset.contentState[currentIndex + 1] is TextItem
-            val nextItemHasTextItem =
-                nextItemIsTextItem && (currentPreset.contentState[currentIndex + 1] as TextItem).content.isNotEmpty()
+            if (currentPreset.isPressedDialog) {
+                currentPreset.updateParagraphs.invoke(
+                    currentPage, currentParagraphIndex, this@TextItem.copy(
+                        content = textFieldState.text.toString(),
+                        selectionStart = textFieldState.selection.start,
+                        selectionEnd = textFieldState.selection.end
+                    ), false
+                )
+            }
 
             TextField(
                 modifier = Modifier
                     .semantics {
-                        contentDescription = "${currentPreset.paragraphIndex} $TYPE_TEXT"
+                        contentDescription = contentDesc
                     }
                     .fillMaxWidth()
-                    .onKeyEvent {
-                        when (it.key) {
-                            Key.Backspace -> {
-                                return@onKeyEvent if (currentTextEmpty && currentIndex != 0) {
-                                    with(currentPreset) {
-                                        focusManager.moveFocus(FocusDirection.Up)
-                                        contentState.remove(contentState[paragraphIndex])
-                                    }
-                                    true
-                                } else if (!currentTextEmpty && currentIndex != 0 && textFieldValue.selection.start == 0 && previousItemHasTextItem) {
-                                    with(currentPreset) {
-                                        val previousItemAsTextItem = (contentState[paragraphIndex - 1] as TextItem)
-                                        contentState[paragraphIndex - 1] = TextItem(
-                                            content = previousItemAsTextItem.content + textFieldValue.text,
-                                            selectionStart = previousItemAsTextItem.selectionStart,
-                                            selectionEnd = previousItemAsTextItem.selectionStart
-                                        )
-                                        focusManager.moveFocus(FocusDirection.Up)
-                                        contentState.remove(contentState[paragraphIndex])
-                                    }
-                                    true
-                                } else if (currentPreset.paragraphIndex == 0 && currentPreset.contentState.size == 2 && textFieldValue.text.length == 1 && !nextItemHasTextItem) {
-                                    currentPreset.contentState.remove(currentPreset.contentState[1])
-                                    true
-                                } else if (currentPreset.contentState.size > 2 && currentPreset.paragraphIndex == 0 && textFieldValue.text.length == 1) {
-                                    if (textFieldValue.text.isEmpty()) {
-                                        currentPreset.contentState.remove(currentPreset.contentState[0])
-                                    }
-                                    true
-                                } else {
-                                    false
-                                }
+                    .focusRequester(focusRequester)
+                    .focusProperties {
+                        canFocus = false
+                        onExit = {
+                            currentPreset.updateParagraphs.invoke(
+                                currentPage, currentParagraphIndex, this@TextItem.copy(
+                                    content = textFieldState.text.toString(),
+                                    selectionStart = textFieldState.selection.start,
+                                    selectionEnd = textFieldState.selection.end
+                                ), needDownTransition.value
+                            )
+                            needDownTransition.value = false
+                        }
+                    }
+                    .onPreviewKeyEvent {
+                        when {
+                            it.type == KeyEventType.KeyDown && it.key == Key.Backspace -> {
+                                currentPreset.handleBackSpaceTransition.invoke(
+                                    currentPage,
+                                    currentParagraphIndex,
+                                    this.copy(
+                                        content = textFieldState.text.toString(),
+                                        selectionStart = textFieldState.selection.start,
+                                        selectionEnd = textFieldState.selection.end
+                                    )
+                                )
+                                true
                             }
 
                             else -> false
                         }
                     }
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            currentPreset.cursorParagraph.value = currentIndex
-                        }
-                    },
-                value = textFieldValue,
-                onValueChange = {
-                    with(currentPreset) {
-                        if (!it.text.contains('\n')) {
-                            contentState[currentIndex] = TextItem(
-                                content = it.text,
-                                selectionStart = it.selection.start,
-                                selectionEnd = it.selection.end
-                            )
-                        }
-                        if (paragraphIndex + 1 == contentState.size && it.text.isNotEmpty()) {
-                            contentState.add(
-                                paragraphIndex + 1,
-                                TextItem("")
-                            )
-                        }
-                    }
-                },
+                    .focusable(),
+                state = textFieldState,
                 placeholder = {
-                    if (currentIndex == 0 && currentTextEmpty) {
+                    if (currentParagraphIndex == 0 && textFieldState.text.isEmpty()) {
                         Text("Content")
                     }
                 },
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
+                    imeAction = ImeAction.Next
                 ),
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        with(currentPreset) {
-                            if (currentIndex + 1 < contentState.size && nextItemHasTextItem
-                                && !currentTextEmpty
-                            ) {
-                                contentState.add(
-                                    paragraphIndex + 1,
-                                    TextItem("")
-                                )
-                            }
-                            focusManager.moveFocus(FocusDirection.Down)
-                        }
-                    }
-                )
+                onKeyboardAction = {
+                    needDownTransition.value = true
+                    it.invoke()
+                }
             )
         }
     }
 
     interface Media : ContentItem {
-        data class Image(override val content: String) : Media {
+        data class Image(
+            override val uniqueKey: String = UUID.randomUUID().toString(),
+            override val content: String
+        ) : Media {
             @OptIn(ExperimentalGlideComposeApi::class)
             @Composable
             override fun Display(
+                focusRequester: FocusRequester,
                 currentPreset: CurrentPreset
             ) {
                 Column(
@@ -180,18 +162,26 @@ interface ContentItem {
             }
         }
 
-        data class Gif(override val content: String) : Media {
+        data class Gif(
+            override val uniqueKey: String = UUID.randomUUID().toString(),
+            override val content: String
+        ) : Media {
             @Composable
             override fun Display(
+                focusRequester: FocusRequester,
                 currentPreset: CurrentPreset
             ) {
                 TODO("Not yet implemented")
             }
         }
 
-        data class Video(override val content: String) : Media {
+        data class Video(
+            override val uniqueKey: String = UUID.randomUUID().toString(),
+            override val content: String
+        ) : Media {
             @Composable
             override fun Display(
+                focusRequester: FocusRequester,
                 currentPreset: CurrentPreset
             ) {
                 TODO("Not yet implemented")
@@ -202,8 +192,8 @@ interface ContentItem {
     companion object {
         const val TYPE_TEXT = "text"
         const val TYPE_IMAGE = "image"
-        const val TYPE_GIF = "gif"
         const val TYPE_VIDEO = "video"
+        const val TYPE_GIF = "gif"
     }
 }
 
@@ -211,13 +201,16 @@ interface ContentItem {
 @Composable
 fun ContentItemImagePreview() {
     val cursorPage = remember { mutableIntStateOf(0) }
-    val cursorParagraph = remember { mutableIntStateOf(0) }
+    val requester = remember { FocusRequester() }
     val currentPreset = CurrentPreset(
-        contentState = SnapshotStateList(),
-        currentPage = cursorPage,
-        cursorParagraph = cursorParagraph,
-        paragraphIndex = 0,
-        focusManager = LocalFocusManager.current
+        { _, _, _ -> },
+        { _, _, _, _ -> },
+        false,
+        currentPage = cursorPage.intValue,
+        paragraphIndex = 0
     )
-    ContentItem.Media.Image("").Display(currentPreset)
+    ContentItem.Media.Image(content = "").Display(
+        requester,
+        currentPreset
+    )
 }

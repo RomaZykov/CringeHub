@@ -30,8 +30,10 @@ fun GuideCreationScreen(
             viewModel.saveContent(
                 it.guideId,
                 it.title,
-                it.content.joinToString("\n") { data -> data.content },
-                media = it.content.filterIsInstance<ContentItem.Media>()
+                it.content.mapValues { content ->
+                    content.value.joinToString("\n") { data -> data.content }
+                },
+                media = it.content.values.filterIsInstance<ContentItem.Media>()
                     .map { mediaData -> mediaData.content.toUri() }
             )
         },
