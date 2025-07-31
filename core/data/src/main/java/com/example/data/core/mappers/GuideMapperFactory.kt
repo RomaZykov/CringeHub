@@ -1,5 +1,6 @@
 package com.example.data.core.mappers
 
+import androidx.core.net.toUri
 import com.example.data.model.GuideData
 import com.example.database.entities.GuideEntity
 import com.example.domain.model.GuideDomain
@@ -23,7 +24,7 @@ interface GuideMapperFactory {
                     GuideNetwork(
                         id = input.id,
                         title = input.title,
-                        content = input.content,
+                        content = input.content.mapKeys { it.key.toString() },
                         isDraft = input.isDraft,
                         isFree = false,
                         latestModified = input.latestModified,
@@ -35,7 +36,7 @@ interface GuideMapperFactory {
                     GuideNetwork(
                         id = input.id,
                         title = input.title,
-                        content = input.content,
+                        content = input.content.mapKeys { it.key.toString() },
                         isDraft = input.isDraft,
                         isFree = false,
                         latestModified = input.latestModified,
@@ -53,7 +54,7 @@ interface GuideMapperFactory {
                     GuideEntity(
                         id = input.id ?: "",
                         title = input.title ?: "",
-                        content = input.content ?: "",
+                        content = input.content?.mapKeys { it.key.toInt() } ?: mapOf(0 to ""),
                         isDraft = input.isDraft ?: true,
                         latestModified = input.latestModified ?: -1L
                     )
@@ -91,7 +92,7 @@ interface GuideMapperFactory {
                     GuideData(
                         id = input.id ?: "",
                         title = input.title ?: "",
-                        content = input.content ?: "",
+                        content = input.content?.mapKeys { it.key.toInt() } ?: mapOf(0 to ""),
                         isDraft = input.isDraft ?: true,
                         isFree = false,
                         latestModified = input.latestModified ?: -1L,
@@ -114,7 +115,10 @@ interface GuideMapperFactory {
                         content = input.content,
                         isDraft = input.isDraft,
                         isFree = false,
-                        media = emptyList()
+                        media = input.content.values.toString().split('\n').filter {
+                            // TODO: Several problems DRY and how to validate correct?
+                            it.startsWith("content://")
+                        }.map { it.toUri() }.toList()
                     )
                 }
 
@@ -122,10 +126,13 @@ interface GuideMapperFactory {
                     GuideDomain(
                         id = input.id ?: "",
                         title = input.title ?: "",
-                        content = input.content ?: "",
+                        content = input.content?.mapKeys { it.key.toInt() } ?: mapOf(0 to ""),
                         isDraft = input.isDraft ?: true,
                         isFree = input.isFree ?: false,
-                        media = emptyList()
+                        media = input.content?.values.toString().split('\n').filter {
+                            // TODO: Several problems DRY and how to validate correct?
+                            it.startsWith("content://")
+                        }.map { it.toUri() }.toList()
                     )
                 }
 
@@ -136,7 +143,10 @@ interface GuideMapperFactory {
                         content = input.content,
                         isDraft = input.isDraft,
                         isFree = input.isFree,
-                        media = emptyList()
+                        media = input.content.values.toString().split('\n').filter {
+                            // TODO: Several problems DRY and how to validate correct?
+                            it.startsWith("content://")
+                        }.map { it.toUri() }.toList()
                     )
                 }
 
