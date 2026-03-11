@@ -12,13 +12,10 @@ Itz yor hub of Cringe :)
 </p>
 <p align="center">
 
-## Description
+## 📖 Description
   A gamified mobile application for boomers and buzzers to immerse themselves in the environment of modern culture (in different countries) of memes, information business, games, slang and various Internet practices with a learning mechanism.
-  
-  First of all, for me, as a developer, this application is a testing ground for various hypotheses and features, since the application's subject matter is not limited to the application itself and it is possible to add various crazy jokes, secondly, it is an attempt to reach monetization in the future and delight my favorite users with cool features and training materials.
-<br /><br />  Inspired by: Lurkmore,  [HyperSkill](https://hyperskill.org/), [Lyra](https://www.gaugash.ru/lyra).
 
-## Screenshots (so far only from Figma)
+## 📸 Screenshots (so far only from Figma)
 <p align="center">
 <img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%201.png">
 </p>
@@ -26,7 +23,7 @@ Itz yor hub of Cringe :)
 <img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%202.png">
 </p>
 
-## Stack
+## 🛠️ Stack
   - Kotlin (KTS), Kotlin coroutines, Flow
   - MVVM, Clean Architecture
   - Single-Activity
@@ -36,7 +33,7 @@ Itz yor hub of Cringe :)
   - Konsist
   - Firebase: Auth, Cloud Firestore
 
-## Features (product side)
+## 🚀 Features (product side)
   - [x] Google signIn/signUp
   - [ ] Lessons on topics (where YouTubers steal content from, etc.)
   - [ ] Store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
@@ -44,7 +41,7 @@ Itz yor hub of Cringe :)
   - [ ] Level Up's and progression
   - [ ] ??? Secret Epic Feature
 
-## Features (admin panel side)
+## 🛡️ Features (admin panel side)
   - [x] Only login via Email and password, no registration directly, manual registration via Firebase
   - [x] Drafts of the created content (offline-first approach based on push synchronization)
   - [x] CRUD operations with drafts
@@ -52,14 +49,14 @@ Itz yor hub of Cringe :)
   - [ ] Option to add images/videos/gifs
   - [ ] Publish draft operation for user feed
 
-## Features (development)
-  - Design from Figma (I did it)
+## ✨ Features (development)
+  - Design from Figma
   - Composite builds through convention plugins
   - Multi-module feature and layers based architecture
-  - Custom theme
-  - Inspired by [NowInAndroid](https://github.com/android/nowinandroid) (without the InDirectionalFlow approach, but with the classic clean architecture from Uncle Bob)
 
-## Tests
+**Please note:** This repository contains a frozen open source version. Current development is conducted in a private repository. We publish the code as soon as it is ready.
+
+## ✅ Tests
 <!-- 
 1) Скриншот тесты
   From the above section you’ll notice that there were two commands we used – updateDebugScreenshotTest and validateDebugScreenshotTest. With these commands we need to make sure that our screenshots are kept up-to-date with the latest changes in our project, but we don’t want to be updating them all of the time – as we could accidentally update screenshots with UI regressions.
@@ -77,5 +74,5 @@ Itz yor hub of Cringe :)
 
 2) Приложите примеры кода и способы, как их запустить. Таким образом, вы сможете продемонстрировать, что вы уверены в том, что ваш проект будет работать без каких-либо проблем. Это позволит другим людям также поверить в успех этого проекта.-->
 
-## Copyright
+## ©️ Copyright
 <a href="https://fonts.google.com/specimen/M+PLUS+Rounded+1c/license" title="fox icons">Шрифт M PLUS Rounded 1c</a>
