@@ -12,10 +12,10 @@
 </p>
 <p align="center">
 
-## Описание
+## 📖 Описание
   Геймифицированное мобильное приложение для бумеров и зумеров для погружения в среду современной культуры (разных стран) мемов, инфобизнеса, игр, слэнга и различных Интернет практик с обучающим механизмом.
 
-## Скриншоты (пока только макеты из Figma)
+## 📸 криншоты (пока только макеты из Figma)
 <p align="center">
 <img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%201.png">
 </p>
@@ -23,7 +23,7 @@
 <img src="https://github.com/RomaZykov/CringeHub/blob/master/demo/Demo%20Cringehub%202.png">
 </p>
 
-## Стэк
+## 🛠️ Технологии
   - Kotlin (KTS), Kotlin coroutines, FLow
   - MVVM, Clean Architecture
   - Single-Activity
@@ -33,7 +33,7 @@
   - Konsist
   - Firebase: Auth, Cloud Firestore
 
-## Особенности (клиентский продукт)
+## 🚀 Особенности (клиентский продукт)
   - [x] Google регистрация
   - [ ] Уроки по тематикам (откуда воруют контент ютуберы и т.п.)
   - [ ] Магазин контента (сборники мемов за определённый год/других стран, гайд по слэнгу зумеров и т.п.)
@@ -41,7 +41,7 @@
   - [ ] Level Up`ы и прогрессия
   - [ ] ??? Секретная Эпик Фича
 
-## Особенности (админка)
+## 🛡️ Особенности (админка)
   - [x] Только вход через Email и пароль, открытой регистрации нет, ручная регистрация через Firebase
   - [x] Черновики создаваемого контента (offline-first подход на основе push синхронизации)
   - [x] CRUD операции с топиками
@@ -49,7 +49,7 @@
   - [ ] Публикация топиков (изначально черновиков) с практикой в ленте пользователя
   - [ ] Добавление практики, как дополнения к топикам
 
-## Особенности (разработка)
+## ✨ Особенности (разработка)
   - Композитная сборка для мульти-модульного проекта через convention плагины
   - Мульти-модульность по фичам и слоям
   - Кастомная тема
@@ -57,7 +57,7 @@
 
 **Обратите внимание:** Этот репозиторий содержит замороженную open source версию. Актуальная разработка ведется в приватном репозитории. Мы публикуем код по мере готовности.
 
-## Тесты
+## ✅ Тесты
 <!-- 
 1) Скриншот тесты
   From the above section you’ll notice that there were two commands we used – updateDebugScreenshotTest and validateDebugScreenshotTest. With these commands we need to make sure that our screenshots are kept up-to-date with the latest changes in our project, but we don’t want to be updating them all of the time – as we could accidentally update screenshots with UI regressions.
@@ -75,5 +75,5 @@
 
 2) Приложите примеры кода и способы, как их запустить. Таким образом, вы сможете продемонстрировать, что вы уверены в том, что ваш проект будет работать без каких-либо проблем. Это позволит другим людям также поверить в успех этого проекта.-->
 
-## Copyright
+## ©️ Copyright
 <a href="https://fonts.google.com/specimen/M+PLUS+Rounded+1c/license" title="fox icons">Шрифт M PLUS Rounded 1c</a>
