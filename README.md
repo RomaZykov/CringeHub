@@ -50,7 +50,6 @@ Itz yor hub of Cringe :)
   - [ ] Publish draft operation for user feed
 
 ## ✨ Features (development)
-  - Design from Figma
   - Composite builds through convention plugins
   - Multi-module feature and layers based architecture
 
