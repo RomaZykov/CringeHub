@@ -37,8 +37,6 @@ dependencies {
     // Glide
     implementation(libs.glide)
     implementation(libs.glide.compose)
-    implementation(libs.androidx.runtime)
-    implementation(libs.androidx.material3)
 
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.junit.ktx)
