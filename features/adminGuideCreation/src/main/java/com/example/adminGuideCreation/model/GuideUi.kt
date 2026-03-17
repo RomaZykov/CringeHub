@@ -1,4 +1,4 @@
-package com.example.adminguidecreation.model
+package com.example.adminGuideCreation.model
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -59,30 +59,30 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.adminguidecreation.GuideCreationUiState
-import com.example.adminguidecreation.R
-import com.example.adminguidecreation.components.ContentItem
-import com.example.adminguidecreation.components.ContentItem.TextItem
-import com.example.adminguidecreation.core.ConcreteActionButton
-import com.example.adminguidecreation.core.ConcreteMediaActionButton
-import com.example.adminguidecreation.core.ControlWrapperFactory
+import com.example.adminGuideCreation.GuideCreationUiState
+import com.example.adminGuideCreation.GuideCreationUserActions
+import com.example.adminGuideCreation.R
+import com.example.adminGuideCreation.components.ContentItem
+import com.example.adminGuideCreation.components.ContentItem.TextItem
+import com.example.adminGuideCreation.core.ConcreteActionButton
+import com.example.adminGuideCreation.core.ConcreteMediaActionButton
+import com.example.adminGuideCreation.core.ControlWrapperFactory
 import com.example.cringehub.theme.CringeHubTheme
 
 /**
  * GuideUi for admin could contain several pages with content inside (text or some media)
  */
 data class GuideUi(
-    val guideId: String = "",
-    val title: String = "",
-    val content: Map<Int, List<ContentItem>> = mapOf(0 to listOf(TextItem("")))
+    private val guideId: String = "",
+    private val title: String = "",
+    private val content: Map<Int, List<ContentItem>> = mapOf(0 to listOf(TextItem("")))
 ) : GuideCreationUiState {
 
     @Composable
     @OptIn(ExperimentalMaterial3Api::class)
     override fun Show(
-        popBackStack: () -> Unit,
+        guideCreationUserActions: GuideCreationUserActions,
         saveContent: (GuideUi) -> Unit,
-        onPublishClicked: () -> Unit
     ) {
         val titleState = rememberSaveable(inputs = arrayOf(guideId)) { mutableStateOf(title) }
         val paragraphsWithPages =
@@ -96,7 +96,7 @@ data class GuideUi(
         if (shouldOpenDialog) {
             ShowDialog(onOpenDraftChanged = {
                 shouldOpenDialog = it
-            }, popBackStack)
+            }, { guideCreationUserActions.popBackStack() })
             saveContent.invoke(
                 this.copy(
                     title = titleState.value,
@@ -107,6 +107,9 @@ data class GuideUi(
         val backInteractionSource = remember { MutableInteractionSource() }
         val backPressed by backInteractionSource.collectIsPressedAsState()
         Scaffold(
+            modifier = Modifier.semantics {
+                contentDescription = GuideCreationUiState.GUIDE_CREATION_SCREEN
+            },
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
@@ -120,7 +123,7 @@ data class GuideUi(
                                 !paragraphsWithPages.any { it.value.any { item -> item.content.isNotBlank() } }
                             val textFieldsEmpty = titleState.value.isEmpty() && contentFieldsEmpty
                             if (textFieldsEmpty) {
-                                popBackStack.invoke()
+                                guideCreationUserActions.popBackStack()
                             } else {
                                 shouldOpenDialog = true
                             }
@@ -136,7 +139,7 @@ data class GuideUi(
                         IconButton(modifier = Modifier.semantics {
                             contentDescription = GuideCreationUiState.PUBLISH_BUTTON
                         }, onClick = {
-                            onPublishClicked.invoke()
+                            guideCreationUserActions.onPublishClicked()
                         }) {
                             Icon(
                                 rememberVectorPainter(
@@ -645,7 +648,6 @@ internal fun GuideCreationScreenPreview() {
             ).map { TextItem(it) }
         )
     ).Show(
-        {},
-        { _ -> },
-        {})
+        GuideCreationUserActions.ForPreview
+    ) { _ -> }
 }
