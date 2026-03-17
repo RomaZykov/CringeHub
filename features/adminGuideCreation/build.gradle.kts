@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.adminguidecreation"
+    namespace = "com.example.adminGuideCreation"
 
     buildTypes {
         release {
@@ -34,11 +34,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
     implementation(libs.test.junit.ktx)
-    // Rich Text Editor
-    implementation(libs.richeditor.compose)
     // Glide
     implementation(libs.glide)
     implementation(libs.glide.compose)
+    implementation(libs.androidx.runtime)
+    implementation(libs.androidx.material3)
 
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.junit.ktx)
