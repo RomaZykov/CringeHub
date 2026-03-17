@@ -1,4 +1,4 @@
-package com.example.adminGuideCreation.navigation
+package com.example.adminguidecreation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController

@@ -7,6 +7,4 @@
     <string name="save">Выйти</string>
     <string name="publish">Опубликовать</string>
     <string name="create_guide_app_bar_title">Создать гайд</string>
-    <string name="guide_page">$d страница</string>
-    <string name="guide_page_paragraph_content_desc">page-%1$d, paragraph-%2$d, type-%3$s</string>
 </resources>

@@ -1,10 +1,11 @@
 package com.example.common.di
 
-import com.example.common.core.DispatcherList
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -13,5 +14,5 @@ object DispatchersModule {
 
     @Provides
     @Singleton
-    fun provideDispatcherList(): DispatcherList = DispatcherList.Default()
+    fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
