@@ -1,42 +1,58 @@
-package com.example.adminguidecreation
+package com.example.adminGuideCreation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.adminguidecreation.components.ContentItem
+import com.example.adminGuideCreation.model.GuideUi
 
 @Composable
 fun GuideCreationScreen(
-    modifier: Modifier = Modifier.semantics {
-        contentDescription = GuideCreationUiState.GUIDE_CREATION_SCREEN
-    },
     guideId: String,
     popBackStack: () -> Unit,
-    viewModel: GuideCreationViewModel = hiltViewModel<GuideCreationViewModel.Base>()
+    viewModel: GuideCreationViewModel = hiltViewModel<GuideCreationViewModel>()
 ) {
-    val uiState by viewModel.guideCreationUiStateFlow().collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(guideId) {
         viewModel.loadGuideWithId(guideId)
     }
+
+    GuideCreationScreenUi(
+        uiState,
+        popBackStack,
+        viewModel::saveContent,
+        viewModel::onPublishClicked
+    )
+}
+
+@Composable
+internal fun GuideCreationScreenUi(
+    uiState: GuideCreationUiState,
+    popBackStack: () -> Unit,
+    saveContent: (GuideUi) -> Unit,
+//    saveContent: (String, String, Map<Int, String>, List<Uri>) -> Unit,
+    onPublishClicked: () -> Unit
+) {
     uiState.Show(
-        popBackStack = popBackStack,
-        saveContent = {
-            viewModel.saveContent(
-                it.guideId,
-                it.title,
-                it.content.mapValues { content ->
-                    content.value.joinToString("\n") { data -> data.content }
-                },
-                media = it.content.values.filterIsInstance<ContentItem.Media>()
-                    .map { mediaData -> mediaData.content.toUri() }
-            )
+        guideCreationUserActions = object : GuideCreationUserActions {
+            override fun onPublishClicked() {
+                onPublishClicked.invoke()
+            }
+
+            override fun popBackStack() {
+                popBackStack.invoke()
+            }
         },
-        onPublishClicked = viewModel::onPublishClicked
+        saveContent = {
+            saveContent(it)
+//                it.guideId,
+//                it.title,
+//                it.content.mapValues { content ->
+//                    content.value.joinToString("\n") { data -> data.content }
+//                },
+//                media = it.content.values.filterIsInstance<ContentItem.Media>()
+//                    .map { mediaData -> mediaData.content.toUri() }
+        },
     )
 }

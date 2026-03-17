@@ -1,19 +1,17 @@
-package com.example.adminguidecreation
+package com.example.adminGuideCreation
 
 import androidx.compose.runtime.Composable
-import com.example.adminguidecreation.model.GuideUi
+import com.example.adminGuideCreation.model.GuideUi
 
 interface GuideCreationUiState {
 
     @Composable
     fun Show(
-        popBackStack: () -> Unit,
+        guideCreationUserActions: GuideCreationUserActions,
         saveContent: (GuideUi) -> Unit,
-        onPublishClicked: () -> Unit
     )
 
-    // Content descriptions for semantic provided for tests
-    companion object {
+    companion object Semantics {
         const val GUIDE_CREATION_SCREEN = "GuideCreationScreen"
 
         const val EDITOR_CONTROL = "editor_control"
