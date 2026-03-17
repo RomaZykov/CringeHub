@@ -1,80 +1,65 @@
-package com.example.adminGuideCreation
+package com.example.adminguidecreation
 
-import android.net.Uri
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.adminGuideCreation.components.ContentItem
-import com.example.adminGuideCreation.model.GuideUi
-import com.example.common.core.DispatcherList
+import com.example.adminguidecreation.model.GuideUi
 import com.example.domain.repositories.admin.guide.GuideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class GuideCreationViewModel @Inject constructor(
-    private val guideRepository: GuideRepository.Admin,
-    private val dispatcherList: DispatcherList
-) : ViewModel(), GuideCreationActions {
-    private val uiStateMutable = MutableStateFlow<GuideCreationUiState>(GuideUi())
-    val uiState: StateFlow<GuideCreationUiState>
-       get() = uiStateMutable.asStateFlow()
+interface GuideCreationViewModel {
 
-    override fun loadGuideWithId(guideId: String) {
-        viewModelScope.launch(dispatcherList.io()) {
-            guideRepository.fetchDraftGuides().collect { guides ->
-                guides.find { desiredGuide -> desiredGuide.id == guideId }?.let { guide ->
-                    uiStateMutable.value = GuideUi(
-                        guideId = guide.id,
-                        title = guide.title,
-                        // TODO: Add mapper
-                        content = mutableMapOf<Int, List<ContentItem>>().apply {
-                            guide.content.entries.forEach { (page, content) ->
-                                val pageContent = mutableListOf<ContentItem>().apply {
-                                    content.split('\n').forEach {
-                                        if (guide.media.contains(it.toUri())) {
-                                            add(ContentItem.Media.Image(content = it))
-                                        } else {
-                                            add(ContentItem.TextItem(content = it))
-                                        }
-                                    }
-                                }
-                                put(page, pageContent)
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    }
-
-    override fun onPublishClicked() {
-    }
-
-    override fun saveContent(
-        guide: GuideUi
-//        id: String,
-//        title: String,
-//        content: Map<Int, String>,
-//        media: List<Uri>
-    ) {
-        viewModelScope.launch {
-            // TODO: Mapper
-//            guideRepository.upsertGuide(id, title, content)
-        }
-    }
-}
-
-interface GuideCreationActions {
+    fun guideCreationUiStateFlow(): StateFlow<GuideCreationUiState>
 
     fun onPublishClicked()
 
     fun loadGuideWithId(guideId: String)
 
-    fun saveContent(guide: GuideUi)
-//    fun saveContent(id: String, title: String, content: Map<Int, String>, media: List<Uri>)
+    fun saveContent(id: String, title: String, content: String)
+
+    @HiltViewModel
+    class Base @Inject constructor(
+        private val guideRepository: GuideRepository.Admin
+    ) : ViewModel(), GuideCreationViewModel {
+
+        private val _uiState = MutableStateFlow<GuideCreationUiState>(GuideUi())
+
+        override fun guideCreationUiStateFlow(): StateFlow<GuideCreationUiState> {
+            return _uiState.asStateFlow()
+        }
+
+        override fun loadGuideWithId(guideId: String) {
+            viewModelScope.launch(Dispatchers.IO) {
+                guideRepository.fetchDraftGuides().collect { guides ->
+                    guides.find { desiredGuide -> desiredGuide.id == guideId }?.let { guide ->
+                        _uiState.update {
+                            GuideUi(
+                                guideId = guide.id,
+                                title = guide.title,
+                                content = guide.content
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        override fun onPublishClicked() {
+            viewModelScope.launch {
+
+            }
+        }
+
+        override fun saveContent(id: String, title: String, content: String) {
+            viewModelScope.launch {
+                guideRepository.upsertGuide(id, title, content)
+            }
+        }
+    }
 }
