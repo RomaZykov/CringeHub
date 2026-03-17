@@ -1,4 +1,4 @@
-package com.example.adminguidecreation.components
+package com.example.adminGuideCreation.components
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.adminguidecreation.R
-import com.example.adminguidecreation.model.CurrentPreset
+import com.example.adminGuideCreation.R
+import com.example.adminGuideCreation.model.CurrentPreset
 import java.util.UUID
 
 interface ContentItem {

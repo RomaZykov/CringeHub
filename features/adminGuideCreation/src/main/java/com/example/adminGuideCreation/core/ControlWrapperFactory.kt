@@ -1,4 +1,4 @@
-package com.example.adminguidecreation.core
+package com.example.adminGuideCreation.core
 
 import android.net.Uri
 import android.util.Log

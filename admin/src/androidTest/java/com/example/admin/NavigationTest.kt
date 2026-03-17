@@ -21,9 +21,9 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.adminauth.navigation.AdminAuthRoute
-import com.example.adminguidecreation.GuideCreationUiState
-import com.example.adminguidecreation.R
-import com.example.adminguidecreation.navigation.GuideCreationRoute
+import com.example.adminGuideCreation.GuideCreationUiState
+import com.example.adminGuideCreation.R
+import com.example.adminGuideCreation.navigation.GuideCreationRoute
 import com.example.adminhome.navigation.AdminHomeRoute
 import com.example.adminnavigation.AdminNavigation
 import com.example.cringehub.admin.ui.MainActivity
@@ -160,7 +160,7 @@ class NavigationTest {
                     "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content",
                     isDraft = true,
                     isFree = false,
-                    images = emptyList()
+                    media = emptyList()
                 ),
                 GuideDomain(
                     "2",
@@ -168,22 +168,22 @@ class NavigationTest {
                     "Short Content",
                     isDraft = true,
                     isFree = false,
-                    images = emptyList()
+                    media = emptyList()
                 ),
                 GuideDomain(
                     "3", "Title 3", "", isDraft = true,
                     isFree = false,
-                    images = emptyList()
+                    media = emptyList()
                 ),
                 GuideDomain(
                     "4", "Title 3", "", isDraft = false,
                     isFree = false,
-                    images = emptyList()
+                    media = emptyList()
                 ),
                 GuideDomain(
                     "5", "Title 3", "", isDraft = false,
                     isFree = false,
-                    images = emptyList()
+                    media = emptyList()
                 )
             )
         )
