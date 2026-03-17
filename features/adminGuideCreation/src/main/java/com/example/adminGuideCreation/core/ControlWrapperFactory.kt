@@ -1,5 +1,10 @@
-package com.example.adminguidecreation.core
+package com.example.adminGuideCreation.core
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,7 +19,7 @@ interface ControlWrapperFactory {
     fun CreateAll()
 
     class Base(
-        private val actionButtons: List<ConcreteActionButton>
+        private val actionButtons: List<UIComponent>
     ) : ControlWrapperFactory {
         @Composable
         override fun CreateAll() {
@@ -47,6 +52,40 @@ class ConcreteActionButton(
                 painter = painterResource(paintRes),
                 contentDescription = null,
                 tint = if (currentSelected) CringeHubTheme.colorScheme.secondary else CringeHubTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+class ConcreteMediaActionButton(
+    private val contentDesc: String,
+    private val enabled: Boolean,
+    private val paintRes: Int,
+    private val onMediaClicked: (Uri) -> Unit
+) : UIComponent {
+    @Composable
+    override fun Display() {
+        val pickMedia =
+            rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                    Log.d("PhotoPicker", "Selected URI: $uri")
+                    onMediaClicked.invoke(uri)
+                } else {
+                    Log.d("PhotoPicker", "No media selected")
+                }
+            }
+        ControlWrapper(
+            contentDesc = contentDesc,
+            enabled = enabled,
+            selected = false,
+            onClick = {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+            }
+        ) {
+            Icon(
+                painter = painterResource(paintRes),
+                contentDescription = null,
+                tint = CringeHubTheme.colorScheme.secondary
             )
         }
     }
