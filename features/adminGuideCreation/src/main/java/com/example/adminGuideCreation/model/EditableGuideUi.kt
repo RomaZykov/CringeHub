@@ -72,7 +72,7 @@ import com.example.cringehub.theme.CringeHubTheme
 /**
  * GuideUi for admin could contain several pages with content inside (text or some media)
  */
-data class GuideUi(
+data class EditableGuideUi(
     private val guideId: String = "",
     private val title: String = "",
     private val content: Map<Int, List<ContentItem>> = mapOf(0 to listOf(TextItem("")))
@@ -82,7 +82,7 @@ data class GuideUi(
     @OptIn(ExperimentalMaterial3Api::class)
     override fun Show(
         guideCreationUserActions: GuideCreationUserActions,
-        saveContent: (GuideUi) -> Unit,
+        onSaveContent: (EditableGuideUi) -> Unit,
     ) {
         val titleState = rememberSaveable(inputs = arrayOf(guideId)) { mutableStateOf(title) }
         val paragraphsWithPages =
@@ -97,7 +97,7 @@ data class GuideUi(
             ShowDialog(onOpenDraftChanged = {
                 shouldOpenDialog = it
             }, { guideCreationUserActions.popBackStack() })
-            saveContent.invoke(
+            onSaveContent.invoke(
                 this.copy(
                     title = titleState.value,
                     content = paragraphsWithPages.toMap()
@@ -176,9 +176,6 @@ data class GuideUi(
 
                 EditorControls(
                     modifier = Modifier
-                        .semantics {
-                            contentDescription = GuideCreationUiState.EDITOR_CONTROL
-                        }
                         .wrapContentHeight(),
                     enabled = controlStateEnabled,
                     onBoldClicked = { selected ->
@@ -323,7 +320,7 @@ private fun Title(titleState: MutableState<String>) {
     )
 }
 
-fun calculateGlobalIndex(
+private fun calculateGlobalIndex(
     pagesWithParagraphs: Map<Int, List<ContentItem>>,
     desiredPageIndex: Int,
     desiredParagraphIndex: Int
@@ -353,10 +350,11 @@ private fun ColumnScope.PageContent(
     cursorParagraph: MutableState<Int>,
     focusChanged: (Boolean) -> Unit
 ) {
-    val listState = rememberLazyListState()
     val downTransition = rememberSaveable { mutableStateOf(false) }
     val backspaceTransition = rememberSaveable { mutableStateOf(false) }
     val requestFocusToNewPosition = rememberSaveable { mutableIntStateOf(0) }
+
+    val listState = rememberLazyListState()
     val focusRequesters = remember(paragraphsState.toMap()) {
         val totalContentItemsSize = paragraphsState.values.sumOf { it.size }
         mutableStateListOf<FocusRequester>().apply {
@@ -638,7 +636,7 @@ internal fun DialogPreview() {
 @Preview(showSystemUi = true)
 @Composable
 internal fun GuideCreationScreenPreview() {
-    GuideUi(
+    EditableGuideUi(
         content = mapOf(
             0 to ("long\n" +
                     "longlong\n" +

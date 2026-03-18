@@ -1,11 +1,10 @@
 package com.example.adminGuideCreation
 
-import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.adminGuideCreation.components.ContentItem
-import com.example.adminGuideCreation.model.GuideUi
+import com.example.adminGuideCreation.model.EditableGuideUi
 import com.example.common.core.DispatcherList
 import com.example.domain.repositories.admin.guide.GuideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,15 +19,15 @@ class GuideCreationViewModel @Inject constructor(
     private val guideRepository: GuideRepository.Admin,
     private val dispatcherList: DispatcherList
 ) : ViewModel(), GuideCreationActions {
-    private val uiStateMutable = MutableStateFlow<GuideCreationUiState>(GuideUi())
-    val uiState: StateFlow<GuideCreationUiState>
+    private val uiStateMutable = MutableStateFlow<GuideCreationUiState>(EditableGuideUi())
+    internal val uiState: StateFlow<GuideCreationUiState>
        get() = uiStateMutable.asStateFlow()
 
     override fun loadGuideWithId(guideId: String) {
         viewModelScope.launch(dispatcherList.io()) {
             guideRepository.fetchDraftGuides().collect { guides ->
                 guides.find { desiredGuide -> desiredGuide.id == guideId }?.let { guide ->
-                    uiStateMutable.value = GuideUi(
+                    uiStateMutable.value = EditableGuideUi(
                         guideId = guide.id,
                         title = guide.title,
                         // TODO: Add mapper
@@ -55,26 +54,18 @@ class GuideCreationViewModel @Inject constructor(
     override fun onPublishClicked() {
     }
 
-    override fun saveContent(
-        guide: GuideUi
-//        id: String,
-//        title: String,
-//        content: Map<Int, String>,
-//        media: List<Uri>
-    ) {
+    override fun saveContent(guide: EditableGuideUi) {
         viewModelScope.launch {
-            // TODO: Mapper
 //            guideRepository.upsertGuide(id, title, content)
         }
     }
 }
 
-interface GuideCreationActions {
+internal interface GuideCreationActions {
 
     fun onPublishClicked()
 
     fun loadGuideWithId(guideId: String)
 
-    fun saveContent(guide: GuideUi)
-//    fun saveContent(id: String, title: String, content: Map<Int, String>, media: List<Uri>)
+    fun saveContent(guide: EditableGuideUi)
 }

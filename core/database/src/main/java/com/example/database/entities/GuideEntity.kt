@@ -12,14 +12,15 @@ import com.google.gson.reflect.TypeToken
 data class GuideEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: String,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "content") @TypeConverters(MapConverter::class) val content: Map<Int, String>,
+    @ColumnInfo(name = "content") @TypeConverters(GsonMapConverter::class) val content: Map<Int, String>,
     @ColumnInfo(name = "latestModified") val latestModified: Long,
     @ColumnInfo(name = "isDraft") val isDraft: Boolean
 //    val isFree: Boolean,
 //    val images: List<String>
 )
 
-internal class MapConverter {
+// TODO: Why not interface?
+internal class GsonMapConverter {
     private val gson = Gson()
 
     @TypeConverter

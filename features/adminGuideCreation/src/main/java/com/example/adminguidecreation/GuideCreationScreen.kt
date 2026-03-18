@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.adminGuideCreation.model.GuideUi
+import com.example.adminGuideCreation.model.EditableGuideUi
 
 @Composable
 fun GuideCreationScreen(
@@ -30,8 +30,7 @@ fun GuideCreationScreen(
 internal fun GuideCreationScreenUi(
     uiState: GuideCreationUiState,
     popBackStack: () -> Unit,
-    saveContent: (GuideUi) -> Unit,
-//    saveContent: (String, String, Map<Int, String>, List<Uri>) -> Unit,
+    onSaveContent: (EditableGuideUi) -> Unit,
     onPublishClicked: () -> Unit
 ) {
     uiState.Show(
@@ -44,8 +43,8 @@ internal fun GuideCreationScreenUi(
                 popBackStack.invoke()
             }
         },
-        saveContent = {
-            saveContent(it)
+        onSaveContent = {
+            onSaveContent(it)
 //                it.guideId,
 //                it.title,
 //                it.content.mapValues { content ->

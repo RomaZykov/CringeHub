@@ -1,14 +1,14 @@
 package com.example.adminGuideCreation
 
 import androidx.compose.runtime.Composable
-import com.example.adminGuideCreation.model.GuideUi
+import com.example.adminGuideCreation.model.EditableGuideUi
 
-interface GuideCreationUiState {
+internal interface GuideCreationUiState {
 
     @Composable
     fun Show(
         guideCreationUserActions: GuideCreationUserActions,
-        saveContent: (GuideUi) -> Unit,
+        onSaveContent: (EditableGuideUi) -> Unit,
     )
 
     companion object Semantics {

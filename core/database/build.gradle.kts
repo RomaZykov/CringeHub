@@ -13,6 +13,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.room)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.converter.gson)
+
     ksp(libs.androidx.room.compiler)
 
     androidTestImplementation(libs.hilt.android.testing)
