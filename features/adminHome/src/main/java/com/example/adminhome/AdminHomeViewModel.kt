@@ -8,9 +8,9 @@ import com.example.adminhome.model.InitialUi
 import com.example.adminnavigation.DraftRouteProvider
 import com.example.adminnavigation.GuideCreationRouteProvider
 import com.example.adminnavigation.navigateIfResumed
+import com.example.common.core.DispatcherList
 import com.example.domain.repositories.admin.guide.GuideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,7 +36,7 @@ interface AdminHomeViewModel {
         private val guideCreationRouteProvider: GuideCreationRouteProvider,
         private val draftRouteProvider: DraftRouteProvider,
         private val guideRepository: GuideRepository.Admin,
-        private val ioDispatcher: CoroutineDispatcher
+        private val dispathcerList: DispatcherList
     ) : ViewModel(), AdminHomeViewModel {
 
         private val _uiState = MutableStateFlow<AdminHomeUiState>(
@@ -49,7 +49,7 @@ interface AdminHomeViewModel {
         override fun adminHomeUiStateFlow(): StateFlow<AdminHomeUiState> = _uiState.asStateFlow()
 
         override fun init() {
-            viewModelScope.launch(ioDispatcher) {
+            viewModelScope.launch(dispathcerList.io()) {
                 combine(
                     guideRepository.fetchDraftGuides(),
                     guideRepository.fetchPublishedGuides()
@@ -72,7 +72,7 @@ interface AdminHomeViewModel {
         }
 
         override fun deleteGuide(id: String) {
-            viewModelScope.launch(ioDispatcher) {
+            viewModelScope.launch(dispathcerList.io()) {
                 guideRepository.deleteGuide(id)
             }
         }
