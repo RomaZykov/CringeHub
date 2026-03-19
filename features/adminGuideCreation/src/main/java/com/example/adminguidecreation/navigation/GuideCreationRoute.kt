@@ -1,8 +1,8 @@
-package com.example.adminguidecreation.navigation
+package com.example.adminGuideCreation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.example.adminguidecreation.GuideCreationScreen
+import com.example.adminGuideCreation.GuideCreationScreen
 import com.example.adminnavigation.Route
 import kotlinx.serialization.Serializable
 

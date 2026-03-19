@@ -30,8 +30,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
     implementation(libs.test.junit.ktx)
-    // Rich Text Editor
-    implementation(libs.richeditor.compose)
 
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.test.junit.ktx)

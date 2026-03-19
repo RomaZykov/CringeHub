@@ -1,10 +1,10 @@
 [versions]
 androidGradlePlugin = "8.8.0"
+gson = "2.13.2"
 kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
 kotlinxCoroutines = "1.10.1"
-richeditorCompose = "1.0.0-rc10"
 rules = "1.6.1"
 runtimeAndroid = "1.7.6"
 appcompat = "1.7.0"
@@ -59,6 +59,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-version" }
 androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "work-version" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -66,7 +67,6 @@ play-services-auth = { group = "com.google.android.gms", name = "play-services-a
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
