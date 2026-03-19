@@ -13,7 +13,7 @@ Itz yor hub of Cringe :)
 <p align="center">
 
 ## 📖 Description
-A gamified mobile application for boomers and buzzers to immerse themselves in the environment of modern culture (in different countries) of memes, information business, games, slang and various Internet practices with a learning mechanism.
+  A gamified mobile application for boomers and buzzers to immerse themselves in the environment of modern culture (in different countries) of memes, information business, games, slang and various Internet practices with a learning mechanism.
 
 ## 📸 Screenshots (so far only from Figma)
 <p align="center">
@@ -24,34 +24,34 @@ A gamified mobile application for boomers and buzzers to immerse themselves in t
 </p>
 
 ## 🛠️ Stack
-- Kotlin (KTS), Kotlin coroutines, Flow
-- MVVM, Clean Architecture
-- Single-Activity
-- Jetpack Compose
-- WorkManager
-- Hilt
-- Konsist
-- Firebase: Auth, Cloud Firestore
+  - Kotlin (KTS), Kotlin coroutines, Flow
+  - MVVM, Clean Architecture
+  - Single-Activity
+  - Jetpack Compose
+  - WorkManager
+  - Hilt
+  - Konsist
+  - Firebase: Auth, Cloud Firestore
 
 ## 🚀 Features (product side)
-- [x] Google signIn/signUp
-- [ ] Lessons on topics (where YouTubers steal content from, etc.)
-- [ ] Store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
-- [ ] In-app currency
-- [ ] Level Up's and progression
-- [ ] ??? Secret Epic Feature
+  - [x] Google signIn/signUp
+  - [ ] Lessons on topics (where YouTubers steal content from, etc.)
+  - [ ] Store (collections of memes for a certain year/other countries, a guide to buzzer slang, etc.)
+  - [ ] In-app currency
+  - [ ] Level Up's and progression
+  - [ ] ??? Secret Epic Feature
 
 ## 🛡️ Features (admin panel side)
-- [x] Only login via Email and password, no registration directly, manual registration via Firebase
-- [x] Drafts of the created content (offline-first approach based on push synchronization)
-- [x] CRUD operations with drafts
-- [ ] Practice as addition for topic
-- [ ] Option to add images/videos/gifs
-- [ ] Publish draft operation for user feed
+  - [x] Only login via Email and password, no registration directly, manual registration via Firebase
+  - [x] Drafts of the created content (offline-first approach based on push synchronization)
+  - [x] CRUD operations with drafts
+  - [ ] Practice as addition for topic
+  - [ ] Option to add images/videos/gifs
+  - [ ] Publish draft operation for user feed
 
 ## ✨ Features (development)
-- Composite builds through convention plugins
-- Multi-module feature and layers based architecture
+  - Composite builds through convention plugins
+  - Multi-module feature and layers based architecture
 
 **Please note:** This repository contains a frozen open source version. Current development is conducted in a private repository. We publish the code as soon as it is ready.
 

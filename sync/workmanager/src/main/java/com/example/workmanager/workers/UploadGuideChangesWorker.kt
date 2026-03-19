@@ -7,11 +7,11 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import com.example.common.core.DispatcherList
 import com.example.network.core.admin.GuideNetworkDataSource
 import com.example.network.model.GuideNetwork
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
@@ -26,14 +26,14 @@ class UploadGuideChangesWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val guideNetworkDataSource: GuideNetworkDataSource,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatcherList: DispatcherList
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return ForegroundInfo(UPLOAD_NOTIFICATION_ID, createNotification(applicationContext))
     }
 
-    override suspend fun doWork(): Result = withContext(ioDispatcher) {
+    override suspend fun doWork(): Result = withContext(dispatcherList.io()) {
         val (guide, deleteRequest) = getMappedWorkData()
         val uploadChangesSuccessful = if (deleteRequest) {
             async {
@@ -50,21 +50,29 @@ class UploadGuideChangesWorker @AssistedInject constructor(
         }
     }
 
-    private fun getMappedWorkData(): Pair<GuideNetwork, Boolean> = Pair(
-        GuideNetwork(
-            id = inputData.getString(GUIDE_ID_KEY),
-            title = inputData.getString(GUIDE_TITLE_KEY),
-            content = inputData.getString(GUIDE_CONTENT_KEY),
-            isDraft = inputData.getBoolean(GUIDE_IS_DRAFT_KEY, true),
-            isFree = inputData.getBoolean(GUIDE_TITLE_KEY, false),
-            latestModified = inputData.getLong(GUIDE_TITLE_KEY, -1L),
-            images = inputData.getStringArray(GUIDE_IMAGES_KEY)?.toList()
-        ),
-        inputData.getBoolean(
-            DELETE_REQUEST_KEY,
-            defaultValue = false
+    private fun getMappedWorkData(): Pair<GuideNetwork, Boolean> {
+        val content: Map<String, String> = mutableMapOf<String, String>().apply {
+            inputData.getStringArray(GUIDE_CONTENT_KEY)?.map {
+                val data = it.split("\n")
+                put(data[0], data[1])
+            }
+        }
+        return Pair(
+            GuideNetwork(
+                id = inputData.getString(GUIDE_ID_KEY),
+                title = inputData.getString(GUIDE_TITLE_KEY),
+                content = content,
+                isDraft = inputData.getBoolean(GUIDE_IS_DRAFT_KEY, true),
+                isFree = inputData.getBoolean(GUIDE_TITLE_KEY, false),
+                latestModified = inputData.getLong(GUIDE_TITLE_KEY, -1L),
+                images = inputData.getStringArray(GUIDE_IMAGES_KEY)?.toList()
+            ),
+            inputData.getBoolean(
+                DELETE_REQUEST_KEY,
+                defaultValue = false
+            )
         )
-    )
+    }
 
     private fun createNotification(appContext: Context): Notification =
         NotificationCompat.Builder(appContext, UPLOAD_NOTIFICATION_CHANNEL_ID)

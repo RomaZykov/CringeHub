@@ -7,10 +7,10 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import com.example.common.core.DispatcherList
 import com.example.domain.repositories.admin.guide.GuideRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -27,16 +27,15 @@ class SyncLatestGuidesWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val guideRepository: GuideRepository,
-    private val ioDispatcher: CoroutineDispatcher
+    private val dispatcherList: DispatcherList
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return ForegroundInfo(SYNC_NOTIFICATION_ID, createNotification(applicationContext))
     }
 
-    override suspend fun doWork(): Result = withContext(ioDispatcher) {
+    override suspend fun doWork(): Result = withContext(dispatcherList.io()) {
 //        val userSignedIn = authRepository.isLoggedIn.first()
-
         val syncSuccessful = awaitAll(
             async { guideRepository.syncWithNetwork() }
         ).all { it }

@@ -1,4 +1,4 @@
-package com.example.adminguidecreation.navigation
+package com.example.adminGuideCreation.navigation
 
 import com.example.adminnavigation.DraftRouteProvider
 import com.example.adminnavigation.Route
