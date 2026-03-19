@@ -1,15 +1,14 @@
 package com.example.adminguidecreation
 
 import androidx.compose.runtime.Composable
-import com.example.adminguidecreation.model.GuideUi
+import com.example.adminGuideCreation.model.EditableGuideUi
 
-interface GuideCreationUiState {
+internal interface GuideCreationUiState {
 
     @Composable
     fun Show(
-        popBackStack: () -> Unit,
-        saveContent: (GuideUi) -> Unit,
-        onPublishClicked: () -> Unit
+        guideCreationUserActions: GuideCreationUserActions,
+        onSaveContent: (EditableGuideUi) -> Unit,
     )
 
     // Content descriptions for semantic provided for tests

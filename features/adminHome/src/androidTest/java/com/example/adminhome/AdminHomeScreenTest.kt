@@ -72,7 +72,7 @@ class AdminHomeScreenTest : BaseComposeTest() {
         }
         composeTestRule.onRoot().printToLog("AdminHomeScreen")
 
-        composeTestRule.onNodeWithText(string(R.string.drafts))
+        composeTestRule.onNodeWithText(retrieveString(R.string.drafts))
             .assertExists()
             .assertIsDisplayed()
 
@@ -90,7 +90,7 @@ class AdminHomeScreenTest : BaseComposeTest() {
             )
         }
 
-        composeTestRule.onNodeWithText(string(R.string.drafts))
+        composeTestRule.onNodeWithText(retrieveString(R.string.drafts))
             .assertDoesNotExist()
 
         composeTestRule.onAllNodes(hasContentDescription("draft")).assertCountEquals(0)
