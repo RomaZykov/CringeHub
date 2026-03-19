@@ -1,6 +1,7 @@
 package com.example.admin
 
 import android.content.Context
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -20,10 +21,13 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.work.Configuration
+import androidx.work.impl.utils.SynchronousExecutor
+import androidx.work.testing.WorkManagerTestInitHelper
 import com.example.adminauth.navigation.AdminAuthRoute
-import com.example.adminGuideCreation.GuideCreationUiState
-import com.example.adminGuideCreation.R
-import com.example.adminGuideCreation.navigation.GuideCreationRoute
+import com.example.adminguidecreation.GuideCreationUiState
+import com.example.adminguidecreation.R
+import com.example.adminguidecreation.navigation.GuideCreationRoute
 import com.example.adminhome.navigation.AdminHomeRoute
 import com.example.adminnavigation.AdminNavigation
 import com.example.cringehub.admin.ui.MainActivity
@@ -48,9 +52,6 @@ class NavigationTest {
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    var workManagerRule = WorkManagerRule()
-
-    @get:Rule(order = 2)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -66,6 +67,14 @@ class NavigationTest {
     @Before
     fun setup() {
         hiltRule.inject()
+
+        // Some screens contains viewModel with workManager
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val config = Configuration.Builder()
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .setExecutor(SynchronousExecutor())
+            .build()
+        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
     }
 
     @After
@@ -160,7 +169,7 @@ class NavigationTest {
                     "Long Long Long Long Long Long  Long Long Long Long Long Long Long  Content",
                     isDraft = true,
                     isFree = false,
-                    media = emptyList()
+                    images = emptyList()
                 ),
                 GuideDomain(
                     "2",
@@ -168,22 +177,22 @@ class NavigationTest {
                     "Short Content",
                     isDraft = true,
                     isFree = false,
-                    media = emptyList()
+                    images = emptyList()
                 ),
                 GuideDomain(
                     "3", "Title 3", "", isDraft = true,
                     isFree = false,
-                    media = emptyList()
+                    images = emptyList()
                 ),
                 GuideDomain(
                     "4", "Title 3", "", isDraft = false,
                     isFree = false,
-                    media = emptyList()
+                    images = emptyList()
                 ),
                 GuideDomain(
                     "5", "Title 3", "", isDraft = false,
                     isFree = false,
-                    media = emptyList()
+                    images = emptyList()
                 )
             )
         )

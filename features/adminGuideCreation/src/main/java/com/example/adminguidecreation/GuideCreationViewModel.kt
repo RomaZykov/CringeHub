@@ -1,4 +1,4 @@
-package com.example.adminGuideCreation
+package com.example.adminguidecreation
 
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
@@ -8,9 +8,11 @@ import com.example.adminGuideCreation.model.EditableGuideUi
 import com.example.common.core.DispatcherList
 import com.example.domain.repositories.admin.guide.GuideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,14 +47,13 @@ class GuideCreationViewModel @Inject constructor(
                                 put(page, pageContent)
                             }
                         }
-                    )
+                    }
                 }
             }
         }
-    }
 
-    override fun onPublishClicked() {
-    }
+        override fun onPublishClicked() {
+            viewModelScope.launch {
 
     override fun saveContent(guide: EditableGuideUi) {
         viewModelScope.launch {

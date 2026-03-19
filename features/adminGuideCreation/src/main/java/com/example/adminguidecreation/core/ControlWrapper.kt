@@ -1,4 +1,4 @@
-package com.example.adminGuideCreation.core
+package com.example.adminguidecreation.core
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
