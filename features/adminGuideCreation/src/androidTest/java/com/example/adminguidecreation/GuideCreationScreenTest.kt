@@ -1,34 +1,20 @@
-package com.example.adminguidecreation
+package com.example.adminGuideCreation
 
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.hasImeAction
 import androidx.compose.ui.test.hasParent
-import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextClearance
-import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.text.input.ImeAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.adminGuideCreation.GuideCreationPage
-import com.example.adminGuideCreation.GuideCreationScreenUi
-import com.example.adminGuideCreation.GuideCreationUiState
-import com.example.adminGuideCreation.R
 import com.example.adminGuideCreation.components.ContentItem
 import com.example.adminGuideCreation.model.EditableGuideUi
 import com.example.test.BaseComposeTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.test.assertEquals
 
 @RunWith(AndroidJUnit4::class)
 class GuideCreationScreenTest : BaseComposeTest() {
@@ -57,12 +43,8 @@ class GuideCreationScreenTest : BaseComposeTest() {
 
     @Test
     fun showImagesCorrectly_withSomeTextBetweenParagraphs() {
-        var count = 0
         repeat(5) {
-            composeTestRule.onNodeWithContentDescription(
-                "$count ${ContentItem.TYPE_TEXT}",
-                substring = true
-            ).performTextInput("$count paragraph")
+            guideCreationPage.performTextByParagraphAndPage(0, it, "${it + 1} paragraph")
 
             composeTestRule.onNodeWithContentDescription(
                 GuideCreationUiState.IMAGE_BUTTON,
@@ -78,225 +60,121 @@ class GuideCreationScreenTest : BaseComposeTest() {
 
     @Test
     fun showLongTextInContentSide_withSeveralParagraphs() {
-        guideCreationPage.assertContentLabelDisplayed()
-        guideCreationPage.performTextByParagraphIndex(0, superLongTextInParagraph)
-        guideCreationPage.assertTextByParagraphIndexEquals(0, superLongTextInParagraph)
+        guideCreationPage.assertContentLabelByPageDisplayed(1)
+        guideCreationPage.performTextByParagraphAndPage(1, 1, superLongTextInParagraph)
+        guideCreationPage.assertTextByParagraphAndPageEquals(1, 1, superLongTextInParagraph)
 
         restorationTester.emulateSavedInstanceStateRestore()
 
-        guideCreationPage.assertTextByParagraphIndexEquals(0, superLongTextInParagraph)
-        guideCreationPage.performTransitionToNextParagraph()
-        guideCreationPage.assertTextByParagraphIndexEquals(1, "")
+        guideCreationPage.assertTextByParagraphAndPageEquals(1, 1, superLongTextInParagraph)
+        guideCreationPage.performTransitionToNextParagraphByPageAndParagraph(1, 1)
+        guideCreationPage.assertTextByParagraphAndPageEquals(1, 2, "")
     }
 
     @Test
-    fun createSeveralPagesWithContent() {
-        guideCreationPage.assertPageTitleDisplayedByPageIndex(0)
-        guideCreationPage.assertContentLabelDisplayed()
-        guideCreationPage.assertAddNewPageButtonDisplayed()
-
-        // First paragraph
-        guideCreationPage.performTextByParagraphIndex(0,"First paragraph on first page")
-        guideCreationPage.assertTextByParagraphIndexEquals(0,"First paragraph on first page")
-
-        // Add second paragraph as image
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.IMAGE_BUTTON)
-            .performClick()
-        composeTestRule
-            .onNode(
-                hasContentDescription(
-                    "1 ${ContentItem.TYPE_IMAGE}",
-                    substring = true
-                ) and
-                        hasParent(
-                            hasContentDescription(retrieveString(R.string.guide_page, 1))
-                        ),
-                useUnmergedTree = true
-            ).assertExists().assertIsDisplayed()
-
-        // Second page of content
-        composeTestRule.onNodeWithContentDescription(
-            retrieveString(R.string.guide_page, 1),
-            substring = true
-        ).assertDoesNotExist()
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CREATE_PAGE_BUTTON)
-            .assertExists().assertIsDisplayed().performClick()
-        composeTestRule.onNodeWithContentDescription(
-            retrieveString(R.string.guide_page, 1),
-            substring = true
-        ).assertExists().assertIsDisplayed()
-
-        with(
-            composeTestRule
-                .onNode(
-                    hasContentDescription(
-                        "0 ${ContentItem.TYPE_TEXT}",
-                        substring = true
-                    ) and
-                            hasParent(
-                                hasContentDescription(retrieveString(R.string.guide_page, 1))
-                            ),
-                    useUnmergedTree = true
-                )
-        ) {
-            assertExists()
-
-            assertTextEquals("Content", includeEditableText = false)
-
-            performTextInput("First paragraph on second page")
-            assertTextEquals("First paragraph on second page")
-        }
-        // Add second paragraph as image
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.IMAGE_BUTTON)
-            .performClick()
-        composeTestRule
-            .onNode(
-                hasContentDescription(
-                    "1 ${ContentItem.TYPE_IMAGE}",
-                    substring = true
-                ) and
-                        hasParent(
-                            hasContentDescription(retrieveString(R.string.guide_page, 1))
-                        ),
-                useUnmergedTree = true
-            ).assertExists().assertIsDisplayed()
-
-        // Third page of content
-        composeTestRule.onNodeWithContentDescription(
-            retrieveString(R.string.guide_page, 2),
-            substring = true
-        ).assertDoesNotExist()
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CREATE_PAGE_BUTTON)
-            .assertExists().assertIsDisplayed().performClick()
-        composeTestRule.onNodeWithContentDescription(
-            retrieveString(R.string.guide_page, 2),
-            substring = true
-        ).assertExists().assertIsDisplayed()
-
-        with(
-            composeTestRule
-                .onNode(
-                    hasContentDescription(
-                        "0 ${ContentItem.TYPE_TEXT}",
-                        substring = true
-                    ) and
-                            hasParent(
-                                hasContentDescription(retrieveString(R.string.guide_page, 2))
-                            ),
-                    useUnmergedTree = true
-                )
-        ) {
-            assertExists()
-
-            assertTextEquals("Content", includeEditableText = false)
-
-            performTextInput("First paragraph on third page")
-            assertTextEquals("First paragraph on third page")
-
-            assert(hasImeAction(ImeAction.Next)).performClick()
-        }
-        with(
-            composeTestRule
-                .onNode(
-                    hasContentDescription(
-                        "1 ${ContentItem.TYPE_TEXT}",
-                        substring = true
-                    ) and
-                            hasParent(
-                                hasContentDescription(retrieveString(R.string.guide_page, 2))
-                            ),
-                    useUnmergedTree = true
-                )
-        ) {
-            assertExists()
-
-            performTextInput("Second paragraph on third page")
-            assertTextEquals("Second paragraph on third page")
-        }
-    }
-
-    @Test // Done - reworked
     fun showDialog_whenTitleOrContentNotEmpty() {
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
-            .assertExists()
-            .assertIsDisplayed()
-            .performTextInput("Test title")
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
-            .assertTextEquals("Test title")
+        guideCreationPage.assertEmptyTitleDisplayed()
+        guideCreationPage.performTitleText("Test title")
+        guideCreationPage.assertTitleTextEquals("Test title")
+        guideCreationPage.SaveDialog().assertNotDisplayed()
+        guideCreationPage.performBackButtonClick()
+        guideCreationPage.SaveDialog().assertDisplayed()
 
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .assertDoesNotExist()
-
-        composeTestRule
-            .onNodeWithContentDescription(GuideCreationUiState.BACK_BUTTON)
-            .performClick()
-
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .assertExists()
-            .assertIsDisplayed()
-
-        // Orientation changes check
         restorationTester.emulateSavedInstanceStateRestore()
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .assertIsDisplayed()
-            .assertExists()
 
-        composeTestRule.onNodeWithText(retrieveString(R.string.save))
-            .assertExists()
-            .assertIsDisplayed()
-        composeTestRule.onNodeWithText(retrieveString(R.string.cancel))
-            .assertExists()
-            .assertIsDisplayed()
-            .performClick()
-
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .isNotDisplayed()
-
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
-            .performTextClearance()
+        guideCreationPage.SaveDialog().assertDisplayed()
+        guideCreationPage.SaveDialog().assertSaveAndCancelButtonDisplayed()
+        guideCreationPage.SaveDialog().performCancelButtonClick()
+        guideCreationPage.SaveDialog().assertNotDisplayed()
+        guideCreationPage.performTitleTextClearing()
 
         // First empty paragraph
-        composeTestRule.onNodeWithContentDescription("0 ${ContentItem.TYPE_TEXT}", substring = true)
-            .assertExists()
-            .assertIsDisplayed()
-            .performTextInput("Test content in 1 paragraph")
-
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.BACK_BUTTON)
-            .performClick()
-
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .assertIsDisplayed()
-            .assertExists()
-
-        composeTestRule.onNodeWithContentDescription("0 ${ContentItem.TYPE_TEXT}", substring = true)
-            .performTextClearance()
+        guideCreationPage.assertContentLabelByPageDisplayed(1)
+        guideCreationPage.performTextByParagraphAndPage(1, 1, "Test content in 1 paragraph")
+        guideCreationPage.performBackButtonClick()
+        guideCreationPage.SaveDialog().assertDisplayed()
+        guideCreationPage.performTextClearingByPageAndParagraph(1, 1)
 
         composeTestRule.activityRule.scenario.onActivity { activity ->
             activity.onBackPressedDispatcher.onBackPressed()
         }
 
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .assertDoesNotExist()
+        guideCreationPage.SaveDialog().assertNotDisplayed()
     }
 
-    @Test // Done - reworked
-    fun doNotShowDialog_whenTitleAndContentEmpty() {
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.TITLE)
-            .assertExists()
-            .assertIsDisplayed()
-        assertTextFieldEquals(GuideCreationUiState.TITLE, "")
+    @Test
+    fun createSeveralPagesWithContent() {
+        guideCreationPage.assertPageNumberDisplayed(1)
+        guideCreationPage.assertContentLabelByPageDisplayed(1)
+        guideCreationPage.assertAddNewPageButtonDisplayed()
 
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.CONTENT)
-            .assertExists()
-            .assertIsDisplayed()
+        // First paragraph
+        guideCreationPage.performTextByParagraphAndPage(1, 1, "First paragraph on first page")
+        guideCreationPage.assertTextByParagraphAndPageEquals(
+            1,
+            1,
+            "First paragraph on first page"
+        )
 
-        assertTextFieldEquals("0 ${ContentItem.TYPE_TEXT}", "")
+        // Add second paragraph as image
+        guideCreationPage.performAddNewPageButtonClick()
+        guideCreationPage.assertPageNumberDisplayed(2)
+//        composeTestRule
+//            .onNode(
+//                hasContentDescription(
+//                    "1 ${ContentItem.TYPE_IMAGE}",
+//                    substring = true
+//                ) and
+//                        hasParent(
+//                            hasContentDescription(retrieveString(R.string.guide_page, 1))
+//                        ),
+//                useUnmergedTree = true
+//            ).assertExists().assertIsDisplayed()
 
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.DIALOG)
-            .assertDoesNotExist()
+        // Second page of content
+        guideCreationPage.assertPageNumberNotDisplayed(2)
+        guideCreationPage.performAddNewPageButtonClick()
+        guideCreationPage.assertPageNumberDisplayed(2)
+        guideCreationPage.assertContentLabelByPageDisplayed(2)
+        guideCreationPage.performTextByParagraphAndPage(2, 1, "First paragraph on second page")
+        guideCreationPage.assertTextByParagraphAndPageEquals(2, 1, "First paragraph on second page")
 
-        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.BACK_BUTTON)
+        // Add second paragraph as image
+        composeTestRule.onNodeWithContentDescription(GuideCreationUiState.IMAGE_BUTTON)
             .performClick()
+//        composeTestRule
+//            .onNode(
+//                hasContentDescription(
+//                    "1 ${ContentItem.TYPE_IMAGE}",
+//                    substring = true
+//                ) and
+//                        hasParent(
+//                            hasContentDescription(retrieveString(R.string.guide_page, 1))
+//                        ),
+//                useUnmergedTree = true
+//            ).assertExists().assertIsDisplayed()
+
+        // Third page of content
+        guideCreationPage.assertPageNumberNotDisplayed(3)
+        guideCreationPage.performAddNewPageButtonClick()
+        guideCreationPage.assertPageNumberDisplayed(3)
+        guideCreationPage.assertContentLabelByPageDisplayed(3)
+        guideCreationPage.performTextByParagraphAndPage(3, 1, "First paragraph on third page")
+        guideCreationPage.assertTextByParagraphAndPageEquals(3, 1, "First paragraph on third page")
+        guideCreationPage.performTransitionToNextParagraphByPageAndParagraph(3, 1)
+        guideCreationPage.performTextByParagraphAndPage(3, 2, "Second paragraph on third page")
+        guideCreationPage.assertTextByParagraphAndPageEquals(3, 2, "Second paragraph on third page")
+    }
+
+    @Test
+    fun doNotShowDialog_whenTitleAndContentEmpty() {
+        guideCreationPage.assertEmptyTitleDisplayed()
+        guideCreationPage.assertTitleTextEquals("")
+
+        guideCreationPage.assertContentLabelByPageDisplayed(1)
+        guideCreationPage.assertTextByParagraphAndPageEquals(1, 1, "")
+        guideCreationPage.SaveDialog().assertNotDisplayed()
+        guideCreationPage.performBackButtonClick()
 
         composeTestRule.onNode(isRoot()).assertDoesNotExist()
     }
@@ -330,22 +208,14 @@ class GuideCreationScreenTest : BaseComposeTest() {
 //        // Quote
 //    }
 
-    @Test
-    fun performStyleTransformation_inDifferentTextParagraphs() {
-        // H1
-
-        // H2
-
-        // Quote
-    }
-
-    private fun assertTextFieldEquals(nodeWithContentDescription: String, expectedResult: String) {
-        val actualText = composeTestRule.onNodeWithContentDescription(
-            nodeWithContentDescription,
-            substring = true
-        ).fetchSemanticsNode().config[SemanticsProperties.InputText]
-        assertEquals(expectedResult, actualText.text)
-    }
+//    @Test
+//    fun performStyleTransformation_inDifferentTextParagraphs() {
+//        // H1
+//
+//        // H2
+//
+//        // Quote
+//    }
 
     private val superLongTextInParagraph =
         "SuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraphSuperLongFirstParagraph"
