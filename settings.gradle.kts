@@ -23,7 +23,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CringeHub"
+rootProject.name = "cringehub"
 include(":app")
 include(":admin")
 
@@ -40,6 +40,7 @@ include(":core:adminNavigation")
 include(":features:auth")
 include(":features:onboarding")
 include(":features:hub")
+include(":features:seasonPass")
 include(":features:store")
 include(":features:adminGuideCreation")
 include(":features:adminAuth")
