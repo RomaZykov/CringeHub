@@ -15,6 +15,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -23,7 +26,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "cringehub"
+rootProject.name = "CringeHub"
 include(":app")
 include(":admin")
 
@@ -40,7 +43,6 @@ include(":core:adminNavigation")
 include(":features:auth")
 include(":features:onboarding")
 include(":features:hub")
-include(":features:seasonPass")
 include(":features:store")
 include(":features:adminGuideCreation")
 include(":features:adminAuth")

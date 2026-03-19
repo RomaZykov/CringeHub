@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.room)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.converter.gson)
+    implementation(libs.gson)
 
     ksp(libs.androidx.room.compiler)
 

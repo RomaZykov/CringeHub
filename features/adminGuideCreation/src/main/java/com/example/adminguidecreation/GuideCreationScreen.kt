@@ -1,24 +1,19 @@
-package com.example.adminguidecreation
+package com.example.adminGuideCreation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.adminGuideCreation.model.EditableGuideUi
 
 @Composable
 fun GuideCreationScreen(
-    modifier: Modifier = Modifier.semantics {
-        contentDescription = GuideCreationUiState.GUIDE_CREATION_SCREEN
-    },
     guideId: String,
     popBackStack: () -> Unit,
-    viewModel: GuideCreationViewModel = hiltViewModel<GuideCreationViewModel.Base>()
+    viewModel: GuideCreationViewModel = hiltViewModel<GuideCreationViewModel>()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(guideId) {
         viewModel.loadGuideWithId(guideId)
     }
@@ -58,6 +53,5 @@ internal fun GuideCreationScreenUi(
 //                media = it.content.values.filterIsInstance<ContentItem.Media>()
 //                    .map { mediaData -> mediaData.content.toUri() }
         },
-        onPublishClicked = viewModel::onPublishClicked
     )
 }
