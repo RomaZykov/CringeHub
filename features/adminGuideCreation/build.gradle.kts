@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.compose.material3)
     implementation(libs.test.junit.ktx)
+
     // Glide
     implementation(libs.glide)
     implementation(libs.glide.compose)

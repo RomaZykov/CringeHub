@@ -4,7 +4,6 @@ kotlin = "2.1.0"
 konsist = "0.16.1"
 jetbrainsKotlinJvm = "2.0.21"
 kotlinxCoroutines = "1.10.1"
-richeditorCompose = "1.0.0-rc10"
 rules = "1.6.1"
 runtime = "1.10.5"
 appcompat = "1.7.0"
@@ -39,7 +38,7 @@ testCoreKtx = "1.6.1"
 testExtJunit = "1.2.1"
 uiTestJunit = "1.10.5"
 glideCompose = "1.0.0-beta01"
-glide = "4.14.2)"
+glide = "4.14.2"
 converterGson = "3.0.0"
 
 # Used directly in gradle plugins
@@ -70,7 +69,6 @@ googleid = { module = "com.google.android.libraries.identity.googleid:googleid",
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
-richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
