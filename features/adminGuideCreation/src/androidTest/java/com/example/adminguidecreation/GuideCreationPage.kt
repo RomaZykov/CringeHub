@@ -16,7 +16,6 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.text.input.ImeAction
 import com.example.adminGuideCreation.components.ContentItem
-import com.example.adminguidecreation.R
 import com.example.test.core.StringResources
 
 class GuideCreationPage(

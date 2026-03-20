@@ -1,8 +1,8 @@
-package com.example.adminguidecreation.di
+package com.example.adminGuideCreation.di
 
-import com.example.adminguidecreation.navigation.BaseDraftRouteProvider
-import com.example.adminguidecreation.navigation.BaseGuideCreationRouteProvider
-import com.example.adminguidecreation.navigation.GuideCreationRouteBuilder
+import com.example.adminGuideCreation.navigation.BaseDraftRouteProvider
+import com.example.adminGuideCreation.navigation.BaseGuideCreationRouteProvider
+import com.example.adminGuideCreation.navigation.GuideCreationRouteBuilder
 import com.example.adminnavigation.DraftRouteProvider
 import com.example.adminnavigation.GuideCreationRouteProvider
 import com.example.adminnavigation.RouteBuilder
