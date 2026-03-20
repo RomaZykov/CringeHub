@@ -1,6 +1,6 @@
 package com.example.common.di
 
-import com.example.common.core.ManageResources
+import com.example.common.core.ProvideString
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ abstract class CommonModule {
 
     @Binds
     @Singleton
-    abstract fun bindsResources(resources: ManageResources.Base): ManageResources
+    abstract fun bindsResources(resources: ProvideString.Base): ProvideString
 }
