@@ -1,0 +1,92 @@
+{
+  "project_info": {
+    "project_number": "172651466072",
+    "project_id": "cringehub-debug",
+    "storage_bucket": "cringehub-debug.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172651466072:android:79d8ad6d5f2d2fb39be92d",
+        "android_client_info": {
+          "package_name": "com.example.cringehub.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172651466072-4ghvkm2a31dea5v797n73ta2gr0pbbda.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cringehub.admin",
+            "certificate_hash": "ef3164193d327983bc82a36f4d5aa01162bd7135"
+          }
+        },
+        {
+          "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzIKbCokh2L7y6v_HoAObKLHXi-bCuSEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172651466072:android:abdcded25ded76f19be92d",
+        "android_client_info": {
+          "package_name": "com.example.cringehub.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172651466072-cs77lsf75h0d4ql7lmhem7lfot5e2l4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cringehub.debug",
+            "certificate_hash": "ef3164193d327983bc82a36f4d5aa01162bd7135"
+          }
+        },
+        {
+          "client_id": "172651466072-mfsmpeke8kf7ecicae6bm2dmfovc5hj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cringehub.debug",
+            "certificate_hash": "4e20a80f199bbd3e487048a11da4a9039ced33f8"
+          }
+        },
+        {
+          "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzIKbCokh2L7y6v_HoAObKLHXi-bCuSEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172651466072-c84a39e1n6ghrd61ppiue03ii1da33hp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
