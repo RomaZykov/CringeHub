@@ -3,7 +3,7 @@ package com.example.adminGuideCreation
 import androidx.compose.runtime.Composable
 import com.example.adminGuideCreation.model.EditableGuideUi
 
-internal interface GuideCreationUiState {
+interface GuideCreationUiState {
 
     @Composable
     fun Show(

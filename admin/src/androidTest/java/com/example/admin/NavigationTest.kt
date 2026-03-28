@@ -25,9 +25,9 @@ import androidx.work.Configuration
 import androidx.work.impl.utils.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.example.adminauth.navigation.AdminAuthRoute
-import com.example.adminguidecreation.GuideCreationUiState
-import com.example.adminguidecreation.R
-import com.example.adminguidecreation.navigation.GuideCreationRoute
+import com.example.adminGuideCreation.GuideCreationUiState
+import com.example.adminGuideCreation.R
+import com.example.adminGuideCreation.navigation.GuideCreationRoute
 import com.example.adminhome.navigation.AdminHomeRoute
 import com.example.adminnavigation.AdminNavigation
 import com.example.cringehub.admin.ui.MainActivity

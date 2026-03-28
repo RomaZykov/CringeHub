@@ -1,4 +1,4 @@
-package com.example.adminguidecreation
+package com.example.adminGuideCreation
 
 class GuideCreationViewModelTest {
 //    @Test

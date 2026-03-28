@@ -65,7 +65,6 @@ import com.example.adminGuideCreation.R
 import com.example.adminGuideCreation.components.ContentItem
 import com.example.adminGuideCreation.components.ContentItem.TextItem
 import com.example.adminGuideCreation.core.ConcreteActionButton
-import com.example.adminGuideCreation.core.ConcreteMediaActionButton
 import com.example.adminGuideCreation.core.ControlWrapperFactory
 import com.example.cringehub.theme.CringeHubTheme
 
@@ -224,14 +223,14 @@ private fun EditorControls(
                     onQuoteClicked.invoke(it)
                 }
             ),
-            ConcreteMediaActionButton(
-                contentDesc = GuideCreationUiState.QUOTE_BUTTON,
-                enabled = enabled,
-                paintRes = com.example.ui.R.drawable.placeholder_small_icon,
-                onMediaClicked = {
-                    onMediaClicked.invoke(it)
-                }
-            )
+//            ConcreteMediaActionButton(
+//                contentDesc = GuideCreationUiState.QUOTE_BUTTON,
+//                enabled = enabled,
+//                paintRes = com.example.ui.R.drawable.placeholder_small_icon,
+//                onMediaClicked = {
+//                    onMediaClicked.invoke(it)
+//                }
+//            )
         )
     )
     FlowRow(modifier = modifier.padding(8.dp)) {
