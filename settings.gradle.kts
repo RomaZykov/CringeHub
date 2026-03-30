@@ -32,7 +32,6 @@ include(":admin")
 
 include(":core:domain")
 include(":core:data")
-include(":core:ui")
 include(":core:test")
 include(":core:database")
 include(":core:network")
